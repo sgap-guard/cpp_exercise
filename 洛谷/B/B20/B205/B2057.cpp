@@ -14,7 +14,8 @@ int main()
         {
             max_score = x;
         }
-        cout << max_score << endl;
-        return 0;
+        
     }
+    cout << max_score << endl;
+    return 0;
 }
