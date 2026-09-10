@@ -1,0 +1,35 @@
+# 编译产物 C/C++
+*.exe
+*.o
+*.obj
+*.out
+*.a
+*.lib
+*.dll
+*.so
+*.d
+*.i
+*.s
+
+# 日志、临时文件
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+
+# Visual Studio Code 配置与缓存
+.vscode/.DS_Store
+.vscode/*.log
+.vscode/*.tmp
+.vscode/extensions.json
+# 如果你不想上传个人调试配置，保留下面这两行；想共享调试配置就注释掉
+.vscode/settings.json
+.vscode/launch.json
+.vscode/c_cpp_properties.json
+.vscode/tasks.json
+.vscode/.ipynb_checkpoints
+
+# 其他系统文件
+Thumbs.db
+.DS_Store
