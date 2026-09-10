@@ -22,18 +22,7 @@
 14. 如果您也有您自己学习C/C++的题目仓库，欢迎共享您的题目仓库。您的题目仓库将会作为友链将被添加到项目中，帮助其他学习者。
 
 ### 本地推送方法
-1. 提交更改： 当你写完代码或修改了文件后，在终端执行：
-```
-git add .
-git commit -m "这里写上你对这次改动的简短描述"
-```
-2. 推送更改： 将你的更改推送到远程仓库
-```
-git push origin master
-```
-3. 提交Pull Request： 在你的GitCode账户中，进入你的仓库，点击`Pull requests`，然后点击`New pull request`，选择你想要合并的分支，然后点击`Create pull request`。
-4. 等待审核： 等待项目维护者审核你的Pull Request，他们会根据你的代码质量、规范和功能完整性进行评估。
-5. 合并代码： 如果你的Pull Request通过了审核，项目维护者会将其合并到主分支中，你的代码将会被包含到项目中。
+详见 [贡献流程](./CONTRIBUTING.md)
 
 ### 注意事项
 - 无论你是业界大佬还是初学者，我们都欢迎你提交Pull Request。
@@ -59,7 +48,7 @@ git push origin master
 [sgap](https://gitcode.com/sgap_guard)
 
 ### 许可证
-本项目遵循MIT许可证。如果您要fork本项目，您需要遵守MIT许可证的条款。
+本项目遵循 [MIT License](./LICENSE)许可证。如果您要fork本项目，您需要遵守MIT许可证的条款。
 MIT License具有极其宽松的条款，您可以自由地使用、修改、分发本项目的代码。
 
 ### 学习平台
