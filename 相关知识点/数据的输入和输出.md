@@ -1,0 +1,84 @@
+## 数据的输入和输出
+### 输入
+```cpp
+cout << "请输入一个整数：";
+cin >> a;
+```
+### 输出
+```cpp
+cout << "a的值是：" << a << endl;
+```
+
+
+## 格式化输出
+### 流输出
+
+`ostream`是C++标准库中的一个输出类，用于输出数据到流中。`ostream`类提供了一些成员函数和操作符，用于格式化输出数据。
+如下是`ostream`类的一些成员函数和操作符：
+|成员函数|说明|
+|---|---|
+|`precision(n)`|设置输出浮点数的精度为n位小数|
+|`width(n)`|设置输出字段的最小宽度为n个字符|
+|`fill(c)`|设置填充字符c|
+|`setf(格式化标记,附加标记)`|设置流格式化状态|
+|`unsetf(格式化标记)`|清除流格式化状态|
+|`flag(f)`|设置流格式化状态|
+
+### 格式化标记
+
+|格式化标记|说明|
+|---|---|
+|`ios::dec`|以十进制形式输出整数|
+|`ios::hex`|以十六进制形式输出整数|
+|`ios::oct`|以八进制形式输出整数|
+|`ios::fixed`|以定点形式输出浮点数|
+|`ios::scientific`|以科学计数法形式输出浮点数|
+|`ios::left`|左对齐输出|
+|`ios::right`|右对齐输出|
+|`ios::internal`|在符号和数字之间填充空格|
+|`ios::showbase`|输出整数时显示基数|
+|`ios::showpoint`|输出浮点数时显示小数点|
+|`ios::showpos`|输出正数时显示正号|
+|`ios::skipws`|跳过输入流中的空白字符|
+|`ios::uppercase`|输出十六进制数时使用大写字母|
+|`ios::unitbuf`|每次输出后刷新输出缓冲区|
+
+### 附加标记
+
+|附加标记|说明|
+|---|---|
+|`ios::adjustfield`|设置字段对齐方式|
+|`ios::basefield`|设置整数基数|
+|`ios::floatfield`|设置浮点数格式|
+|`ios::basefield`|设置整数基数|
+|`ios::floatfield`|设置浮点数格式|
+
+### 示例
+
+```cpp
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main() {
+    int a = 123;
+    double b = 3.1415926;
+    cout << "a的值是：" << a << endl;
+    cout << "b的值是：" << b << endl;
+    cout << "a的十六进制值是：" << hex << a << endl;
+    cout << "b的定点形式是：" << fixed << b << endl;
+    cout << "b的科学技术法形式是：" << scientific << b << endl;
+    cout << "a的左对齐输出是：" << left << setw(10) << a << endl;
+    cout << "a的右对齐输出是：" << right << setw(10) << a << endl;
+    cout << "a的内部对齐输出是：" << internal << setw(10) << a << endl;
+    cout << "a的带符号输出是：" << showpos << a << endl;
+    cout << "a的带基数输出是：" << showbase << a << endl;
+    cout << "a的带小数点输出是：" << showpoint << b << endl;
+    cout << "a的带正号输出是：" << showpos << a << endl;
+    cout << "a的跳过空格输入是：" << skipws << a << endl;
+    cout << "a的大写字母输出是：" << uppercase << a << endl;
+    cout << "a的刷新输出缓冲区是：" << unitbuf << a << endl;
+
+    return 0;
+}
+```
