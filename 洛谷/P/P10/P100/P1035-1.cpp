@@ -9,7 +9,7 @@ int main()
     while( sum <= k ) //条件：总和还没有超过k，就继续循环
     {
         n++;
-        sum += 1.0 / n;
+        sum += 1.0 / n;//每次走的距离，取整操作得到每次走的距离
     }
     cout << n;
     return 0;

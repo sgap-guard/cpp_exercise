@@ -7,6 +7,7 @@ int main()
     string s;
     cin>>s;
     reverse(s.begin(),s.end());
-    cout<<s<<endl;//字符串翻转
+    //字符串翻转,返回值为void,需要用reverse函数调用
+    cout<<s<<endl;
     return 0;
 }
