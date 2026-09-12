@@ -2,37 +2,46 @@
 using namespace std;
 int main()
 {
-    int m, n;
+    int m, n; //定义两个整数m和n，分别表示范围的下限和上限
     //多组输入，不断读取m n
-    while (cin >> m >> n)
+    while (cin >> m >> n)//读取范围的下限和上限
     {
-        bool has = false; //标记：是否找到水仙花数
+        bool has = false; //用bool类型变量has标记：是否找到水仙花数，因为可能没有水仙花数，所以需要初始化为false。
         //x从m遍历到n
-        for (int x = m; x <= n; x++)
+        for (int x = m; x <= n; x++)//for循环遍历从m到n的所有整数
         {
-            int bai = x / 100;
-            int shi = x % 100 / 10;
-            int ge = x % 10;
-            int sum = bai*bai*bai + shi*shi*shi + ge*ge*ge;
+            int bai = x / 100;//bai表示x的百位数字
+            int shi = x % 100 / 10;//shi表示x的十位数字
+            int ge = x % 10;//ge表示x的个位数字
+            int sum = bai*bai*bai + shi*shi*shi + ge*ge*ge;//sum表示x的水仙花数和
 
-            if (sum == x)
+            if (sum == x)//如果x的水仙花数和等于x本身
             {
-                if (has)
+                if (has)//如果已经找到一个水仙花数
                 {
-                    cout << " "; //不是第一个，先输出空格
+                    cout << " "; //但不是第一个，先输出空格，再输出这个水仙花数
                 }
-                cout << x;
-                has = true;
+                cout << x; //输出这个水仙花数
+                has = true;//将has的值设为true，表示已经找到一个水仙花数，后续的水仙花数需要输出空格。
             }
         }
-        if (has)
+        if (has)//如果找到了水仙花数
         {
-            cout << endl;
+            cout << endl;//输出换行符
         }
-        else
+        else//如果没有找到水仙花数
         {
-            cout << "no" << endl;
+            cout << "no" << endl;//输出no
         }
     }
     return 0;
 }
+//总结：
+//本题考查了循环、条件判断、输出等基本的C++知识。
+//在本题中，我们需要遍历从m到n的所有整数，判断每个整数是否是水仙花数。
+//如果是水仙花数，我们就输出这个整数。
+//如果不是水仙花数，我们就继续遍历下一个整数。
+//需要注意的是，如果找到了多个水仙花数，我们需要在输出时用空格分隔它们。
+//另外，如果没有任何一个整数是水仙花数，我们需要输出"no"。
+//因此，我们需要使用一个bool类型的变量has来标记是否找到了水仙花数。
+//最后，我们需要使用while循环来读取多组输入，直到输入结束。
