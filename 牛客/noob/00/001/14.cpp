@@ -1,6 +1,6 @@
 #include<iostream>
-#include<cmath>
-#include<iomanip>
+#include<cmath>//调用此库来使用sqrt、abs、fabs函数
+#include<iomanip>//调用此库来使用fixed、setprecision函数
 using namespace std;
 int main()
 {

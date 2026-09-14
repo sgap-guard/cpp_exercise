@@ -1,5 +1,6 @@
 #include<iostream>
 #include<numeric>//调用此库来使用gcd函数
+//使用numeric需要满足C++14标准
 using namespace std;
 int main()
 {

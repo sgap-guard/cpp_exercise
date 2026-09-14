@@ -53,9 +53,9 @@ MIT License具有极其宽松的条款，您可以自由地使用、修改、分
 
 ### 学习平台
 本项目主要学习平台为：
-- 洛谷
-- VJudge
-- 力扣
+- [洛谷](https://www.luogu.com.cn/)
+- [VJudge](https://vjudge.net/)
+- [牛客](https://www.nowcoder.com/)
 
 ### 其他学习辅助
 -详见https://github.com/stars/sgap-guard/lists/%E8%AE%A1%E7%A7%91%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99

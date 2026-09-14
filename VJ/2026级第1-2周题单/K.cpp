@@ -1,15 +1,16 @@
 #include<iostream>
 using namespace std;
-
 int main() 
 {
     int n;
     cin >> n;
     int count = 0;
-    for (int i = 0; i < n; ++i) {//for循环遍历n个学生
+    for (int i = 0; i < n; ++i) 
+    {//for循环遍历n个学生
         int p, v, t;//p、v、t分别表示学生i的三科的分数
         cin >> p >> v >> t;
-        if (p + v + t >= 2) {//如果学生i的三科的分数之和大于等于2
+        if (p + v + t >= 2) 
+        {//如果学生i的三科的分数之和大于等于2
             count++;//count++表示将count的值增加1
         }
     }

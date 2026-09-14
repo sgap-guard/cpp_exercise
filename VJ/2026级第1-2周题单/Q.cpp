@@ -1,29 +1,31 @@
 #include<iostream>
 using namespace std;
+bool isPrime(int n)//定义bool类型isPrime来判断n是否是素数
+//需要单独拿出来，不能放进main函数中
+    {
+        if(n <= 1) return false;//如果n小于等于1，返回false
+        if(n == 2) return true;//如果n等于2，返回true
+        if(n %2 == 0)return false;//如果n是偶数，返回false
+        for(int j = 3;j * j <= n;j += 2)
+        //for循环，从3开始，每次增加2，判断是否是n的因子数
+        {
+        if(n % j == 0)//如果n是j的因子数
+        return false;//返回false
+        }
+        return true;//返回true
+    }
 int main()
 {
-    int n;
-    cin>>n;
-    if(n == 2 || n == 3 || n == 5 || n == 7)//如果n是2、3、5、7中的一个，则输出YES。因为2、3、5、7都是质数，所以n是质数。这一点很重要。
+    int T,n;
+    cin >> T;
+    for(int i = 1;i <= T;i++)//for循环，从第1组数据到第T组数据
     {
-        cout << "YES" << endl;
-    }
-    else if(n % 2 ==0 || n % 3 ==0 || n % 5 ==0 || n % 7 ==0)//如果n是2、3、5、7的倍数，则输出NO。因为2、3、5、7都是质数，所以n不是质数。
-    {
-        cout << "NO" << endl;
-    }
+    cin >> n;//输入第i组数据
+    if(isPrime(n))
+    cout << "Yes\n";//如果n是素数，输出Yes
     else
-    {
-        cout << "YES" << endl;//如果n不是2、3、5、7的倍数，则输出YES。因为n不是2、3、5、7的倍数，所以n是质数。
+    cout << "No\n";//否则输出No
     }
     return 0;
 }
-//这里不用while循环，因为只有一组输入。 
-//注意：质数是大于1的自然数，除了1和它本身外，不能被其他自然数整除。
-//因此，我们需要使用if-else语句来判断n是否是质数。
-//首先，我们判断n是否是2、3、5、7中的一个，如果是，则输出YES。
-//如果n不是2、3、5、7中的一个，则判断n是否是2、3、5、7的倍数。
-//如果是，则输出NO。
-//如果n不是2、3、5、7的倍数，则输出YES。
-//因为n不是2、3、5、7的倍数，所以n是质数。
-//不用考虑11、13、17、19等其他质数，因为2、3、5、7已经包含了所有可能的质数。
+//本题非常重要

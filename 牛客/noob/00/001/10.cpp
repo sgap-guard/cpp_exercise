@@ -5,6 +5,6 @@ int main()
 {
     long a;
     cin >> a;
-    cout << (a / 10) %10 << endl;
+    cout << (a / 10) %10 << endl;//输出a的十位数
     return 0;
 }

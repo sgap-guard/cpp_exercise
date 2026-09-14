@@ -6,9 +6,11 @@ int main()
     //多组输入，不断读取m n
     while (cin >> m >> n)//读取范围的下限和上限
     {
-        bool has = false; //用bool类型变量has标记：是否找到水仙花数，因为可能没有水仙花数，所以需要初始化为false。
+        bool has = false; 
+        //用bool类型变量has标记：是否找到水仙花数，因为可能没有水仙花数，所以需要初始化为false。
         //x从m遍历到n
-        for (int x = m; x <= n; x++)//for循环遍历从m到n的所有整数
+        for (int x = m; x <= n; x++)
+        //for循环遍历从m到n的所有整数
         {
             int bai = x / 100;//bai表示x的百位数字
             int shi = x % 100 / 10;//shi表示x的十位数字
@@ -22,7 +24,8 @@ int main()
                     cout << " "; //但不是第一个，先输出空格，再输出这个水仙花数
                 }
                 cout << x; //输出这个水仙花数
-                has = true;//将has的值设为true，表示已经找到一个水仙花数，后续的水仙花数需要输出空格。
+                has = true;
+                //将has的值设为true，表示已经找到一个水仙花数，后续的水仙花数需要输出空格。
             }
         }
         if (has)//如果找到了水仙花数

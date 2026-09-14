@@ -11,7 +11,7 @@ bool have5(int x)//判断x是否包含5
         x = x / 10;//将x除以10，去掉个位数
     }
     return false;//如果x中没有5，返回false
-   }
+}
 int main()
 {
     int n;
