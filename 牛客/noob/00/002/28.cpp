@@ -6,12 +6,13 @@ int main()
     cin >> y;
     int n = y % 100;
     switch(n)
+    //这里合理的利用了switch的穿透特性，避免了重复代码
     {
         case 3:
         case 4:
         case 5:
             cout << "spring" << endl;
-            break;
+            break;//break语句用于跳出switch语句，防止穿透执行
         case 6:
         case 7:
         case 8:
