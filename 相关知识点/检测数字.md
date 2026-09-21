@@ -1,0 +1,95 @@
+# 通用模板：检查整数n的十进制数位里是否包含数字 `k`（k是0~9）
+核心不变：**`%10`取个位，`/=10`砍掉个位**，不管你要找 0,1,2…9，只需要改判断条件。
+
+```cpp
+// 判断数字n中是否含有数码k（k范围0~9）
+bool hasDigit(int n, int k)
+{
+    if (n == 0)
+    {
+        // n本身是0，只有k=0才返回true
+        return k == 0;
+    }
+    while(n > 0)
+    {
+        int d = n % 10; // 取出十进制个位
+        if(d == k)
+            return true;
+        n /= 10;        // 去掉个位
+    }
+    return false;
+}
+```
+
+## 单独拆出来写（你之前的hasZero这种单数字版本）
+### ✅ has1：检测数字有没有1
+```cpp
+bool has1(int n)
+{
+    if(n == 0) return false;
+    while (n > 0)
+    {
+        int d = n % 10;
+        if(d == 1) return true;
+        n /= 10;
+    }
+    return false;
+}
+```
+
+### ✅ has2：检测数字有没有2
+```cpp
+bool has2(int n)
+{
+    if(n == 0) return false;
+    while (n > 0)
+    {
+        int d = n % 10;
+        if(d == 2) return true;
+        n /= 10;
+    }
+    return false;
+}
+```
+
+> has3、has4、has5、has6、has7、has9 全部照抄！只改一行：`if(d == 数字)`
+
+### ✅ has7（单独检测7）
+```cpp
+bool has7(int n)
+{
+    if(n == 0) return false;
+    while (n > 0)
+    {
+        int d = n % 10;
+        if(d == 7) return true;
+        n /= 10;
+    }
+    return false;
+}
+```
+
+### ✅ has9（单独检测9）
+```cpp
+bool has9(int n)
+{
+    if(n == 0) return false;
+    while (n > 0)
+    {
+        int d = n % 10;
+        if(d == 9) return true;
+        n /= 10;
+    }
+    return false;
+}
+```
+
+## ⚠️ 重点区分两个完全不一样的东西（很多人混淆）
+1. **数位检测（上面写的代码）：数字里面某个位上是几**
+`has8(18)` → true，因为18的个位是8；`has8(85)` → true。
+> 运算符：`%10` 和 `/=10`
+
+2. **倍数检测（判断能不能被这个数整除）**
+`n % 8 == 0` → 判断n是8的倍数，`16%8==0`，16里面没有数字8，但仍然是8的倍数。
+> 运算符：`%数字`
+

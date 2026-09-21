@@ -7,8 +7,10 @@ int main()
     cin >> x >> y;
     if(x < y)
     {
-        t = x;x = y;y = t;//交换x,y的值
+        t = x;x = y;y = t;
+        //交换x,y的值
     }
-    cout << "交换后的x,y为:" << x << ">" << y << endl;//输出交换后的x,y的值
+    cout << "交换后的x,y为:" << x << ">" << y << endl;
+    //输出交换后的x,y的值
     return 0;
 }

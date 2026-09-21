@@ -1,0 +1,567 @@
+# C++ 结构体（struct）学习笔记
+
+## 一、什么是结构体
+
+结构体（struct）是 C++ 中一种**用户自定义的复合数据类型**，用于把不同类型的数据组合成一个整体，方便统一管理。
+
+```cpp
+struct Student 
+{
+    string name;   // 姓名
+    int age;       // 年龄
+    double score;  // 成绩
+};
+```
+
+**为什么需要结构体**：当我们需要描述一个"对象"（如学生、点、商品）时，多个相关数据分散定义会难以管理；结构体把它们打包在一起，逻辑更清晰。
+
+---
+
+## 二、基本语法
+
+### 2.1 定义与使用
+
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Student 
+{
+    string name;
+    int age;
+    double score;
+};
+
+int main() {
+    // 方式一：先声明再赋值
+    Student s1;
+    s1.name = "张三";
+    s1.age = 20;
+    s1.score = 92.5;
+
+    // 方式二：聚合初始化
+    Student s2 = {"李四", 21, 88.0};
+
+    // 方式三：C++11 列表初始化
+    Student s3{"王五", 19, 95.5};
+
+    // 访问成员
+    cout << s1.name << " " << s1.age << endl;
+    return 0;
+}
+```
+
+### 2.2 定义位置与作用域
+
+```cpp
+// 全局定义：所有函数可用
+struct Point { int x, y; };
+
+int main() 
+{
+    // 局部定义：仅在本作用域可用（不推荐）
+    struct Local { int a; };
+    return 0;
+}
+```
+
+### 2.3 分号不能忘
+
+```cpp
+struct Node 
+{
+    int val;
+    Node* next;
+};   // ← 这个分号不能少！
+```
+
+---
+
+## 三、结构体与指针
+
+### 3.1 使用指针访问成员
+
+```cpp
+struct Point { int x, y; };
+
+int main() 
+{
+    Point p = {3, 4};
+    Point* ptr = &p;
+
+    // 方式一：先解引用再取成员
+    cout << (*ptr).x << endl;
+
+    // 方式二：箭头运算符（推荐，等价于上面）
+    cout << ptr->x << endl;
+    cout << ptr->y << endl;
+
+    return 0;
+}
+```
+
+### 3.2 动态分配
+
+```cpp
+Point* p = new Point{1, 2};
+cout << p->x << endl;
+delete p;   // 别忘了释放
+
+// 数组
+Point* arr = new Point[10];
+arr[0].x = 5;
+delete[] arr;
+```
+
+---
+
+## 四、结构体与函数
+
+### 4.1 作为参数
+
+```cpp
+struct Point { int x, y; };
+
+// 值传递：拷贝一份，修改不影响原对象
+void moveByValue(Point p) 
+{
+    p.x += 10;
+}
+
+// 引用传递：不拷贝，效率高（推荐）
+void moveByRef(Point& p) 
+{
+    p.x += 10;
+}
+
+// const 引用：不拷贝且不可修改（最常用）
+void print(const Point& p) 
+{
+    cout << "(" << p.x << ", " << p.y << ")" << endl;
+}
+```
+
+### 4.2 作为返回值
+
+```cpp
+Point makePoint(int x, int y) 
+{
+    return {x, y};   // 返回结构体（编译器会优化，无额外拷贝）
+}
+```
+
+**建议**：结构体较大时用 `const 引用` 传参，避免不必要的拷贝。
+
+---
+
+## 五、结构体数组与嵌套
+
+### 5.1 结构体数组
+
+```cpp
+struct Student 
+{
+    string name;
+    int age;
+};
+
+int main() 
+{
+    Student cls[3] = 
+    {
+        {"张三", 20},
+        {"李四", 21},
+        {"王五", 19}
+    };
+
+    for (int i = 0; i < 3; i++) 
+    {
+        cout << cls[i].name << endl;
+    }
+    return 0;
+}
+```
+
+### 5.2 结构体嵌套
+
+```cpp
+struct Date 
+{
+    int year, month, day;
+};
+
+struct Student 
+{
+    string name;
+    Date birthday;   // 嵌套另一个结构体
+};
+
+int main() 
+{
+    Student s = {"张三", {2004, 5, 20}};
+    cout << s.birthday.year << endl;   // 逐层访问
+    return 0;
+}
+```
+
+### 5.3 结构体自引用（链表节点）
+
+```cpp
+struct Node 
+{
+    int val;
+    Node* next;   // 只能是指针，不能是 Node 本身
+};
+```
+
+---
+
+## 六、struct 与 class 的区别
+
+C++ 中 struct 和 class **几乎等价**，唯一区别是**默认访问权限**：
+
+```cpp
+struct S 
+{
+    int a;      // 默认 public
+};
+
+class C 
+{
+    int a;      // 默认 private
+};
+```
+
+| 特性 | struct | class |
+|------|--------|-------|
+| 默认成员访问权限 | public | private |
+| 默认继承方式 | public | private |
+| 能否有成员函数 | ✅ | ✅ |
+| 能否有构造/析构 | ✅ | ✅ |
+| 能否继承/多态 | ✅ | ✅ |
+
+**使用惯例**：
+- `struct`：主要用于**数据聚合**（POD，简单数据结构）
+- `class`：用于**封装对象**（有行为、有不变式、需要隐藏实现）
+
+```cpp
+// struct 也可以有成员函数
+struct Point 
+{
+    int x, y;
+    double length() const 
+    {   // 成员函数
+        return sqrt(x * x + y * y);
+    }
+    Point(int x = 0, int y = 0) : x(x), y(y) {}  // 构造函数
+};
+```
+
+---
+
+## 七、进阶特性
+
+### 7.1 构造函数与初始化列表
+
+```cpp
+struct Point 
+{
+    int x, y;
+    Point() : x(0), y(0) {}              // 默认构造
+    Point(int x, int y) : x(x), y(y) {}  // 带参构造
+};
+
+Point p1;         // (0, 0)
+Point p2(3, 4);   // (3, 4)
+```
+
+### 7.2 运算符重载
+
+```cpp
+struct Point 
+{
+    int x, y;
+
+    // 重载 +，方便向量运算
+    Point operator+(const Point& other) const 
+    {
+        return {x + other.x, y + other.y};
+    }
+
+    // 重载 ==
+    bool operator==(const Point& other) const 
+    {
+        return x == other.x && y == other.y;
+    }
+
+    // 重载 <，用于排序
+    bool operator<(const Point& other) const 
+    {   
+        return x < other.x || (x == other.x && y < other.y);
+    }
+};
+
+int main() 
+{
+    Point a{1, 2}, b{3, 4};
+    Point c = a + b;              // (4, 6)
+    cout << (a == b) << endl;     // 0
+    return 0;
+}
+```
+
+### 7.3 排序示例
+
+```cpp
+struct Student 
+{
+    string name;
+    int score;
+};
+
+vector<Student> v = {{"张三", 90}, {"李四", 85}, {"王五", 95}};
+
+// 自定义比较函数
+sort(v.begin(), v.end(), [](const Student& a, const Student& b) {
+    return a.score > b.score;   // 按成绩降序
+});
+```
+
+### 7.4 位域（Bit-field）
+
+用于节省内存，把多个小字段压缩到同一字节中：
+
+```cpp
+struct Flags {
+    unsigned int a : 1;   // 占 1 位
+    unsigned int b : 2;   // 占 2 位
+    unsigned int c : 3;   // 占 3 位
+};
+```
+
+### 7.5 匿名结构体与 typedef
+
+```cpp
+// typedef：起别名（C 风格，C++ 更推荐 using）
+typedef struct {
+    int x, y;
+} Point;
+
+Point p{1, 2};
+
+// using（C++11，推荐）
+using Point2 = struct { int x, y; };
+```
+
+---
+
+## 八、内存布局与对齐
+
+### 8.1 内存对齐规则
+
+编译器会为了访问效率，在成员之间插入填充字节（padding），使每个成员对齐到其自身大小的整数倍。
+
+```cpp
+struct A 
+{
+    char c;    // 1 字节
+    int i;     // 4 字节（前面补 3 字节）
+    char d;    // 1 字节（后面补 3 字节）
+};
+// sizeof(A) = 12，而不是 6
+```
+
+```cpp
+struct B 
+{
+    int i;     // 4
+    char c;    // 1
+    char d;    // 1（后面补 2）
+};
+// sizeof(B) = 8
+```
+
+**优化技巧**：把大成员放前面，小成员集中放，可减少 padding。
+
+### 8.2 查看大小
+
+```cpp
+cout << sizeof(Point) << endl;   // 8（两个 int）
+cout << sizeof(A) << endl;       // 12
+```
+
+### 8.3 关闭对齐（不推荐，影响性能）
+
+```cpp
+#pragma pack(1)   // 按 1 字节对齐
+struct Packed 
+{
+    char c;
+    int i;
+};
+#pragma pack()
+// sizeof(Packed) = 5
+```
+
+---
+
+## 九、常见应用场景
+
+| 场景 | 示例 |
+|------|------|
+| 数据聚合 | 学生、商品、坐标 |
+| 链表/树节点 | `struct Node { int val; Node* next; }` |
+| 函数多返回值 | 返回 `{min, max}` |
+| 图论邻接表 | `struct Edge { int to, w; }` |
+| 竞赛模板 | 存点、区间、状态 |
+| 配置项/参数打包 | `struct Config { ... }` |
+| 位运算压缩状态 | 位域 |
+
+---
+
+## 十、常见错误与注意事项
+
+```cpp
+// ❌ 错误1：忘记分号
+struct Point { int x, y; }   // 编译错误，缺分号
+
+// ❌ 错误2：自引用用对象而非指针
+struct Node {
+    Node next;   // 错误！无限递归，大小无法确定
+};
+struct Node {
+    Node* next;  // ✅ 正确
+};
+
+// ❌ 错误3：值传递大结构体导致性能问题
+void f(BigStruct s);              // 拷贝开销大
+void f(const BigStruct& s);       // ✅ 推荐
+
+// ❌ 错误4：未初始化就使用
+Point p;
+cout << p.x;      // 未定义行为
+Point p{};        // ✅ 值初始化，全为 0
+
+// ❌ 错误5：比较结构体用 == 需重载
+Point a{1,2}, b{1,2};
+if (a == b) {}    // C++20 前需手动重载 operator==
+```
+
+---
+
+## 十一、C++ 新特性补充
+
+### 11.1 结构化绑定（C++17）
+
+```cpp
+struct Point { int x, y; };
+Point p{3, 4};
+
+auto [x, y] = p;   // 直接解构
+cout << x << " " << y << endl;
+```
+
+### 11.2 默认比较（C++20）
+
+```cpp
+struct Point {
+    int x, y;
+    auto operator<=>(const Point&) const = default;  // 自动生成所有比较
+};
+```
+
+### 11.3 指定初始化（C++20）
+
+```cpp
+struct Point { int x = 0, y = 0; };
+Point p{.x = 3, .y = 4};   // 指定成员名初始化，更清晰
+```
+
+---
+
+## 十二、完整综合示例
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+struct Student {
+    string name;
+    int id;
+    int score;
+
+    // 构造函数
+    Student(string n, int i, int s) : name(n), id(i), score(s) {}
+
+    // 重载 <，按分数降序、学号升序
+    bool operator<(const Student& o) const {
+        if (score != o.score) return score > o.score;
+        return id < o.id;
+    }
+};
+
+// const 引用传参
+void print(const Student& s) {
+    cout << s.id << " " << s.name << " " << s.score << endl;
+}
+
+int main() {
+    vector<Student> cls = {
+        {"张三", 1001, 92},
+        {"李四", 1002, 88},
+        {"王五", 1003, 95},
+        {"赵六", 1004, 88}
+    };
+
+    sort(cls.begin(), cls.end());   // 使用重载的 <
+
+    for (const auto& s : cls) print(s);
+
+    // 结构化绑定（C++17）
+    auto [name, id, score] = cls[0];
+    cout << "最高分：" << name << endl;
+
+    return 0;
+}
+```
+
+**输出**：
+```
+1003 王五 95
+1001 张三 92
+1002 李四 88
+1004 赵六 88
+最高分：王五
+```
+
+---
+
+## 十三、速查口诀
+
+```
+struct 打包数据用，分号结尾别忘记。
+点号取成员，箭头穿指针。
+值传递会拷贝，const 引用效率高。
+嵌套自引用，只能放指针。
+struct 与 class，只差默认权。
+构造函数初始化，运算符重载更自然。
+内存对齐有填充，大小成员顺序排。
+结构化绑定新特性，解构一行真方便。
+```
+
+---
+
+## 十四、练习建议
+
+1. 定义 `Point` 结构体，重载 `+`、`-`、`==`、`<<`
+2. 用结构体实现一个简单的链表（增删查）
+3. 定义 `Student` 并用 `sort` + 自定义比较排序
+4. 打印不同成员顺序的结构体 `sizeof`，理解内存对齐
+5. 用结构体 + `vector` 实现图的邻接表存储
+6. 尝试用结构化绑定遍历结构体数组
+
+结构体是从"基本类型"迈向"自定义类型"的第一步，也是理解类、对象、封装的基础。掌握好结构体，后续学习 `class`、STL、面向对象会顺畅很多。

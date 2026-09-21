@@ -6,7 +6,7 @@
 2. 本项目含有题目以及标准cpp答案，你可以按照目录索引找到他们。
 3. 本项目中的已有代码都是在本地编译通过的，你可以直接在本地运行。
 4. 本项目中的代码都是开源的，你可以自由地使用和修改，并根据需要添加到项目中。
-5. 本项目中的代码都是在GitCode仓库中，你可以直接在GitCode仓库中查看和贡献。
+5. 本项目中的代码是只在GitCode，GitHub，Gitee仓库中，将以GitCode作为主仓库，其他仓库作为镜像仓库，你可以直接在上述仓库中查看，在GitCode贡献。由于主仓库是GitCode仓库，其他仓库的代码只是镜像，不包含任何贡献。而且镜像仓库的同步没有不会及时更新，可能会导致代码不一致。
 6. 受限于时间与精力，有些cpp源文件未附上原题目以及注释、标准cpp答案等，你可以根据需要添加到项目中。
 7. 受限于维护者做题平台的不全面，本项目不可能覆盖所有题目，包括但不限于：洛谷、VJudge等平台的题目，以及由他们衍生出来的题目。
 8. 本项目仍含有一些未解出的题目以及未上传的题目，你可以根据需要添加到项目中。
@@ -45,10 +45,11 @@
 - 通过AI生成的题目，需要附上您的提示词，以便项目维护者了解您的代码。
 
 ### 贡献者
-[sgap](https://gitcode.com/sgap_guard)
+- sgap
 
 ### 许可证
-本项目遵循 [MIT License](./LICENSE)许可证。如果您要fork本项目，您需要遵守MIT许可证的条款。
+本项目遵循 [MIT License](./LICENSE)许可证。
+如果您要fork本项目，您需要遵守MIT许可证的条款。
 MIT License具有极其宽松的条款，您可以自由地使用、修改、分发本项目的代码。
 
 ### 学习平台
@@ -56,6 +57,11 @@ MIT License具有极其宽松的条款，您可以自由地使用、修改、分
 - [洛谷](https://www.luogu.com.cn/)
 - [VJudge](https://vjudge.net/)
 - [牛客](https://www.nowcoder.com/)
+- [力扣](https://leetcode.cn/)
+- [计蒜客](https://www.jisuanke.com/)
+- [QOJ](https://qoj.ac/)
+- [Codeforces](https://codeforces.com/)
+- [蓝桥杯](https://www.lanqiao.cn/)
+- [ACM](https://www.acmicpc.net/)
+- [PinTia](https://www.pintia.cn/)
 
-### 其他学习辅助
--详见https://github.com/stars/sgap-guard/lists/%E8%AE%A1%E7%A7%91%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99
