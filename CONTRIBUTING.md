@@ -4,10 +4,10 @@
 本仓库存放C++练习题原题目及代码，采用MIT协议，所有提交的代码都将遵循 [MIT License](./LICENSE)。
 
 ## 贡献流程（Fork + Pull Request）
-### 1. 下载git-for-windows
-[git-for-windows官网](https://git-for-windows.github.io/)
+### 1. 下载Git
+[Git官网](https://git-scm.com/)
 
-[git-for-windows镜像站](https://mirrors.nju.edu.cn/github-release/git-for-windows/git/)
+[Git镜像站](https://mirrors.cernet.edu.cn/app/Git)
 
 ### 2. Fork 仓库
 1. 访问本仓库主页，点击右上角 **Fork**，将仓库复制到你自己的 GitCode 账号下。
