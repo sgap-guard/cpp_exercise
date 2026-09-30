@@ -1,0 +1,522 @@
+# C++ 链表学习笔记
+
+## 一、链表概述
+
+链表（Linked List）是一种**线性数据结构**，由一系列节点（Node）组成，每个节点包含：
+
+- **数据域（data）**：存储数据元素
+- **指针域（next）**：存储指向下一个节点的指针
+
+与数组不同，链表在内存中**不要求连续存储**，节点之间通过指针连接。
+
+### 链表 vs 数组
+
+| 特性 | 数组 | 链表 |
+|------|------|------|
+| 内存布局 | 连续 | 离散 |
+| 随机访问 | $O(1)$ | $O(n)$ |
+| 头部插入/删除 | $O(n)$ | $O(1)$ |
+| 尾部插入 | $O(1)$（动态数组均摊） | $O(n)$（单链表） |
+| 缓存友好性 | 好 | 差 |
+| 额外空间开销 | 无 | 每节点一个指针 |
+
+---
+
+## 二、单链表的节点定义
+
+### 2.1 C 风格（结构体 + 指针）
+
+```cpp
+struct Node
+{
+    int data;
+    Node* next;
+};
+```
+
+### 2.2 C++ 风格（构造函数初始化）
+
+```cpp
+struct Node
+{
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+```
+
+---
+
+## 三、单链表的基本操作
+
+下面给出一个完整的单链表类实现（带头指针，不含哨兵节点）。
+
+```cpp
+#include <iostream>
+
+class LinkedList
+{
+private:
+    struct Node
+    {
+        int data;
+        Node* next;
+
+        Node(int val) : data(val), next(nullptr) {}
+    };
+
+    Node* head;
+
+public:
+    LinkedList() : head(nullptr) {}
+
+    // 析构：释放所有节点
+    ~LinkedList()
+    {
+        Node* cur = head;
+        while (cur != nullptr)
+        {
+            Node* tmp = cur;
+            cur = cur->next;
+            delete tmp;
+        }
+    }
+
+    // 头插法：O(1)
+    void pushFront(int val)
+    {
+        Node* node = new Node(val);
+        node->next = head;
+        head = node;
+    }
+
+    // 尾插法：O(n)
+    void pushBack(int val)
+    {
+        Node* node = new Node(val);
+        if (head == nullptr)
+        {
+            head = node;
+            return;
+        }
+        Node* cur = head;
+        while (cur->next != nullptr)
+        {
+            cur = cur->next;
+        }
+        cur->next = node;
+    }
+
+    // 按值删除第一个匹配节点
+    void remove(int val)
+    {
+        if (head == nullptr)
+        {
+            return;
+        }
+        if (head->data == val)
+        {
+            Node* tmp = head;
+            head = head->next;
+            delete tmp;
+            return;
+        }
+        Node* cur = head;
+        while (cur->next != nullptr && cur->next->data != val)
+        {
+            cur = cur->next;
+        }
+        if (cur->next != nullptr)
+        {
+            Node* tmp = cur->next;
+            cur->next = tmp->next;
+            delete tmp;
+        }
+    }
+
+    // 查找：O(n)
+    Node* find(int val) const
+    {
+        Node* cur = head;
+        while (cur != nullptr)
+        {
+            if (cur->data == val)
+            {
+                return cur;
+            }
+            cur = cur->next;
+        }
+        return nullptr;
+    }
+
+    // 打印
+    void print() const
+    {
+        Node* cur = head;
+        while (cur != nullptr)
+        {
+            std::cout << cur->data << " -> ";
+            cur = cur->next;
+        }
+        std::cout << "nullptr\n";
+    }
+};
+
+int main()
+{
+    LinkedList list;
+    list.pushBack(1);
+    list.pushBack(2);
+    list.pushBack(3);
+    list.pushFront(0);
+    list.print();          // 0 -> 1 -> 2 -> 3 -> nullptr
+    list.remove(2);
+    list.print();          // 0 -> 1 -> 3 -> nullptr
+    return 0;
+}
+```
+
+---
+
+## 四、带哨兵节点（dummy head）的单链表
+
+哨兵节点可以**简化边界处理**，让头插、头删与其他位置的操作统一。
+
+```cpp
+class LinkedListWithDummy
+{
+private:
+    struct Node
+    {
+        int data;
+        Node* next;
+        Node(int val) : data(val), next(nullptr) {}
+    };
+
+    Node* dummy;   // 哨兵节点，不存储有效数据
+
+public:
+    LinkedListWithDummy()
+    {
+        dummy = new Node(0);
+    }
+
+    ~LinkedListWithDummy()
+    {
+        Node* cur = dummy;
+        while (cur != nullptr)
+        {
+            Node* tmp = cur;
+            cur = cur->next;
+            delete tmp;
+        }
+    }
+
+    void pushFront(int val)
+    {
+        Node* node = new Node(val);
+        node->next = dummy->next;
+        dummy->next = node;
+    }
+
+    void remove(int val)
+    {
+        Node* cur = dummy;
+        while (cur->next != nullptr && cur->next->data != val)
+        {
+            cur = cur->next;
+        }
+        if (cur->next != nullptr)
+        {
+            Node* tmp = cur->next;
+            cur->next = tmp->next;
+            delete tmp;
+        }
+    }
+};
+```
+
+---
+
+## 五、双链表
+
+每个节点同时保存**前驱**和**后继**指针。
+
+```cpp
+struct DNode
+{
+    int data;
+    DNode* prev;
+    DNode* next;
+
+    DNode(int val) : data(val), prev(nullptr), next(nullptr) {}
+};
+```
+
+插入操作示意（在 `p` 之后插入 `s`）：
+
+$$
+s\text{->next} = p\text{->next},\quad s\text{->prev} = p,\quad p\text{->next->prev} = s,\quad p\text{->next} = s
+$$
+
+---
+
+## 六、循环链表
+
+尾节点的 `next` 指回头节点，形成环。
+
+- **循环单链表**：最后一个节点的 `next` 指向 `head`
+- **循环双链表**：`head->prev` 指向尾节点，尾节点的 `next` 指向 `head`
+
+遍历时终止条件不再是 `cur != nullptr`，而是 `cur != head`（或使用 `do-while`）。
+
+---
+
+## 七、常见算法题
+
+### 7.1 反转链表（迭代法）
+
+```cpp
+Node* reverse(Node* head)
+{
+    Node* prev = nullptr;
+    Node* cur = head;
+    while (cur != nullptr)
+    {
+        Node* next = cur->next;
+        cur->next = prev;
+        prev = cur;
+        cur = next;
+    }
+    return prev;
+}
+```
+
+### 7.2 快慢指针找中点
+
+```cpp
+Node* middle(Node* head)
+{
+    Node* slow = head;
+    Node* fast = head;
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;
+}
+```
+
+### 7.3 判断是否有环（Floyd 判圈）
+
+```cpp
+bool hasCycle(Node* head)
+{
+    Node* slow = head;
+    Node* fast = head;
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+```
+
+### 7.4 合并两个有序链表
+
+```cpp
+Node* merge(Node* a, Node* b)
+{
+    Node dummy(0);
+    Node* tail = &dummy;
+    while (a != nullptr && b != nullptr)
+    {
+        if (a->data <= b->data)
+        {
+            tail->next = a;
+            a = a->next;
+        }
+        else
+        {
+            tail->next = b;
+            b = b->next;
+        }
+        tail = tail->next;
+    }
+    tail->next = (a != nullptr) ? a : b;
+    return dummy.next;
+}
+```
+
+---
+
+## 八、C++11 与 C++26 差异说明
+
+链表本身是数据结构，与语言标准关系不大。但在**实现细节**上，C++11 之后提供了更现代的工具。以下列出常见差异。
+
+### 8.1 使用 `nullptr` 代替 `NULL`
+
+**C++11 起支持**，C++11 之前只能用 `NULL` 或 `0`。
+
+```cpp
+// C++11 及以后
+Node* next = nullptr;
+
+// C++11 之前
+Node* next = NULL;   // 或 = 0;
+```
+
+> 在 C++11 之前的 OJ 环境（如老版本 GCC 默认 `-std=c++98`），`nullptr` 会编译报错。
+
+### 8.2 使用 `auto` 简化类型
+
+**C++11 起支持**。
+
+```cpp
+// C++11 及以后
+auto cur = head;
+
+// C++11 之前
+Node* cur = head;
+```
+
+### 8.3 使用智能指针管理节点
+
+**C++11 起支持 `std::unique_ptr` / `std::shared_ptr`**，可避免手动 `delete`。
+
+```cpp
+#include <memory>
+
+struct Node
+{
+    int data;
+    std::unique_ptr<Node> next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+```
+
+> 在 C++11 之前的 OJ 环境无法使用 `<memory>` 中的智能指针（`auto_ptr` 已废弃，不推荐）。
+
+### 8.4 `std::optional` 表示"可能不存在"的查找结果
+
+**C++17 起支持**，C++26 默认可用。
+
+```cpp
+#include <optional>
+
+std::optional<int> findValue(Node* head, int val)
+{
+    Node* cur = head;
+    while (cur != nullptr)
+    {
+        if (cur->data == val)
+        {
+            return cur->data;
+        }
+        cur = cur->next;
+    }
+    return std::nullopt;
+}
+```
+
+**C++11 等价写法**：返回 `bool` + 输出参数，或返回 `nullptr` 指针。
+
+```cpp
+bool findValue(Node* head, int val, int& out)
+{
+    Node* cur = head;
+    while (cur != nullptr)
+    {
+        if (cur->data == val)
+        {
+            out = cur->data;
+            return true;
+        }
+        cur = cur->next;
+    }
+    return false;
+}
+```
+
+### 8.5 `constexpr` / `consteval`（C++26 新增 `consteval` 块）
+
+**C++11 起支持 `constexpr`**，C++20 起支持 `consteval`，C++26 进一步扩展。链表节点涉及动态内存，一般不用常量表达式，此处仅作说明。
+
+### 8.6 结构化绑定（C++17 起）
+
+遍历 `std::map` 等容器时方便，链表手写场景下用处不大。
+
+```cpp
+// C++17 及以后
+for (const auto& [key, value] : myMap)
+{
+    // ...
+}
+```
+
+**C++11 等价写法**：
+
+```cpp
+for (const auto& kv : myMap)
+{
+    // kv.first, kv.second
+}
+```
+
+### 8.7 范围 `for` 循环（C++11 起）
+
+```cpp
+// C++11 及以后
+for (int x : arr)
+{
+    // ...
+}
+```
+
+> 链表**不能**直接使用范围 `for`，因为链表没有提供 `begin()` / `end()` 迭代器。需要自己实现迭代器或改用 `std::forward_list`。
+
+### 8.8 使用 STL 的 `std::forward_list` / `std::list`
+
+- `std::forward_list`：**C++11 起支持**，单链表
+- `std::list`：**C++98 起支持**，双链表
+
+```cpp
+#include <forward_list>
+#include <list>
+
+std::forward_list<int> fl = {1, 2, 3};
+std::list<int> dl = {1, 2, 3};
+```
+
+> 在 C++11 之前的 OJ 环境，只能用 `std::list`，无法使用 `std::forward_list`。
+
+---
+
+## 九、常见易错点
+
+1. **忘记释放内存**：手动 `new` 的节点必须 `delete`，否则内存泄漏。建议使用智能指针或 RAII 封装。
+2. **丢失头指针**：头插、头删后要更新 `head`。
+3. **空指针解引用**：访问 `cur->next` 前先判断 `cur != nullptr`。
+4. **删除节点后继续使用**：`delete` 之后指针变成悬空指针，不要再访问。
+5. **循环链表死循环**：遍历循环链表时终止条件写错会陷入死循环。
+6. **快慢指针边界**：`fast->next->next` 前必须保证 `fast->next != nullptr`。
+
+---
+
+## 十、复杂度总结
+
+| 操作 | 单链表 | 双链表 |
+|------|--------|--------|
+| 头部插入 | $O(1)$ | $O(1)$ |
+| 尾部插入 | $O(n)$ | $O(1)$（维护尾指针） |
+| 按值查找 | $O(n)$ | $O(n)$ |
+| 按位置删除 | $O(n)$ | $O(n)$ |
+| 反转 | $O(n)$ | $O(n)$ |

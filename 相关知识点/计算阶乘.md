@@ -1,0 +1,66 @@
+## 重写阶乘示例
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// 迭代实现
+unsigned long long factorial(int n)
+{
+    unsigned long long result = 1;
+    for (int i = 2; i <= n; ++i)
+    {
+        result *= i;
+    }
+    return result;
+}
+
+// 大数阶乘（低位在前）
+vector<int> bigFactorial(int n)
+{
+    vector<int> digits = {1};
+    for (int i = 2; i <= n; ++i)
+    {
+        int carry = 0;
+        for (size_t j = 0; j < digits.size(); ++j)
+        {
+            int prod = digits[j] * i + carry;
+            digits[j] = prod % 10;
+            carry = prod / 10;
+        }
+        while (carry > 0)
+        {
+            digits.push_back(carry % 10);
+            carry /= 10;
+        }
+    }
+    return digits;
+}
+
+int main()
+{
+    cout << "10! = " << factorial(10) << endl;
+
+    auto res = bigFactorial(100);
+    cout << "100! = ";
+    for (auto it = res.rbegin(); it != res.rend(); ++it)
+    {
+        cout << *it;
+    }
+    cout << endl;
+    return 0;
+}
+```
+
+对应数学关系：
+
+$$
+n! =
+\begin{cases}
+1, & n \le 1 \\
+n \cdot (n-1)!, & n > 1
+\end{cases}
+$$
+
+以后我都会按这套规范输出。
