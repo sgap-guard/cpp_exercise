@@ -11,8 +11,8 @@
 2. 本项目含有题目以及`cpp`答案（可能包含**错误**的`cpp`答案），你可以按照目录索引找到他们。
 3. 本项目中的已有代码都是在本地编译通过的，你可以直接在本地运行。
 4. 本项目中的代码都是开源的，你可以自由地使用和修改，并根据需要添加到项目中。
-5. 本项目中的代码托管在[GitCode](https://gitcode.com/sgap_guard/cpp_exercise)、[Gitee](https://gitee.com/sgap_guard/cpp_exercise)仓库中，将以GitCode作为主仓库，Gitee作为镜像仓库，你可以直接在上述仓库中查看，在GitCode贡献。
-6. 由于主仓库是GitCode仓库，Gitee仓库是镜像，所以Gitee仓库不包含任何贡献。而且镜像仓库的同步没有主仓库同步及时，所以Gitee仓库不会及时更新，可能会导致代码不一致。
+5. 本项目中的代码托管在[GitCode](https://gitcode.com/sgap_guard/cpp_exercise)、[Gitee](https://gitee.com/sgap_guard/cpp_exercise)、[GitHub](https://github.com/sgap-guard/cpp_exercise)仓库中，将以GitCode作为主仓库，其他仓库作为镜像仓库，你可以直接在上述仓库中查看，在GitCode贡献。
+6. 由于主仓库是GitCode仓库，其他仓库是镜像，所以其他仓库不包含任何贡献。而且镜像仓库的同步没有主仓库同步及时，所以Gitee仓库不会及时更新，可能会导致代码不一致。
 7. 受限于时间与精力，有些`cpp`源文件未附上原题目以及注释、标准`cpp`答案等，你可以根据需要添加到项目中。
 8. 受限于维护者做题平台的不全面，本项目不可能覆盖所有题目，包括但不限于：洛谷、VJudge等平台的题目，以及由他们衍生出来的题目。
 9.  本项目仍含有一些未解出的题目以及未上传的题目，你可以根据需要添加到项目中。
@@ -73,4 +73,5 @@ MIT License具有极其宽松的条款，您可以自由地使用、修改、分
 - [蓝桥杯](https://www.lanqiao.cn/)
 - [ACM](https://www.acmicpc.net/)
 - [PinTia](https://www.pintia.cn/)
+- [HRBUST ACM](https://acm.hrbust.edu.cn/) （**校园内部网络需要**）
 
