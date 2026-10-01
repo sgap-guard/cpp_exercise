@@ -9,28 +9,28 @@ int main()
     {
         int M,K;
         cin >> M >> K;
-        int ans = -1;
+        int result = -1;
         for (int N = 1; N <= M; N++)
         {
-            int last = 0;
+            int current_last = 0;
             for (int n = 2; n <= M; n++)
             {
-                last = (last + N) % n;
+                current_last = (current_last + N) % n;
             }
-            last++;
-            if (last == K)
+            current_last++;
+            if (current_last == K)
             {
-                ans = N;
+                result = N;
                 break;
             }
         }
-        if (ans == -1)
+        if (result == -1)
         {
             cout << "No Solution!" << endl;
         }
         else
         {
-            cout << ans << endl;
+            cout << result << endl;
         }
     }
     return 0;

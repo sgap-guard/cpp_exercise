@@ -1,4 +1,4 @@
-#include<iostream>
+#include<bits/stdc++.h>
 using namespace std;
 
 int main()
@@ -18,6 +18,7 @@ int main()
         for (int k = 0; k < n; k++)
         {
             ct = ct * 10 + a;
+            //这是因为每年的数值都是上一年的10倍加上a
             sum += ct;
         }
         cout << sum << endl;

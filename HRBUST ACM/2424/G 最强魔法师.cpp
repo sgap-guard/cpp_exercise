@@ -1,4 +1,4 @@
-#include<iostream>
+#include<bits/stdc++.h>
 using namespace std;
 int main()
 {
@@ -8,11 +8,14 @@ int main()
     {
         int a,b;
         cin >> a >> b; // 读取当前这一组矩阵的行数a、列数b
-        int sz[105][105]; // 定义二维数组sz，大小105*105，存放矩阵元素；题目a,b<=100，空间足够
+        int sz[105][105];
+        // 定义二维数组sz，大小105*105，存放矩阵元素；题目a,b<=100，空间足够
         // max_val记录当前找到的最大值，初始赋值一个极小负数，保证任何合法数字都能比它大
         long long max_val = -99999999999;
-        long long ans_row = 1; // 保存最大值所在行号（题目要求从1开始计数）
-        long long ans_col = 1; // 保存最大值所在列号（题目要求从1开始计数）
+        long long ans_row = 1;
+        // 保存最大值所在行号（题目要求从1开始计数）
+        long long ans_col = 1;
+        // 保存最大值所在列号（题目要求从1开始计数）
 
         // 外层循环：遍历矩阵每一行，i是数组下标，从0开始到a-1，一共a行
         for (int i = 0; i < a; i++)
