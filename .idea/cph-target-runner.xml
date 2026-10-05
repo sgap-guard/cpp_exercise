@@ -3,6 +3,22 @@
   <component name="CphTargetRunnerState">
     <option name="targets">
       <map>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/H MD Counting Rectangles.cpp::H MD Counting Rectangles.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="7ddd159e-e497-4e5c-9c43-505dc58ef709" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="H MD Counting Rectangles.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/H MD Counting Rectangles.cpp::H MD Counting Rectangles.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
         <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/HRBUST ACM/2424/A 运费计算.cpp::A 运费计算.cpp">
           <value>
             <CphTargetCases>
@@ -229,13 +245,115 @@
             </CphTargetCases>
           </value>
         </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/HRBUST ACM/2424/N RSA加密算法.cpp::N RSA加密算法.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="985eb549-15ac-4b10-b723-a7bf5ca231cc" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="N RSA加密算法.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/HRBUST ACM/2424/N RSA加密算法.cpp::N RSA加密算法.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/VJudge/2026级第4周题单/I 求区间和.cpp::I 求区间和.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="d6147f94-7d9d-4168-83c5-ae181de0b6d8" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="I 求区间和.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/VJudge/2026级第4周题单/I 求区间和.cpp::I 求区间和.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/VJudge/2026级第4周题单/J 最大加权矩形.cpp::J 最大加权矩形.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="c597d084-d575-4fa8-86e2-ef4766971e90" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="J 最大加权矩形.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/VJudge/2026级第4周题单/J 最大加权矩形.cpp::J 最大加权矩形.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/VJudge/2026级第4周题单/K 语文成绩.cpp::K 语文成绩.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="ccfc8f38-e28e-483d-a643-d18933eff4a9" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="K 语文成绩.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/VJudge/2026级第4周题单/K 语文成绩.cpp::K 语文成绩.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/VJudge/2026级第4周题单/N 领地选择.cpp::N 领地选择.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="expectedOutput" value="1 2&#10;" />
+                    <option name="id" value="10c41bbd-27f7-4898-aac7-eb0ba14acfae" />
+                    <option name="input" value="3 4 2&#10;1 2 3 1&#10;-1 9 0 2&#10;2 0 1 1&#10;" />
+                    <option name="lastResult">
+                      <CphCaseResult>
+                        <option name="actualOutput" value="1 2&#13;&#10;" />
+                        <option name="durationMillis" value="511" />
+                        <option name="exitCode" value="0" />
+                        <option name="message" value="Accepted (CLion C/C++ File runner)" />
+                        <option name="verdict" value="AC" />
+                      </CphCaseResult>
+                    </option>
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="N 领地选择.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/VJudge/2026级第4周题单/N 领地选择.cpp::N 领地选择.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
         <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/VJudge/2026级第5周题单/A 斐波那契数列.cpp::A 斐波那契数列.cpp">
           <value>
             <CphTargetCases>
               <option name="cases">
                 <list>
                   <CphTestCase>
+                    <option name="expectedOutput" value="5&#10;1&#10;4181&#10;1" />
                     <option name="id" value="49ef69cd-f5d6-4b65-8cf3-20d2d6b62ffd" />
+                    <option name="input" value="4&#10;5&#10;2&#10;19&#10;1" />
+                    <option name="lastResult">
+                      <CphCaseResult>
+                        <option name="actualOutput" value="5&#13;&#10;1&#13;&#10;4181&#13;&#10;1&#13;&#10;" />
+                        <option name="durationMillis" value="712" />
+                        <option name="exitCode" value="0" />
+                        <option name="message" value="Accepted (CLion C/C++ File runner)" />
+                        <option name="verdict" value="AC" />
+                      </CphCaseResult>
+                    </option>
                     <option name="name" value="Case 1" />
                   </CphTestCase>
                 </list>
@@ -251,7 +369,18 @@
               <option name="cases">
                 <list>
                   <CphTestCase>
+                    <option name="expectedOutput" value="5" />
                     <option name="id" value="ce6b2eed-a538-42ee-b009-d732447cad26" />
+                    <option name="input" value="4" />
+                    <option name="lastResult">
+                      <CphCaseResult>
+                        <option name="actualOutput" value="5&#13;&#10;" />
+                        <option name="durationMillis" value="557" />
+                        <option name="exitCode" value="0" />
+                        <option name="message" value="Accepted (CLion C/C++ File runner)" />
+                        <option name="verdict" value="AC" />
+                      </CphCaseResult>
+                    </option>
                     <option name="name" value="Case 1" />
                   </CphTestCase>
                 </list>
@@ -482,6 +611,198 @@
               </option>
               <option name="displayName" value="全排列问题.cpp" />
               <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/VJudge/2026级第5周题单/全排列问题.cpp::全排列问题.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/B/B20/B206/B2064.cpp::B2064.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="7acc0788-c3b3-4293-9427-894105dcc859" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="B2064.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/B/B20/B206/B2064.cpp::B2064.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P12/P121/P1216 数字三角形.cpp::P1216 数字三角形.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="68c86c01-fd8f-44b6-8140-18ddf72772a8" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="P1216 数字三角形.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P12/P121/P1216 数字三角形.cpp::P1216 数字三角形.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P12/P122/P1226 快速幂.cpp::P1226 快速幂.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="d9cb03ee-5711-4eb5-bd5f-4cffed22e4e5" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="P1226 快速幂.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P12/P122/P1226 快速幂.cpp::P1226 快速幂.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P12/P125/P1255 数楼梯.cpp::P1255 数楼梯.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="7e2e0257-2838-4dbc-a23f-1f4527b74cc5" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="P1255 数楼梯.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P12/P125/P1255 数楼梯.cpp::P1255 数楼梯.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P14/P146/P1464 Function.cpp::P1464 Function.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="e98c35f8-4500-4479-9af1-d294a2578835" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="P1464 Function.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P14/P146/P1464 Function.cpp::P1464 Function.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P14/P149/P1496 火烧赤壁.cpp::P1496 火烧赤壁.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="0a578ebe-50c3-406c-9349-3d7b60fab5af" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="P1496 火烧赤壁.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P14/P149/P1496 火烧赤壁.cpp::P1496 火烧赤壁.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P17/P171/P1719 最大加权矩形.cpp::P1719 最大加权矩形.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="8f49ec99-57c9-4ba5-84a5-736da5423716" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="P1719 最大加权矩形.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P17/P171/P1719 最大加权矩形.cpp::P1719 最大加权矩形.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P20/P200/P2004 领地选择.cpp::P2004 领地选择.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="80868925-7853-4e6e-a43c-c586f66f2412" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="P2004 领地选择.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P20/P200/P2004 领地选择.cpp::P2004 领地选择.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P23/P236/P2367 语文成绩.cpp::P2367 语文成绩.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="8943ee8a-8b78-4695-8eb1-e2dbe56e3d2f" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="P2367 语文成绩.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P23/P236/P2367 语文成绩.cpp::P2367 语文成绩.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P28/P287/P2879 Tallest Cow S.cpp::P2879 Tallest Cow S.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="682b583d-7efb-4ec7-ac7d-8d08d55cec0f" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="P2879 Tallest Cow S.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P28/P287/P2879 Tallest Cow S.cpp::P2879 Tallest Cow S.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P33/P339/P3397 地毯.cpp::P3397 地毯.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="07a91fad-cb1b-4811-9789-c34448b80fa5" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="P3397 地毯.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P33/P339/P3397 地毯.cpp::P3397 地毯.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P82/P821/P8218 求区间和.cpp::P8218 求区间和.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="405269d2-802c-418f-bc45-bcfc5664bee2" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="P8218 求区间和.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/洛谷/P/P82/P821/P8218 求区间和.cpp::P8218 求区间和.cpp" />
             </CphTargetCases>
           </value>
         </entry>

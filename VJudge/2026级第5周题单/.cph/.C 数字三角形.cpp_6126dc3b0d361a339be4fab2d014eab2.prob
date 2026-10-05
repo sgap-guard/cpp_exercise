@@ -1,0 +1,1 @@
+{"name":"Local: C 数字三角形","url":"d:\\cpp_exercise\\VJudge\\2026级第5周题单\\C 数字三角形.cpp","tests":[{"id":1791033201412,"input":"5\n7\n3 8\n8 1 0\n2 7 4 4\n4 5 2 6 5 \n","output":"30\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\cpp_exercise\\VJudge\\2026级第5周题单\\C 数字三角形.cpp","group":"local","local":true}
