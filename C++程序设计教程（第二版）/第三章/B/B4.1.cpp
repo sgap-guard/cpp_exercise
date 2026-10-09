@@ -1,7 +1,7 @@
-#include<iostream>
-#include<cmath>
+#include<bits/stdc++.h>
 using namespace std;
-int main()
+
+signed main()
 {
     int x,y;
     cin >> x;
@@ -9,7 +9,7 @@ int main()
     {
         y = abs(x);
     }
-    else if (x >= 5 && x < 10)
+    else if (x < 20)
     {
         y = 3 * x * x - 2 * x +1;
     }

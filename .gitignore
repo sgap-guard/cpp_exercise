@@ -10,6 +10,8 @@
 *.d
 *.i
 *.s
+*.bin
+*.slnx
 
 # 日志、临时文件
 *.log
@@ -33,3 +35,7 @@
 # 其他系统文件
 Thumbs.db
 .DS_Store
+
+#CPH相关
+.cph/*.prob
+.cph/*.exe

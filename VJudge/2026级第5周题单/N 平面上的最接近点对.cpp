@@ -1,3 +1,7 @@
-//
-// Created by SGAP on 2026/10/1.
-//
+#include <bits/stdc++.h>
+using namespace std;
+
+signed main()
+{
+    
+}

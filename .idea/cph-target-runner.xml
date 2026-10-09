@@ -806,6 +806,22 @@
             </CphTargetCases>
           </value>
         </entry>
+        <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/牛客/国庆新生赛第一场/A Hello,HITUST.cpp::A Hello,HITUST.cpp">
+          <value>
+            <CphTargetCases>
+              <option name="cases">
+                <list>
+                  <CphTestCase>
+                    <option name="id" value="8d3bf432-c06e-421e-8efd-a7e255e35e53" />
+                    <option name="name" value="Case 1" />
+                  </CphTestCase>
+                </list>
+              </option>
+              <option name="displayName" value="A Hello,HITUST.cpp" />
+              <option name="targetId" value="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/牛客/国庆新生赛第一场/A Hello,HITUST.cpp::A Hello,HITUST.cpp" />
+            </CphTargetCases>
+          </value>
+        </entry>
         <entry key="CppFileRunConfiguration::com.jetbrains.cidr.cpp.runfile.CppFileRunConfiguration::CPP_FILE::D:/cpp_exercise/计蒜客/T/T10/T100/T1001 计算A+B.cpp::T1001 计算A+B.cpp (2)">
           <value>
             <CphTargetCases>

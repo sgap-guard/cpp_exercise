@@ -3,10 +3,14 @@ using namespace std;
 
 signed main()
 {
-    long long a,b,p;
+    long long a, b, p;
     cin >> a >> b >> p;
+    long long original_a = a;
+    long long original_b = b;
+
     long long ans = 1;
     a = a % p;
+
     while (b > 0)
     {
         if (b % 2 == 1)
@@ -16,5 +20,6 @@ signed main()
         a = (a * a) % p;
         b /= 2;
     }
-    cout << a << "^" << b << " mod " << p << "=" << ans << endl;
+    cout << original_a << "^" << original_b << " mod " << p << "=" << ans << endl;
+    return 0;
 }

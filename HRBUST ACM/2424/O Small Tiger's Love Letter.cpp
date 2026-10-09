@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int pi[200005];
+static int pi[999999];
 
 int main()
 {
