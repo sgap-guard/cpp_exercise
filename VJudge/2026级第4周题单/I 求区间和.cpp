@@ -5,7 +5,7 @@ using namespace std;
 // A[i]：存储原数组的第 i 个元素
 // pfX[i]：存储前缀和，即 A[1] + A[2] + ... + A[i]
 // 数组大小开到 100005，因为 n <= 100000，多开几个防止越界
-int A[100005], pfX[100005];
+static int A[100005], pfX[100005];
 
 // 使用 signed main 等价于 int main，是竞赛中的习惯写法
 signed main()
