@@ -5,10 +5,9 @@ signed main()
 {
     long long a, b, p;
     cin >> a >> b >> p;
-    long long original_a = a;
-    long long original_b = b;
-
-    long long ans = 1;
+    long long original_a = a,
+              original_b = b,
+              ans = 1;
     a = a % p;
 
     while (b > 0)

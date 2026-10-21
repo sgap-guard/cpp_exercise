@@ -9,16 +9,16 @@ typedef vector<int> BigInt;
 // ========== 高精度加法函数 ==========
 // 输入：两个大整数 a 和 b（低位在前）
 // 输出：a + b 的结果（低位在前）
-BigInt add(const BigInt &a, const BigInt &b)
+BigInt add(const BigInt& a, const BigInt& b)
 {
-    BigInt c;              // 存储结果
-    int carry = 0;         // 进位，初始为 0
-    int len = max(a.size(), b.size());  // 两个数中较长的位数
+    BigInt c; // 存储结果
+    int carry = 0; // 进位，初始为 0
+    int len = max(a.size(), b.size()); // 两个数中较长的位数
 
     // 从低位到高位逐位相加，或者还有进位未处理时继续循环
     for (int i = 0; i < len || carry; ++i)
     {
-        int sum = carry;   // 当前位的和，初始为进位
+        int sum = carry; // 当前位的和，初始为进位
 
         // 如果 a 还有第 i 位，加上 a[i]
         if (i < a.size()) sum += a[i];
@@ -39,7 +39,7 @@ BigInt add(const BigInt &a, const BigInt &b)
 // ========== 大整数输出函数 ==========
 // 输入：一个大整数（低位在前）
 // 输出：从高位到低位打印，即正常的数字形式
-void printBigInt(const BigInt &num)
+void printBigInt(const BigInt& num)
 {
     // 如果 num 为空（理论上不会发生），输出 0
     if (num.empty())
@@ -86,9 +86,9 @@ int main()
             // 注意：这里的递推关系是 f(n) = f(n-1) + f(n-2)
             // 其中 f(1) = 1, f(2) = 2, f(3) = 3, f(4) = 5, ...
             // 这与标准斐波那契数列（1, 1, 2, 3, 5, ...）偏移了一位
-            BigInt prev2 = {1};   // f(1) = 1
-            BigInt prev1 = {2};   // f(2) = 2
-            BigInt current;       // 临时变量，存储当前项
+            BigInt prev2 = {1}; // f(1) = 1
+            BigInt prev1 = {2}; // f(2) = 2
+            BigInt current; // 临时变量，存储当前项
 
             // 从第 3 项开始递推到第 N 项
             for (int i = 3; i <= N; ++i)

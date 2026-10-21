@@ -75,5 +75,5 @@ MIT License具有极其宽松的条款，您可以自由地使用、修改、分
 - [蓝桥杯](https://www.lanqiao.cn/)
 - [ACM](https://www.acmicpc.net/)
 - [PinTia](https://www.pintia.cn/)
-- [HRBUST ACM](https://acm.hrbust.edu.cn/) （**校园内部网络需要**）
+- [HRBUST ACM](http://acm.hrbust.edu.cn/) （**校园内部网络需要**）
 
