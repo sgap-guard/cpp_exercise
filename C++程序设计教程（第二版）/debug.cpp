@@ -1,15 +1,14 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 signed main()
 {
-    int a = 100, i = 0, sum = 0;
-    do
+    string s; cin >> s;
+    for (char c : s)
     {
-        i++;
-        sum += 1;
+        int a = c;
+        cout << a << endl;
     }
-    while (i < 100);
-    cout << sum << endl;
     return 0;
 }

@@ -43,5 +43,7 @@ foreach (file ${CPP_FILES})
             "PinTia/2023秋基础联考第一场/6 数学题.cpp"
             "PinTia/2023秋基础联考第一场/7 吃黄焖鸡吗.cpp"
             "PinTia/2023秋基础联考第一场/8 小瑾的A与C.cpp"
-            C++程序设计教程（第二版）/debug.cpp)
+            C++程序设计教程（第二版）/debug.cpp
+            算法实验/实验1/1.cpp
+            算法实验/实验1/2.cpp)
 endforeach()

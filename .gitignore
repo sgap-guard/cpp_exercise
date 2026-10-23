@@ -41,13 +41,5 @@ Thumbs.db
 .cph/*.exe
 
 # CMake相关
-build/           # 加上这一行，屏蔽整个build文件夹！
-
-.cmake
-.json
-.cache
-.txt
-.make
-.rsp
-.makes
-.dir
+build/*.*
+cmake-build-debug/*.*
