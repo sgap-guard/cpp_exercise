@@ -1,5 +1,4 @@
 #include <iostream>
-
 using namespace std;
 
 int main() 
@@ -16,10 +15,12 @@ int main()
         if (vote == 1) 
         {
             countA++;
-        } else if (vote == 2) 
+        } 
+        else if (vote == 2) 
         {
             countB++;
-        } else if (vote == 3) 
+        } 
+        else if (vote == 3) 
         {
             countC++;
         }
@@ -31,10 +32,12 @@ int main()
     if (TVV > 0 && countA > TVV / 2.0) 
     {
         cout << "A-yes" << endl;
-    } else if (TVV > 0 && countB > TVV / 2.0) 
+    } 
+    else if (TVV > 0 && countB > TVV / 2.0) 
     {
         cout << "B-yes" << endl;
-    } else if (TVV > 0 && countC > TVV / 2.0) 
+    } 
+    else if (TVV > 0 && countC > TVV / 2.0) 
     {
         cout << "C-yes" << endl;
     } 
