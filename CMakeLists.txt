@@ -40,10 +40,10 @@ foreach (file ${CPP_FILES})
     add_executable(${name} ${file}
             "计蒜客/T/T10/T100/T1002 输出马里奥.cpp"
             "计蒜客/T/T10/T100/T1006 对齐输出.cpp"
-            "PinTia/2023秋基础联考第一场/6 数学题.cpp"
-            "PinTia/2023秋基础联考第一场/7 吃黄焖鸡吗.cpp"
-            "PinTia/2023秋基础联考第一场/8 小瑾的A与C.cpp"
-            C++程序设计教程（第二版）/debug.cpp
-            算法实验/实验1/1.cpp
-            算法实验/实验1/2.cpp)
+            "牛客/哈理工ACM协会26级新生赛/B 小竹和妈妈.cpp"
+            "牛客/哈理工ACM协会26级新生赛/G 文件路径.cpp"
+            "牛客/哈理工ACM协会26级新生赛/L 校运动会.cpp"
+            "牛客/哈理工ACM协会26级新生赛/I 哪有赌徒天天输.cpp"
+            "牛客/哈理工ACM协会26级新生赛/J 编码转换.cpp"
+            "牛客/哈理工ACM协会26级新生赛/K 编码转换.cpp")
 endforeach()

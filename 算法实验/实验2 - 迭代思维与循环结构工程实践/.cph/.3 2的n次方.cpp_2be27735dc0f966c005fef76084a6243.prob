@@ -1,0 +1,1 @@
+{"name":"Local: 3 2的n次方","url":"d:\\cpp_exercise\\算法实验\\实验2 - 迭代思维与循环结构工程实践\\3 2的n次方.cpp","tests":[{"id":1793511312338,"input":"2 8 15","output":"1\n3\nNo!"},{"id":1793511336451,"input":"-8\n0","output":"3\nNo!"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\cpp_exercise\\算法实验\\实验2 - 迭代思维与循环结构工程实践\\3 2的n次方.cpp","group":"local","local":true}
