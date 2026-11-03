@@ -1,0 +1,1 @@
+{"name":"Local: 2 n行n列的星星 2","url":"d:\\cpp_exercise\\26级作业\\循环3\\2 n行n列的星星 2.cpp","tests":[{"id":1793515563566,"input":"4","output":"* * * *\n* * * *\n* * * *\n* * * *"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\cpp_exercise\\26级作业\\循环3\\2 n行n列的星星 2.cpp","group":"local","local":true}

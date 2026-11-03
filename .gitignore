@@ -38,9 +38,11 @@ Thumbs.db
 .DS_Store
 
 #CPH相关
-.cph/*.prob
-.cph/*.exe
+.cph/*.*
 
 # CMake相关
 build/*.*
 cmake-build-debug/*.*
+
+# IDEA相关
+.idea/*.*
