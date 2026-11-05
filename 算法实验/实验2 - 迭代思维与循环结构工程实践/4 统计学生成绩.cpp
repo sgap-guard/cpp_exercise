@@ -3,6 +3,7 @@ using namespace std;
 
 signed main()
 {
+    cout << "2604090112 刘佳林" << endl;
     int n, sum = 0; cin >> n;
     for (int i = 1; i <= n; i++)
     {
