@@ -8,6 +8,8 @@ signed main()
     {
         if (x < 0) x = -x;
         if (((x & (x - 1)) == 0) && x > 0)
+        // 这里同或，判断 x 是否为 2 的 n次方。那么同或是指与操作，即 x & (x - 1) 为 0，
+        // 因为 2 的 n次方的二进制表示中，只有 1 个 1，其他都是 0。
         {
             long long n = __builtin_ctz(x);
             cout << n << endl;
