@@ -59,7 +59,30 @@
 ```
 ### Virtual Machine Fedora
 ```plain
-
+             .',;::::;,'.                 sgap@fedora-vmware
+         .';:cccccccccccc:;,.             ------------------
+      .;cccccccccccccccccccccc;.          OS: Fedora Linux 44 (KDE Plasma Desktop Edition) x86_64
+    .:cccccccccccccccccccccccccc:.        Host: VMware Virtual Platform
+  .;ccccccccccccc;.:dddl:.;ccccccc;.      Kernel: Linux 7.2.14-200.fc44.x86_64
+ .:ccccccccccccc;OWMKOOXMWd;ccccccc:.     Uptime: 3 mins
+.:ccccccccccccc;KMMc;cc;xMMc;ccccccc:.    Packages: 2331 (rpm)
+,cccccccccccccc;MMM.;cc;;WW:;cccccccc,    Shell: bash 5.3.9
+:cccccccccccccc;MMM.;cccccccccccccccc:    Display (Virtual-1): 2878x1482, 60 Hz
+:ccccccc;oxOOOo;MMM000k.;cccccccccccc:    Desktop Environment: KDE Plasma 6.8.2
+cccccc;0MMKxdd:;MMMkddc.;cccccccccccc;    Window Manager: KWin (Wayland)
+ccccc;XMO';cccc;MMM.;cccccccccccccccc'    WM Theme: Breeze
+ccccc;MMo;ccccc;MMW.;ccccccccccccccc;     Theme: Fusion (BreezeLight) [Qt], Breeze [GTK2/3/4]
+ccccc;0MNc.ccc.xMMd;ccccccccccccccc;      Icons: breeze [Qt], breeze [GTK2/3/4]
+cccccc;dNMWXXXWM0:;cccccccccccccc:,       Font: Noto Sans (10pt) [Qt], Noto Sans (10pt) [GTK2/3/4]
+cccccccc;.:odl:.;cccccccccccccc:,.        Cursor: Breeze_Light (24px)
+ccccccccccccccccccccccccccccc:'.          Terminal: konsole 26.8.2
+:ccccccccccccccccccccccc:;,..             CPU: Intel(R) Core(TM) Ultra 9 285H (8) @ 3.69 GHz
+ ':cccccccccccccccc::;,.                  GPU: VMware SVGA II Adapter [Integrated]
+                                          Memory: 2.23 GiB / 11.62 GiB (19%)
+                                          Swap: 0 B / 8.00 GiB (0%)
+                                          Disk (/): 13.36 GiB / 178.00 GiB (8%) - btrfs
+                                          Local IP (ens160): 192.168.164.129/24
+                                          Locale: zh_CN.UTF-8
 ```
 ### Deepin
 ```plain
