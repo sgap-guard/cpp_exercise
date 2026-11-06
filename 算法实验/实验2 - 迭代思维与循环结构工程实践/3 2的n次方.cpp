@@ -3,6 +3,7 @@ using namespace std;
 
 signed main()
 {
+    cout << "2604090112 刘佳林" << endl;
     long long x;
     while (cin >> x)
     {

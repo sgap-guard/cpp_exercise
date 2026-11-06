@@ -19,6 +19,7 @@ bool isPrime(int x)
 
 signed main()
 {
+    cout << "2604090112 刘佳林" << endl;
     int a; cin >> a;
     if (isPrime(a))
         cout << "YES" << endl;
