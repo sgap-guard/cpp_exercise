@@ -15,11 +15,7 @@ signed main()
     {
         for (int j = 0; j < m; j++)
         {
-<<<<<<< HEAD
             if (g[i][j] == '*')
-=======
-            if (g[i][j] == "*")
->>>>>>> e171408bbe38f651fe6976f29addf5342728bad3
             {
                 cout << "*";
             }
@@ -34,11 +30,7 @@ signed main()
                     {
                         if (g[x][y] == '*')
                         {
-<<<<<<< HEAD
                             cnt++;
-=======
-                            cnt++
->>>>>>> e171408bbe38f651fe6976f29addf5342728bad3
                         }
                     }
                 }

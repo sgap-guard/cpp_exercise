@@ -3,6 +3,7 @@ using namespace std;
 
 signed main()
 {
+    cout << "2604090112 Áõ¼ÑÁÖ" << endl;
     int n, m; cin >> n >> m;
     long long max_gold_sum = -1,
               best_road_id = 0,
