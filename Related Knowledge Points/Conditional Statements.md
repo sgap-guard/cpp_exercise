@@ -1,0 +1,702 @@
+## C++条件语句
+### 1. `if`语句
+if语句用于根据条件执行不同的代码块。
+```cpp
+if (condition) {
+    // 代码块1
+} else {
+    // 代码块2
+}
+```
+
+### 2. `if`语句（多条件）
+if语句可以包含多个条件，每个条件之间用`||`或`&&`运算符连接。
+```cpp
+if (condition1) {
+    // 代码块1
+} else if (condition2) {
+    // 代码块2
+} else {
+    // 代码块3
+}
+```
+
+### 3. `if`语句（嵌套）
+
+if语句可以嵌套在其他if语句中，形成多层条件判断。
+```cpp
+if (condition1) {
+    if (condition2) {
+        // 代码块1
+    } else {
+        // 代码块2
+    }
+} else {
+    // 代码块3
+}
+```
+
+### 4. `switch`语句
+switch语句用于根据变量的不同值执行不同的代码块。
+```cpp
+switch (variable) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+### 5. `switch`语句（嵌套）
+switch语句可以嵌套在其他switch语句中。
+```cpp
+switch (variable1) {
+    case value1:
+        switch (variable2) {
+            case value2:
+                // 代码块1
+                break;
+            default:
+                // 代码块2
+        }
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 6. `switch`语句（多条件）
+switch语句可以包含多个条件，每个条件之间用逗号分隔。
+```cpp
+switch (variable) {
+    case value1:
+    case value2:
+        // 代码块1
+        break;
+    default:
+        // 代码块2
+}
+```
+### 7. `switch`语句（范围）
+switch语句可以包含一个范围，表示变量的值在某个范围内。
+```cpp
+switch (variable) {
+    case value1 ... value2:
+        // 代码块1
+        break;
+    default:
+        // 代码块2
+}
+``` 
+
+### 8. `switch`语句（枚举）
+switch语句可以用于枚举类型，根据枚举值执行不同的代码块。
+```cpp
+enum Color { RED, GREEN, BLUE };
+Color color = RED;
+switch (color) {
+    case RED:
+        // 代码块1
+        break;
+    case GREEN:
+        // 代码块2
+        break;
+    case BLUE:
+        // 代码块3
+        break;
+}
+```
+
+### 9. `switch`语句（字符串）
+switch语句可以用于字符串，根据字符串的值执行不同的代码块。
+```cpp
+string str = "hello";
+switch (str) {
+    case "hello":
+        // 代码块1
+        break;
+    case "world":
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 10. `switch`语句（函数）
+switch语句可以用于函数，根据函数的返回值执行不同的代码块。
+```cpp
+int func() {
+    // 函数体
+}
+switch (func()) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 11. `switch`语句（类）
+switch语句可以用于类，根据类的对象执行不同的代码块。
+```cpp
+class MyClass {
+public:
+    int getValue() {
+        // 返回值
+    }
+};
+MyClass obj;
+switch (obj.getValue()) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+### 12. `switch`语句（结构体）
+switch语句可以用于结构体，根据结构体的值执行不同的代码块。
+```cpp
+struct MyStruct {
+    int value;
+};
+MyStruct obj = {1};
+switch (obj.value) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 13. `switch`语句（数组）
+switch语句可以用于数组，根据数组的值执行不同的代码块。
+```cpp
+int arr[] = {1, 2, 3};
+switch (arr[0]) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 14. `switch`语句（指针）
+switch语句可以用于指针，根据指针的值执行不同的代码块。
+```cpp
+int *ptr = &value;
+switch (*ptr) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 15. `switch`语句（常量）
+switch语句可以用于常量，根据常量的值执行不同的代码块。
+```cpp
+const int value = 1;
+switch (value) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 16. `switch`语句（枚举常量）
+switch语句可以用于枚举常量，根据枚举常量的值执行不同的代码块。
+```cpp
+enum Color { RED, GREEN, BLUE };
+const Color color = RED;
+switch (color) {
+    case RED:
+        // 代码块1
+        break;
+    case GREEN:
+        // 代码块2
+        break;
+    case BLUE:
+        // 代码块3
+        break;
+    default:
+        // 代码块4
+}
+```
+
+### 17. `switch`语句（字符串常量）
+switch语句可以用于字符串常量，根据字符串常量的值执行不同的代码块。
+```cpp
+const string str = "hello";
+switch (str) {
+    case "hello":
+        // 代码块1
+        break;
+    case "world":
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 18. `switch`语句（函数常量）
+switch语句可以用于函数常量，根据函数常量的值执行不同的代码块。
+```cpp
+const int func() {
+    // 函数体
+}
+switch (func()) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 19. `switch`语句（类常量）
+switch语句可以用于类常量，根据类常量的值执行不同的代码块。
+```cpp
+class MyClass {
+public:
+    const int getValue() {
+        // 返回值
+    }
+};
+MyClass obj;
+switch (obj.getValue()) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 20. `switch`语句（结构体常量）
+switch语句可以用于结构体常量，根据结构体常量的值执行不同的代码块。
+```cpp
+struct MyStruct {
+    const int value;
+};
+MyStruct obj = {1};
+switch (obj.value) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 21. `switch`语句（数组常量）
+switch语句可以用于数组常量，根据数组常量的值执行不同的代码块。
+```cpp
+const int arr[] = {1, 2, 3};
+switch (arr[0]) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 22. `switch`语句（指针常量）
+
+switch语句可以用于指针常量，根据指针常量的值执行不同的代码块。
+```cpp
+const int *ptr = &value;
+switch (*ptr) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 23. `switch`语句（常量指针）
+switch语句可以用于常量指针，根据常量指针的值执行不同的代码块。
+```cpp
+int *const ptr = &value;
+switch (*ptr) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 24. `switch`语句（常量引用）
+switch语句可以用于常量引用，根据常量引用的值执行不同的代码块。
+```cpp
+const int &ref = value;
+switch (ref) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 25. `switch`语句（枚举常量引用）
+switch语句可以用于枚举常量引用，根据枚举常量引用的值执行不同的代码块。
+```cpp
+const Color &ref = color;
+switch (ref) {
+    case RED:
+        // 代码块1
+        break;
+    case GREEN:
+        // 代码块2
+        break;
+    case BLUE:
+        // 代码块3
+        break;
+    default:
+        // 代码块4
+}
+```
+
+### 26. `switch`语句（字符串常量引用）
+switch语句可以用于字符串常量引用，根据字符串常量引用的值执行不同的代码块。
+```cpp
+const string &ref = str;
+switch (ref) {
+    case "hello":
+        // 代码块1
+        break;
+    case "world":
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 27. `switch`语句（函数常量引用）
+switch语句可以用于函数常量引用，根据函数常量引用的值执行不同的代码块。
+```cpp
+const int &ref = func();
+switch (ref) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 28. `switch`语句（类常量引用）
+switch语句可以用于类常量引用，根据类常量引用的值执行不同的代码块。
+```cpp
+const int &ref = obj.getValue();
+switch (ref) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 29. `switch`语句（结构体常量引用）
+switch语句可以用于结构体常量引用，根据结构体常量引用的值执行不同的代码块。
+```cpp
+const MyStruct &ref = obj;
+switch (ref.value) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 30. `switch`语句（数组常量引用）
+switch语句可以用于数组常量引用，根据数组常量引用的值执行不同的代码块。
+```cpp
+const int &ref = arr[0];
+switch (ref) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+``` 
+
+### 31. `switch`语句（指针常量引用）
+switch语句可以用于指针常量引用，根据指针常量引用的值执行不同的代码块。
+```cpp
+const int *&ref = ptr;
+switch (*ref) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 32. `switch`语句（常量指针引用）
+switch语句可以用于常量指针引用，根据常量指针引用的值执行不同的代码块。
+```cpp
+const int *const &ref = ptr;
+switch (*ref) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 33. `switch`语句（常量引用引用）
+switch语句可以用于常量引用引用，根据常量引用引用的值执行不同的代码块。
+```cpp
+const int &&ref = value;
+switch (ref) {
+    case value1:
+        // 代码块1
+        break;
+    case value2:
+        // 代码块2
+        break;
+    default:
+        // 代码块3
+}
+```
+
+### 34. `while`语句
+while语句可以用于重复执行代码块，直到满足条件。
+```cpp
+while (condition) {
+    // 代码块
+}
+```
+
+### 35. `do-while`语句
+do-while语句可以用于重复执行代码块，直到满足条件。
+```cpp
+do {
+    // 代码块
+} while (condition);
+```
+
+### 36. `for`语句
+for语句可以用于重复执行代码块，直到满足条件。
+```cpp
+for (initialization; condition; increment) {
+    // 代码块
+}
+```
+
+### 37. `for`语句（类常量）
+for语句可以用于类常量，根据类常量的值执行不同的代码块。
+```cpp
+class MyClass {
+public:
+    int getValue() {
+        return value;
+    }
+private:
+    int value;
+};
+MyClass obj;
+for (int i = 0; i < obj.getValue(); i++) {
+    // 代码块
+}
+```
+
+### 38. `for`语句（结构体常量）
+for语句可以用于结构体常量，根据结构体常量的值执行不同的代码块。
+```cpp
+struct MyStruct {
+    const int value;
+};
+MyStruct obj = {1};
+for (int i = 0; i < obj.value; i++) 
+{
+    // 代码块
+}
+```
+
+### 39. `for`语句（数组常量）
+for语句可以用于数组常量，根据数组常量的值执行不同的代码块。
+```cpp
+const int arr[] = {1, 2, 3};
+for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++) 
+    {
+    // 代码块
+    // 代码块
+    }
+```
+
+### 40. `for`语句（指针常量）
+for语句可以用于指针常量，根据指针常量的值执行不同的代码块。
+```cpp
+const int *ptr = &value;
+for (int i = 0; i < *ptr; i++) {
+    // 代码块
+}
+```
+
+### 41. `for`语句（常量指针）
+for语句可以用于常量指针，根据常量指针的值执行不同的代码块。
+```cpp
+int *const ptr = &value;
+for (int i = 0; i < *ptr; i++) {
+    // 代码块
+}
+``` 
+
+### 42. `for`语句（常量引用）
+for语句可以用于常量引用，根据常量引用的值执行不同的代码块。
+```cpp
+const int &ref = value;
+for (int i = 0; i < ref; i++) {
+    // 代码块
+}
+```
+
+### 43. `for`语句（枚举常量）
+for语句可以用于枚举常量，根据枚举常量的值执行不同的代码块。
+```cpp
+enum MyEnum {
+    value1 = 0,
+    value2 = 1,
+    value3 = 2
+};
+for (int i = 0; i < sizeof(MyEnum) / sizeof(MyEnum[0]); i++) {
+    // 代码块
+}
+```
+
+### 44. `for`语句（字符串常量）
+for语句可以用于字符串常量，根据字符串常量的值执行不同的代码块。
+```cpp
+const char *str = "hello";
+for (int i = 0; i < strlen(str); i++) {
+    // 代码块
+}
+```
+
+### 45. `for`语句（函数常量）
+for语句可以用于函数常量，根据函数常量的值执行不同的代码块。
+```cpp
+const int func() {
+    return value;
+}
+for (int i = 0; i < func(); i++) {
+    // 代码块
+}
+```
+
+### 46. `for`语句（类常量引用）
+for语句可以用于类常量引用，根据类常量引用的值执行不同的代码块。
+```cpp
+class MyClass {
+public:
+    int getValue() {
+        return value;
+    }
+private:
+    int value;
+};
+MyClass obj;
+const int &ref = obj.getValue();
+for (int i = 0; i < ref; i++) {
+    // 代码块
+}
+```
+
+### 47. `for`语句（结构体常量引用）
+for语句可以用于结构体常量引用，根据结构体常量引用的值执行不同的代码块。
+```cpp
+struct MyStruct {
+    const int value;
+};
+MyStruct obj = {1};
+const int &ref = obj.value;
+for (int i = 0; i < ref; i++) {
+    // 代码块
+}
+```
+
+
+
+
+
+

@@ -1,0 +1,282 @@
+# C++ 指针学习笔记
+
+## 一、指针基础概念
+
+### 1.1 什么是指针
+指针是一个变量，其存储的值是另一个变量的**内存地址**。
+
+```cpp
+int a = 10;
+int* p = &a;  // p 存储了 a 的地址
+```
+
+- `&`：取地址运算符
+- `*`：解引用运算符（取值）
+
+### 1.2 内存模型示意
+```
+变量 a:  [ 10 ]  地址: 0x7fff1000
+变量 p:  [0x7fff1000]  地址: 0x7fff1008
+```
+
+---
+
+## 二、指针的声明与初始化
+
+```cpp
+int* p1;          // 未初始化（危险！野指针）
+int* p2 = nullptr; // 推荐：初始化为空指针
+int a = 5;
+int* p3 = &a;      // 指向 a
+
+// 声明风格（等价）
+int* p;   // 推荐
+int *p;
+int * p;
+```
+
+⚠️ **注意**：`int* p1, p2;` 中 `p1` 是指针，`p2` 是 int，**不是**两个指针。
+
+---
+
+## 三、指针的核心操作
+
+### 3.1 取地址与解引用
+```cpp
+int a = 10;
+int* p = &a;
+*p = 20;         // 通过指针修改 a 的值
+cout << a;       // 输出 20
+```
+
+### 3.2 指针的算术运算
+```cpp
+int arr[5] = {1, 2, 3, 4, 5};
+int* p = arr;    // 数组名退化为指针
+
+cout << *p;      // 1
+cout << *(p+1);  // 2
+p++;             // 移动到下一个元素（+sizeof(int) 字节）
+```
+
+指针加减的步长取决于**指向类型的大小**。
+
+### 3.3 指针比较
+```cpp
+if (p == nullptr) { /* 空指针判断 */ }
+if (p1 < p2) { /* 地址先后比较，同数组内有效 */ }
+```
+
+---
+
+## 四、指针与数组
+
+```cpp
+int arr[5] = {1,2,3,4,5};
+int* p = arr;         // 等价于 &arr[0]
+
+// 以下四种写法等价
+arr[i] == *(arr + i) == p[i] == *(p + i)
+```
+
+**关键区别**：
+- `sizeof(arr)` = 20（整个数组）
+- `sizeof(p)` = 8（64位系统指针大小）
+- 数组名是**常量指针**，不能 `arr++`
+
+---
+
+## 五、指针与函数
+
+### 5.1 指针作为参数（值传递地址）
+```cpp
+void swap(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int x = 1, y = 2;
+swap(&x, &y);  // 交换成功
+```
+
+### 5.2 指针作为返回值
+```cpp
+int* findMax(int* arr, int size) {
+    int* maxPtr = arr;
+    for (int i = 1; i < size; i++)
+        if (arr[i] > *maxPtr) maxPtr = &arr[i];
+    return maxPtr;
+}
+```
+⚠️ **不要返回局部变量的地址**（栈内存函数结束即销毁）。
+
+---
+
+## 六、多级指针
+
+```cpp
+int a = 10;
+int* p = &a;
+int** pp = &p;      // 指向指针的指针
+
+**pp = 20;          // 修改 a
+cout << *(*pp);     // 20
+```
+
+常用于：二维数组动态分配、修改指针本身。
+
+---
+
+## 七、const 与指针（重点易错）
+
+| 写法 | 含义 |
+|------|------|
+| `const int* p` | 指向常量的指针，**不能改值**，可改指向 |
+| `int* const p` | 常量指针，**不能改指向**，可改值 |
+| `const int* const p` | 都不能改 |
+
+记忆口诀：**const 靠近谁就修饰谁**
+
+```cpp
+int a = 1, b = 2;
+const int* p1 = &a;
+// *p1 = 3;   ❌ 错误
+p1 = &b;      // ✅ 可以
+
+int* const p2 = &a;
+*p2 = 3;      // ✅ 可以
+// p2 = &b;   ❌ 错误
+```
+
+---
+
+## 八、动态内存管理
+
+### 8.1 new / delete
+```cpp
+// 单个变量
+int* p = new int(10);
+delete p;
+
+// 数组
+int* arr = new int[10];
+delete[] arr;   // 注意用 delete[]
+```
+
+### 8.2 常见错误
+- **内存泄漏**：new 后忘记 delete
+- **重复释放**：delete 两次
+- **悬空指针**：delete 后继续使用
+```cpp
+delete p;
+p = nullptr;   // 好习惯
+```
+
+### 8.3 二维数组动态分配
+```cpp
+int rows = 3, cols = 4;
+int** mat = new int*[rows];
+for (int i = 0; i < rows; i++)
+    mat[i] = new int[cols];
+
+// 释放
+for (int i = 0; i < rows; i++)
+    delete[] mat[i];
+delete[] mat;
+```
+
+---
+
+## 九、指针与字符串
+
+```cpp
+const char* str = "hello";      // 字符串字面量，只读
+char arr[] = "hello";           // 可修改副本
+
+// C++ 风格字符串
+#include <string>
+std::string s = "hello";
+const char* c = s.c_str();      // 转换
+```
+
+---
+
+## 十、函数指针
+
+```cpp
+int add(int a, int b) { return a + b; }
+
+int (*funcPtr)(int, int) = add;
+cout << funcPtr(3, 4);   // 7
+
+// 作为回调
+void process(int x, int y, int (*op)(int,int)) {
+    cout << op(x, y);
+}
+```
+
+---
+
+## 十一、智能指针（C++11+，现代推荐）
+
+替代裸指针，自动管理内存。
+
+```cpp
+#include <memory>
+
+// unique_ptr：独占所有权
+std::unique_ptr<int> p1 = std::make_unique<int>(10);
+
+// shared_ptr：共享所有权，引用计数
+std::shared_ptr<int> p2 = std::make_shared<int>(20);
+std::shared_ptr<int> p3 = p2;   // 引用计数 = 2
+
+// weak_ptr：不增加引用计数，解决循环引用
+std::weak_ptr<int> wp = p2;
+```
+
+**优先使用智能指针，避免手动 new/delete。**
+
+---
+
+## 十二、常见陷阱总结
+
+| 陷阱 | 说明 |
+|------|------|
+| 野指针 | 未初始化的指针 |
+| 悬空指针 | 指向已释放内存 |
+| 内存泄漏 | new 未 delete |
+| 越界访问 | 指针越出数组范围 |
+| 返回局部变量地址 | 函数返回后失效 |
+| 混淆 `*` 和 `&` | 声明 vs 运算 |
+
+---
+
+## 十三、快速记忆表
+
+| 表达式 | 含义 |
+|--------|------|
+| `&x` | 取 x 的地址 |
+| `*p` | 取 p 指向的值 |
+| `int* p` | 声明指针 |
+| `p + 1` | 移动一个元素 |
+| `p[i]` | 等价 `*(p+i)` |
+| `nullptr` | 空指针（C++11） |
+| `new/delete` | 动态分配/释放 |
+| `delete[]` | 释放数组 |
+
+---
+
+## 十四、实践建议
+
+1. 指针声明时**立即初始化**（nullptr 或有效地址）
+2. delete 后**立即置 nullptr**
+3. 优先使用**智能指针**和 STL 容器
+4. 使用 `nullptr` 而非 `NULL` 或 `0`
+5. 数组操作优先用 `std::vector` / `std::array`
+6. 用 `const` 修饰不修改的指针参数
+
+---
+
+**核心心法**：指针本身也是变量，只是它存的是"门牌号"，而 `*` 就是"按门牌号去开门"。理解内存模型，指针就不难。

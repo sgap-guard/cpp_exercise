@@ -1,0 +1,764 @@
+# C++ 函数学习笔记
+
+## 一、函数是什么
+
+函数是**一段可重复调用的代码块**，用于封装特定功能，接收输入（参数），返回输出（返回值）。
+
+**核心价值**：
+- **复用**：写一次，多处调用
+- **抽象**：调用者只需知道"做什么"，不必关心"怎么做"
+- **模块化**：把大问题拆成小函数，便于维护和测试
+- **可读性**：好函数名自带注释效果
+
+```cpp
+// 函数定义
+int add(int a, int b) {
+    return a + b;
+}
+
+int main() {
+    int sum = add(3, 4);   // 函数调用
+    cout << sum << endl;   // 7
+    return 0;
+}
+```
+
+---
+
+## 二、函数的基本结构
+
+```cpp
+返回类型 函数名(参数列表) {
+    函数体;
+    return 返回值;
+}
+```
+
+**各部分说明**：
+
+| 部分 | 说明 | 示例 |
+|------|------|------|
+| 返回类型 | 返回值类型，无返回用 `void` | `int`、`double`、`void` |
+| 函数名 | 标识符，见名知意 | `add`、`getMax` |
+| 参数列表 | 输入，可为空 | `(int a, int b)` |
+| 函数体 | 具体实现 | `{ ... }` |
+| return | 返回结果并结束函数 | `return a + b;` |
+
+**示例**：
+
+```cpp
+// 无参数无返回
+void sayHello() {
+    cout << "Hello!" << endl;
+}
+
+// 有参数有返回
+int square(int x) {
+    return x * x;
+}
+
+// 多参数
+double average(double a, double b, double c) {
+    return (a + b + c) / 3.0;
+}
+
+// 提前返回
+bool isEven(int n) {
+    if (n % 2 == 0) return true;
+    return false;
+    // return 之后的代码不会执行
+}
+```
+
+---
+
+## 三、函数声明与定义
+
+### 3.1 为什么需要声明
+
+C++ 编译时**从上到下**处理，若函数定义在使用之后，需先**声明**（原型）。
+
+```cpp
+// 函数声明（原型）：只写签名，加分号
+int add(int a, int b);
+
+int main() {
+    cout << add(3, 4) << endl;   // 此时 add 已声明，可调用
+    return 0;
+}
+
+// 函数定义：具体实现
+int add(int a, int b) {
+    return a + b;
+}
+```
+
+### 3.2 声明 vs 定义
+
+| 项目 | 声明（原型） | 定义 |
+|------|--------------|------|
+| 形式 | `int add(int, int);` | `int add(int a, int b) { ... }` |
+| 参数名 | 可省略 | 必须有 |
+| 函数体 | 无 | 有 |
+| 出现次数 | 可多次 | 只能一次（ODR 规则） |
+
+### 3.3 头文件组织
+
+```cpp
+// math_utils.h —— 声明放头文件
+#ifndef MATH_UTILS_H
+#define MATH_UTILS_H
+
+int add(int a, int b);
+int sub(int a, int b);
+
+#endif
+
+// math_utils.cpp —— 定义放源文件
+#include "math_utils.h"
+
+int add(int a, int b) { return a + b; }
+int sub(int a, int b) { return a - b; }
+
+// main.cpp —— 使用
+#include "math_utils.h"
+int main() {
+    cout << add(3, 4);
+    return 0;
+}
+```
+
+---
+
+## 四、参数传递
+
+### 4.1 值传递（传值）
+
+拷贝实参的值给形参，函数内修改**不影响**原变量。
+
+```cpp
+void change(int x) {
+    x = 100;   // 只改副本
+}
+
+int main() {
+    int a = 5;
+    change(a);
+    cout << a << endl;   // 5，未改变
+    return 0;
+}
+```
+
+**缺点**：大对象拷贝开销大。
+
+### 4.2 引用传递（传引用）
+
+形参是实参的**别名**，函数内修改**直接影响**原变量。
+
+```cpp
+void change(int& x) {
+    x = 100;   // 改的是原变量
+}
+
+int main() {
+    int a = 5;
+    change(a);
+    cout << a << endl;   // 100
+    return 0;
+}
+```
+
+**用途**：
+- 需要修改实参
+- 避免大对象拷贝（性能）
+
+### 4.3 const 引用（最常用）
+
+既避免拷贝，又保证不修改，是**传递大对象的最佳实践**。
+
+```cpp
+void print(const string& s) {
+    cout << s << endl;
+    // s += "x";   // ❌ 编译错误，只读
+}
+
+void print(const vector<int>& v) {
+    for (int x : v) cout << x << " ";
+}
+```
+
+### 4.4 指针传递
+
+传地址，函数内通过解引用修改原变量。
+
+```cpp
+void change(int* p) {
+    *p = 100;
+}
+
+int main() {
+    int a = 5;
+    change(&a);
+    cout << a << endl;   // 100
+    return 0;
+}
+```
+
+**三种传递对比**：
+
+| 方式 | 语法 | 能否改实参 | 是否拷贝 | 推荐场景 |
+|------|------|-----------|----------|----------|
+| 值传递 | `void f(int x)` | 否 | 是 | 小类型（int、char） |
+| 引用传递 | `void f(int& x)` | 是 | 否 | 需修改实参 |
+| const 引用 | `void f(const T& x)` | 否 | 否 | 大对象只读（推荐） |
+| 指针传递 | `void f(int* p)` | 是 | 否（传地址） | 需修改或可空 |
+
+### 4.5 数组传参
+
+数组退化为指针，需额外传长度。
+
+```cpp
+void print(int arr[], int n) {
+    for (int i = 0; i < n; i++)
+        cout << arr[i] << " ";
+}
+
+// 或用模板保留大小
+template <size_t N>
+void print(int (&arr)[N]) {
+    for (int x : arr) cout << x << " ";
+}
+```
+
+---
+
+## 五、默认参数
+
+从右往左连续指定默认值，调用时可省略。
+
+```cpp
+void greet(string name, string prefix = "Hello") {
+    cout << prefix << ", " << name << endl;
+}
+
+greet("张三");                 // Hello, 张三
+greet("李四", "Hi");           // Hi, 李四
+```
+
+**规则**：
+```cpp
+// ✅ 正确：默认参数在右边
+void f(int a, int b = 10, int c = 20);
+
+// ❌ 错误：默认参数不能跳着写
+void f(int a = 1, int b, int c = 3);
+
+// 默认参数在声明中给出，定义中不再重复
+void f(int a, int b = 10);   // 声明
+void f(int a, int b) { ... } // 定义，不写默认值
+```
+
+---
+
+## 六、函数重载（Overloading）
+
+**同名函数，参数不同**（类型、个数、顺序），编译器根据实参选择。
+
+```cpp
+int add(int a, int b) { return a + b; }
+
+double add(double a, double b) { return a + b; }
+
+int add(int a, int b, int c) { return a + b + c; }
+
+int main() {
+    cout << add(1, 2) << endl;         // 调用 int 版
+    cout << add(1.5, 2.5) << endl;     // 调用 double 版
+    cout << add(1, 2, 3) << endl;      // 调用三参版
+    return 0;
+}
+```
+
+**重载规则**：
+
+```cpp
+// ✅ 参数个数不同
+void f(int a);
+void f(int a, int b);
+
+// ✅ 参数类型不同
+void f(int a);
+void f(double a);
+
+// ✅ 参数顺序不同
+void f(int a, double b);
+void f(double a, int b);
+
+// ❌ 仅返回类型不同 —— 不算重载
+int f(int a);
+double f(int a);   // 编译错误
+
+// ❌ 仅参数名不同 —— 不算重载
+void f(int a);
+void f(int b);     // 重复定义
+```
+
+**注意**：默认参数与重载可能产生二义性。
+
+```cpp
+void f(int a);
+void f(int a, int b = 0);
+
+f(5);   // ❌ 二义性，两个都能匹配
+```
+
+---
+
+## 七、内联函数（inline）
+
+建议编译器把函数体**直接展开**到调用处，省去函数调用开销。
+
+```cpp
+inline int square(int x) {
+    return x * x;
+}
+
+int main() {
+    int y = square(5);   // 可能展开为 int y = 5 * 5;
+    return 0;
+}
+```
+
+**适用**：短小、频繁调用的函数。
+**不适用**：函数体大、递归函数（编译器可能忽略 inline）。
+
+**现代 C++ 建议**：
+- 类内定义的成员函数**自动**为 inline
+- 现代编译器会自动内联优化，inline 更多用于**允许头文件多次定义**
+
+---
+
+## 八、递归函数
+
+函数**调用自身**，必须有**终止条件**，否则无限递归导致栈溢出。
+
+```cpp
+// 阶乘
+int factorial(int n) {
+    if (n <= 1) return 1;        // 终止条件
+    return n * factorial(n - 1); // 递归调用
+}
+
+// 斐波那契（朴素递归，效率低）
+int fib(int n) {
+    if (n <= 1) return n;
+    return fib(n - 1) + fib(n - 2);
+}
+
+// 二分查找（递归版）
+int binarySearch(int arr[], int l, int r, int target) {
+    if (l > r) return -1;
+    int mid = l + (r - l) / 2;
+    if (arr[mid] == target) return mid;
+    if (arr[mid] < target) return binarySearch(arr, mid + 1, r, target);
+    return binarySearch(arr, l, mid - 1, target);
+}
+```
+
+**递归三要素**：
+1. **终止条件**（base case）
+2. **递归调用**（向终止条件靠近）
+3. **状态传递**（参数携带信息）
+
+**递归 vs 迭代**：
+
+| 特性 | 递归 | 迭代 |
+|------|------|------|
+| 代码 | 简洁、贴近数学定义 | 通常更长 |
+| 性能 | 有函数调用开销 | 更快 |
+| 空间 | O(递归深度) | 通常 O(1) |
+| 风险 | 栈溢出 | 无 |
+| 适用 | 树、分治、回溯 | 线性循环 |
+
+---
+
+## 九、返回值的细节
+
+### 9.1 返回类型
+
+```cpp
+int f() { return 42; }
+void g() { /* 无返回 */ }
+string h() { return "hello"; }
+int* p() { static int x = 5; return &x; }   // 返回指针（注意生命周期）
+```
+
+### 9.2 不要返回局部变量的引用/指针
+
+```cpp
+// ❌ 危险：返回局部变量的引用
+int& bad() {
+    int x = 5;
+    return x;   // x 在函数结束时销毁，引用悬空
+}
+
+// ✅ 安全：返回值
+int good() {
+    int x = 5;
+    return x;   // 返回值拷贝，安全
+}
+
+// ✅ 安全：返回静态变量引用
+int& ok() {
+    static int x = 5;
+    return x;
+}
+```
+
+### 9.3 返回多个值
+
+```cpp
+// 方法一：结构体
+struct MinMax { int mn, mx; };
+MinMax findMinMax(vector<int>& v) {
+    return {*min_element(v.begin(), v.end()),
+            *max_element(v.begin(), v.end())};
+}
+
+// 方法二：pair / tuple
+pair<int, int> f() { return {1, 2}; }
+auto [a, b] = f();   // C++17 结构化绑定
+
+// 方法三：引用参数输出
+void findMinMax(vector<int>& v, int& mn, int& mx) {
+    mn = *min_element(v.begin(), v.end());
+    mx = *max_element(v.begin(), v.end());
+}
+```
+
+### 9.4 auto 返回类型推导（C++14）
+
+```cpp
+auto add(int a, int b) {
+    return a + b;   // 自动推导为 int
+}
+
+// 尾置返回类型
+auto multiply(int a, int b) -> int {
+    return a * b;
+}
+```
+
+---
+
+## 十、函数指针与 Lambda
+
+### 10.1 函数指针
+
+指向函数的指针，可用于回调、策略模式。
+
+```cpp
+int add(int a, int b) { return a + b; }
+int sub(int a, int b) { return a - b; }
+
+int main() {
+    int (*op)(int, int) = add;   // 函数指针
+    cout << op(3, 4) << endl;    // 7
+
+    op = sub;                    // 切换到另一个函数
+    cout << op(3, 4) << endl;    // -1
+
+    // 作为参数传递（回调）
+    auto apply = [](int (*f)(int,int), int x, int y) {
+        return f(x, y);
+    };
+    cout << apply(add, 1, 2) << endl;   // 3
+    return 0;
+}
+```
+
+### 10.2 Lambda 表达式（C++11，重点）
+
+匿名函数，语法：`[捕获](参数) -> 返回类型 { 函数体 }`
+
+```cpp
+// 基本形式
+auto add = [](int a, int b) { return a + b; };
+cout << add(3, 4) << endl;   // 7
+
+// 捕获外部变量
+int x = 10;
+auto f1 = [x](int y) { return x + y; };      // 值捕获
+auto f2 = [&x](int y) { x += y; return x; }; // 引用捕获
+auto f3 = [=](int y) { return x + y; };      // 全部值捕获
+auto f4 = [&](int y) { x += y; };            // 全部引用捕获
+
+// 常用于 STL 算法
+vector<int> v = {3, 1, 4, 1, 5};
+sort(v.begin(), v.end(), [](int a, int b) {
+    return a > b;   // 降序
+});
+
+// 找第一个大于 3 的元素
+auto it = find_if(v.begin(), v.end(), [](int x) {
+    return x > 3;
+});
+```
+
+**捕获方式对比**：
+
+| 捕获 | 含义 | 能否修改外部 |
+|------|------|-------------|
+| `[x]` | 值捕获 x | 否（除非 mutable） |
+| `[&x]` | 引用捕获 x | 是 |
+| `[=]` | 全部值捕获 | 否 |
+| `[&]` | 全部引用捕获 | 是 |
+| `[=, &x]` | 混合 | x 可改，其余不可 |
+| `[]` | 不捕获 | — |
+
+---
+
+## 十一、作用域与生命周期
+
+### 11.1 局部变量
+
+函数内定义，函数结束时销毁。
+
+```cpp
+void f() {
+    int x = 5;    // 局部变量，函数结束销毁
+}
+```
+
+### 11.2 静态局部变量
+
+只初始化一次，函数结束后**仍保留**，下次调用继续用。
+
+```cpp
+void counter() {
+    static int count = 0;   // 只初始化一次
+    count++;
+    cout << count << endl;
+}
+
+int main() {
+    counter();   // 1
+    counter();   // 2
+    counter();   // 3
+    return 0;
+}
+```
+
+### 11.3 全局变量
+
+所有函数外定义，整个程序可见，程序结束销毁。
+
+```cpp
+int g = 100;   // 全局变量
+
+void f() {
+    g = 200;   // 可修改
+}
+```
+
+**建议**：尽量少用全局变量，避免命名污染和隐藏依赖。
+
+### 11.4 命名空间
+
+```cpp
+namespace math {
+    int add(int a, int b) { return a + b; }
+}
+
+int main() {
+    cout << math::add(1, 2) << endl;   // 用命名空间限定
+    using namespace math;              // 或引入
+    cout << add(3, 4) << endl;
+    return 0;
+}
+```
+
+---
+
+## 十二、函数与复杂度
+
+函数本身不改变算法复杂度，但要注意：
+
+```cpp
+// O(n) 函数被调用 O(n) 次 → 整体 O(n²)
+for (int i = 0; i < n; i++) {
+    f(a, n);   // f 是 O(n)
+}
+```
+
+**递归复杂度**：
+```cpp
+// T(n) = 2T(n/2) + O(n) → O(n log n)  归并
+// T(n) = T(n-1) + O(1)   → O(n)       线性递归
+// T(n) = T(n-1) + T(n-2) → O(2ⁿ)      斐波那契
+```
+
+**函数调用开销**：
+- 栈帧创建/销毁
+- 参数拷贝
+- 返回值传递
+- 小函数可用 `inline` 减少开销
+
+---
+
+## 十三、常见错误与注意事项
+
+```cpp
+// ❌ 错误1：返回局部变量引用
+int& f() { int x = 5; return x; }   // 悬空引用
+
+// ❌ 错误2：忘记 return
+int f() { int x = 5; }              // 未定义行为
+
+// ❌ 错误3：参数默认值顺序错
+void f(int a = 1, int b);           // ❌ 默认参数必须在右边
+
+// ❌ 错误4：重载只看返回类型
+int f(int);
+double f(int);                      // ❌ 重复定义
+
+// ❌ 错误5：递归无终止条件
+void f() { f(); }                   // ❌ 栈溢出
+
+// ❌ 错误6：值传递大对象
+void f(vector<int> v);              // 拷贝整个 vector
+void f(const vector<int>& v);       // ✅ 推荐
+
+// ❌ 错误7：修改 const 引用
+void f(const int& x) { x = 5; }     // ❌ 编译错误
+
+// ❌ 错误8：函数声明与定义不一致
+int f(int a);
+double f(int a) { return 0; }       // ❌ 返回类型不匹配
+```
+
+---
+
+## 十四、综合示例
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// 函数声明
+int sum(const vector<int>& v);
+double average(const vector<int>& v);
+pair<int, int> minMax(const vector<int>& v);
+bool isPrime(int n);
+int gcd(int a, int b);
+void printVector(const vector<int>& v);
+
+int main() {
+    vector<int> v = {12, 7, 3, 19, 8, 5};
+
+    cout << "和：" << sum(v) << endl;
+    cout << "平均：" << average(v) << endl;
+
+    auto [mn, mx] = minMax(v);
+    cout << "最小：" << mn << " 最大：" << mx << endl;
+
+    cout << "素数：";
+    for (int x : v)
+        if (isPrime(x)) cout << x << " ";
+    cout << endl;
+
+    cout << "gcd(12, 18) = " << gcd(12, 18) << endl;
+
+    printVector(v);
+    sort(v.begin(), v.end(), [](int a, int b) { return a > b; });
+    printVector(v);
+
+    return 0;
+}
+
+// const 引用传参，避免拷贝
+int sum(const vector<int>& v) {
+    int s = 0;
+    for (int x : v) s += x;
+    return s;
+}
+
+double average(const vector<int>& v) {
+    return v.empty() ? 0.0 : (double)sum(v) / v.size();
+}
+
+// 返回多个值：pair + 结构化绑定
+pair<int, int> minMax(const vector<int>& v) {
+    int mn = v[0], mx = v[0];
+    for (int x : v) {
+        mn = min(mn, x);
+        mx = max(mx, x);
+    }
+    return {mn, mx};
+}
+
+// 判断素数，O(√n)
+bool isPrime(int n) {
+    if (n < 2) return false;
+    for (int i = 2; i * i <= n; i++)
+        if (n % i == 0) return false;
+    return true;
+}
+
+// 递归求最大公约数（欧几里得）
+int gcd(int a, int b) {
+    return b == 0 ? a : gcd(b, a % b);
+}
+
+void printVector(const vector<int>& v) {
+    for (int x : v) cout << x << " ";
+    cout << endl;
+}
+```
+
+**输出**：
+```
+和：54
+平均：9
+最小：3 最大：19
+素数：7 3 19 5
+gcd(12, 18) = 6
+12 7 3 19 8 5
+19 12 8 7 5 3
+```
+
+---
+
+## 十五、速查口诀
+
+```
+函数封装复用强，返回类型参数列表。
+先声明来后使用，原型加分号定义带体。
+值传递拷贝不影响，引用传递能改原。
+const 引用最推荐，大对象只读不拷贝。
+默认参数靠右边，重载只看参数变。
+递归必须有出口，否则栈溢无处逃。
+内联展开小函数，Lambda 匿名真方便。
+局部静态只一次，全局变量少用妙。
+不返局部引用针，返回多值用结构。
+函数指针做回调，现代 C++ 用 Lambda。
+```
+
+---
+
+## 十六、练习建议
+
+1. 写一个函数判断素数，再用它输出 1~100 的所有素数
+2. 实现 `swap(int&, int&)`、`swap(int*, int*)` 两个版本
+3. 用重载实现 `max` 支持 int、double、string
+4. 递归实现阶乘、斐波那契、汉诺塔
+5. 用函数指针或 Lambda 实现一个简单计算器（+、-、*、/）
+6. 写函数返回数组的最大值、最小值、平均值（用结构体或引用参数）
+7. 实现二分查找（迭代版 + 递归版）
+8. 用 Lambda + `sort` 对结构体数组按不同字段排序
+9. 写一个递归函数求数组元素之和
+10. 对比值传递与 const 引用传递大 vector 的性能
+
+函数是 C++ 程序的基本组成单元，理解参数传递、返回值、重载、递归，是写好程序的关键。掌握函数后，就可以进一步学习类、模板、STL 等更高级的内容。

@@ -1,0 +1,1656 @@
+# C++ 基础与 ACM 竞赛需要掌握的 STL 与语言特性
+
+## 一、先明确一个核心原则
+
+> **STL 是工具，不是目的。**
+>
+> ACM 竞赛考查的是**算法思维**和**问题建模能力**，STL 只是帮你把「数据结构」这一层快速搭好，让你专注于算法本身。因此掌握 STL 的原则是：**够用、熟练、不卡手**。
+
+对于基础和 ACM，你不需要掌握 STL 的全部细节，只需要掌握下面这份**核心清单**。
+
+---
+
+## 二、必须熟练（闭着眼都能写）
+
+这些是 ACM 中出场率最高的，必须做到**不查文档、不假思索**地写出来。
+
+### 2.1 `std::vector`（动态数组）
+
+**用途**：几乎所有需要数组的场景，替代 C 风格数组。
+
+```cpp
+#include <vector>
+
+std::vector<int> v;
+v.push_back(1);              // 尾部插入
+v.pop_back();                // 尾部删除
+v.size();                    // 元素个数
+v.empty();                   // 是否为空
+v.clear();                   // 清空
+v[i];                        // 下标访问
+v.front(); v.back();         // 首尾元素
+
+std::vector<int> v2(n, 0);   // n 个 0
+std::vector<std::vector<int>> g(n);  // 邻接表常用
+
+// 遍历
+for (int x : v) { /* ... */ }
+for (int i = 0; i < (int)v.size(); ++i) { /* ... */ }
+```
+
+**ACM 要点**：
+- 邻接表：`vector<vector<int>> g(n)` 或 `vector<pair<int,int>> g[n]`
+- 二维数组：`vector<vector<int>> a(n, vector<int>(m, 0))`
+- `v.size()` 返回 `size_t`（无符号），与 `int` 比较时要小心 `-1` 陷阱
+
+---
+
+### 2.2 `std::string`
+
+**用途**：字符串处理，ACM 中极其高频。
+
+```cpp
+#include <string>
+
+std::string s = "hello";
+s.size(); s.length();
+s += " world";              // 拼接
+s.substr(pos, len);         // 子串
+s.find("ll");               // 查找，返回下标或 npos
+s.replace(pos, len, str);   // 替换
+s.compare(other);           // 比较
+s.c_str();                  // 转 C 风格字符串
+
+// 输入
+std::getline(std::cin, s);  // 读一行（含空格）
+std::cin >> s;              // 读一个单词（遇空白停止）
+
+// 遍历
+for (char c : s) { /* ... */ }
+```
+
+**ACM 要点**：
+- `getline` 前若用了 `cin >>`，要先用 `cin.ignore()` 吃掉换行符
+- `s.find()` 失败返回 `std::string::npos`
+- 字符串拼接用 `+=` 或 `append`，不要频繁 `s = s + ...`
+
+---
+
+### 2.3 `std::sort` 与自定义排序
+
+**用途**：排序，ACM 中最常用的算法之一。
+
+```cpp
+#include <algorithm>
+
+std::vector<int> v = {3, 1, 4, 1, 5};
+std::sort(v.begin(), v.end());                     // 升序
+std::sort(v.begin(), v.end(), std::greater<int>()); // 降序
+
+// 自定义比较器（lambda）
+std::sort(v.begin(), v.end(), [](int a, int b)
+{
+    return a > b;   // 降序
+});
+
+// 结构体排序
+struct Node
+{
+    int x, y;
+};
+std::vector<Node> nodes;
+std::sort(nodes.begin(), nodes.end(), [](const Node& a, const Node& b)
+{
+    if (a.x != b.x)
+    {
+        return a.x < b.x;
+    }
+    return a.y < b.y;
+});
+```
+
+**ACM 要点**：
+- 比较器必须满足**严格弱序**，否则 `sort` 可能越界崩溃
+- `sort` 不稳定，需要稳定排序用 `std::stable_sort`
+- 默认 $O(n \log n)$
+
+---
+
+### 2.4 `std::set` / `std::map`
+
+**用途**：有序集合 / 有序映射，去重、查找、范围查询。
+
+```cpp
+#include <set>
+#include <map>
+
+std::set<int> s;
+s.insert(1);
+s.erase(1);
+s.find(1);
+s.count(1);
+s.lower_bound(1);
+s.upper_bound(1);
+
+std::map<std::string, int> m;
+m["key"] = 1;
+m.find("key");
+m.count("key");
+m.erase("key");
+```
+
+**ACM 要点**：
+- 需要**有序**、**范围查询**用 `set`/`map`
+- 只需**去重/快速查找**用 `unordered_set`/`unordered_map`
+- `map` 的 `operator[]` 会插入默认值，查询用 `find()`
+
+---
+
+### 2.5 `std::pair` 与 `std::tuple`
+
+**用途**：打包多个值，邻接表、优先队列常用。
+
+```cpp
+#include <utility>
+#include <tuple>
+
+std::pair<int, int> p = {1, 2};
+p.first; p.second;
+
+// C++11 起
+auto p2 = std::make_pair(1, 2);
+
+// C++17 起结构化绑定
+auto [a, b] = p;
+
+std::tuple<int, int, int> t = {1, 2, 3};
+std::get<0>(t);
+```
+
+**ACM 要点**：
+- 邻接表：`vector<pair<int,int>> g[n]`（存 `{to, weight}`）
+- `pair` 默认先比 `first` 再比 `second`，可直接用于 `set`/`map`/`sort`
+
+---
+
+### 2.6 `std::queue` / `std::stack` / `std::deque`
+
+**用途**：BFS、DFS、单调队列。
+
+```cpp
+#include <queue>
+#include <stack>
+#include <deque>
+
+std::queue<int> q;
+q.push(1); q.pop(); q.front(); q.back(); q.empty(); q.size();
+
+std::stack<int> st;
+st.push(1); st.pop(); st.top(); st.empty(); st.size();
+
+std::deque<int> dq;
+dq.push_back(1); dq.push_front(1);
+dq.pop_back(); dq.pop_front();
+dq.front(); dq.back();
+```
+
+**ACM 要点**：
+- BFS 用 `queue`，DFS 用 `stack` 或递归
+- 单调队列用 `deque`
+- `queue`/`stack` 没有迭代器，不能遍历
+
+---
+
+### 2.7 `std::priority_queue`（优先队列）
+
+**用途**：堆，Dijkstra、贪心、Top-K。
+
+```cpp
+#include <queue>
+
+// 大根堆（默认）
+std::priority_queue<int> maxHeap;
+
+// 小根堆
+std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap;
+
+maxHeap.push(1);
+maxHeap.top();     // 堆顶
+maxHeap.pop();     // 弹出堆顶
+maxHeap.empty();
+
+// 自定义类型
+struct Node
+{
+    int dist, id;
+    bool operator<(const Node& other) const
+    {
+        return dist > other.dist;   // 小根堆
+    }
+};
+std::priority_queue<Node> pq;
+```
+
+**ACM 要点**：
+- Dijkstra 用小根堆
+- `priority_queue` 默认是**大根堆**，小根堆要传 `greater`
+- 自定义比较器与 `sort` 相反（`priority_queue` 的 `operator<` 定义的是「优先级低」）
+
+---
+
+### 2.8 `std::lower_bound` / `std::upper_bound`
+
+**用途**：二分查找，必须熟练。
+
+```cpp
+#include <algorithm>
+
+std::vector<int> v = {1, 2, 3, 4, 5};
+
+// 第一个 >= 3 的位置
+auto it1 = std::lower_bound(v.begin(), v.end(), 3);   // 指向 3
+
+// 第一个 > 3 的位置
+auto it2 = std::upper_bound(v.begin(), v.end(), 3);   // 指向 4
+
+int idx1 = it1 - v.begin();   // 下标
+int idx2 = it2 - v.begin();
+```
+
+**ACM 要点**：
+- 必须在**有序区间**上使用
+- `lower_bound` 是「第一个 $\ge x$」，`upper_bound` 是「第一个 $> x$」
+- 手写二分也很重要，因为有些场景需要自定义判断
+
+---
+
+### 2.9 `std::max` / `std::min` / `std::swap` / `std::abs`
+
+```cpp
+#include <algorithm>
+#include <cmath>
+
+std::max(a, b);
+std::min(a, b);
+std::swap(a, b);
+std::abs(x);       // 整数
+std::fabs(x);      // 浮点
+```
+
+**ACM 要点**：
+- `std::max` / `std::min` 要求两参数类型一致
+- 浮点比较用 `fabs(a - b) < eps`
+
+---
+
+### 2.10 `std::memset` / `std::fill`
+
+```cpp
+#include <cstring>
+#include <algorithm>
+
+int a[100];
+std::memset(a, 0, sizeof(a));       // 只能设 0 / -1
+std::fill(a, a + 100, 0);           // 可设任意值
+
+std::vector<int> v(100);
+std::fill(v.begin(), v.end(), 0);
+```
+
+**ACM 要点**：
+- `memset` 按字节设置，只能安全设 `0`、`-1`、`0x3f`（用于 INF）
+- `fill` 更通用但稍慢
+
+---
+
+## 三、必须掌握的语言特性
+
+### 3.1 `auto`（C++11）
+
+```cpp
+auto x = 1;                        // int
+auto it = m.begin();               // 迭代器
+auto p = std::make_pair(1, 2);     // pair
+```
+
+**ACM 要点**：简化迭代器写法，OJ 支持 C++11 即可用。
+
+---
+
+### 3.2 范围 `for`（C++11）
+
+```cpp
+for (int x : v) { /* ... */ }
+for (const auto& x : v) { /* ... */ }   // 避免拷贝
+for (auto& x : v) { x *= 2; }           // 修改
+```
+
+**ACM 要点**：遍历容器首选，但**不能遍历链表**（无迭代器）。
+
+---
+
+### 3.3 Lambda 表达式（C++11）
+
+```cpp
+auto cmp = [](int a, int b) { return a > b; };
+std::sort(v.begin(), v.end(), cmp);
+
+// 捕获外部变量
+int threshold = 10;
+auto pred = [threshold](int x) { return x > threshold; };
+```
+
+**ACM 要点**：
+- 排序、`find_if`、递归 DFS（C++14 起 `auto` 递归）常用
+- C++11 的 lambda 不能直接递归，需要 `std::function` 或 Y 组合子
+
+---
+
+### 3.4 结构化绑定（C++17）
+
+```cpp
+auto [a, b] = std::make_pair(1, 2);
+
+for (const auto& [key, value] : m) { /* ... */ }
+```
+
+**ACM 要点**：**OJ 若只支持 C++11/14，不可用**，需写 `kv.first` / `kv.second`。
+
+---
+
+### 3.5 `const` 与引用
+
+```cpp
+void f(const std::vector<int>& v);   // 避免拷贝，且不修改
+void g(std::vector<int>& v);         // 引用传递，可修改
+```
+
+**ACM 要点**：大对象传参用 `const&`，避免拷贝开销。
+
+---
+
+### 3.6 `long long` 与溢出
+
+```cpp
+long long x = 1LL * a * b;   // 强制 long long 乘法
+const long long INF = 0x3f3f3f3f3f3f3f3fLL;
+```
+
+**ACM 要点**：
+- `int` 约 $2 \times 10^9$，`long long` 约 $9 \times 10^{18}$
+- 乘法前先转 `long long`，否则溢出
+- `1LL` 是常用技巧
+
+---
+
+### 3.7 输入输出加速
+
+```cpp
+std::ios::sync_with_stdio(false);
+std::cin.tie(nullptr);
+```
+
+**ACM 要点**：
+- 大数据输入必须加，否则 `cin` 可能 TLE
+- 加了之后**不要混用 `scanf` / `printf`**
+- 或用 `scanf` / `printf` 替代
+
+---
+
+## 四、按优先级划分的掌握清单
+
+### 第一优先级（必须闭眼写）
+
+| 内容 | 用途 |
+|------|------|
+| `vector` | 动态数组 |
+| `string` | 字符串 |
+| `sort` + lambda | 排序 |
+| `set` / `map` | 有序集合/映射 |
+| `queue` / `stack` | BFS / DFS |
+| `priority_queue` | 堆 |
+| `pair` | 打包 |
+| `lower_bound` / `upper_bound` | 二分 |
+| `long long` | 防溢出 |
+| 输入输出加速 | 防 TLE |
+
+### 第二优先级（熟练使用）
+
+| 内容 | 用途 |
+|------|------|
+| `unordered_set` / `unordered_map` | 哈希 |
+| `deque` | 单调队列 |
+| `memset` / `fill` | 初始化 |
+| `auto` / 范围 `for` | 简化代码 |
+| `min` / `max` / `swap` / `abs` | 基础工具 |
+| `__gcd` / `std::gcd` | 最大公约数 |
+| `reverse` / `unique` | 常用算法 |
+
+### 第三优先级（了解即可，按需查）
+
+| 内容 | 用途 |
+|------|------|
+| `multiset` / `multimap` | 可重复 |
+| `bitset` | 位运算优化 |
+| `tuple` | 多返回值 |
+| `next_permutation` | 全排列 |
+| `nth_element` | 第 k 小 |
+| `accumulate` | 求和 |
+| `iota` | 填充递增序列 |
+| `std::function` | 函数包装 |
+
+---
+
+## 五、ACM 中「不需要」深入的内容
+
+以下内容在 ACM 中**很少用到**，不必花时间深挖：
+
+- `std::list` / `std::forward_list`（链表，ACM 几乎不用，因为常数大且不支持随机访问）
+- `std::valarray`
+- `std::regex`（性能差，ACM 不用）
+- `std::filesystem`
+- 复杂的模板元编程
+- 智能指针（ACM 中一般不用，手动管理或直接开数组）
+- 异常处理（ACM 中一般不用）
+- `std::variant` / `std::any`（C++17，ACM 少用）
+- `std::ranges`（C++20，OJ 支持少）
+
+---
+
+## 六、基础与 ACM 的差异
+
+| 维度 | 基础学习 | ACM 竞赛 |
+|------|---------|---------|
+| 重点 | 理解原理、写对 | 写快、写对、不卡手 |
+| STL 使用 | 全面了解 | 核心熟练，其余查文档 |
+| 代码风格 | 规范、可读 | 简洁、快速 |
+| 内存管理 | RAII、智能指针 | 手动或静态数组 |
+| 异常处理 | 常用 | 基本不用 |
+| 模板 | 深入理解 | 会用即可 |
+| 标准版本 | 最新 C++26 | 通常 C++11/14/17 |
+
+---
+
+## 七、给你的学习建议
+
+### 7.1 先「用熟」再「理解」
+
+- 第一遍：把上面**第一优先级**的容器和函数写几遍，形成肌肉记忆
+- 第二遍：理解底层（红黑树、哈希、堆），知道什么时候该用哪个
+- 第三遍：读源码或看《STL 源码剖析》，但**不要一上来就啃**
+
+### 7.2 刷题时「刻意练习」
+
+- 每道题写完，问自己：**有没有更合适的 STL 容器？**
+- 遇到 TLE，问自己：**是不是容器选错了？是不是没加输入加速？**
+- 遇到 RE，问自己：**是不是越界？是不是迭代器失效？**
+
+### 7.3 建立自己的「模板库」
+
+ACM 选手通常会准备一份**代码模板**，包含：
+- 常用头文件
+- 输入输出加速
+- 常用宏（`rep`、`pb`、`fi`、`se` 等）
+- 常用算法（并查集、Dijkstra、线段树等）
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+#define rep(i, a, b) for (int i = (a); i < (b); ++i)
+#define pb push_back
+#define fi first
+#define se second
+
+using ll = long long;
+using pii = pair<int, int>;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    // ...
+
+    return 0;
+}
+```
+
+> **注意**：`bits/stdc++.h` 是 GCC 特有，**非标准**，但 ACM 中广泛使用。若 OJ 用 MSVC 则不可用。
+
+### 7.4 不要陷入「库的海洋」
+
+- 遇到问题先想**算法**，再想**用什么容器**
+- 不要为了用某个 STL 而用，**简单数组往往比 `vector` 更快**
+- ACM 中**常数**很重要，`vector` 比数组慢，`unordered_map` 可能被卡
+
+---
+
+## 八、一句话总结
+
+> **基础阶段**：掌握 `vector`、`string`、`sort`、`set`、`map`、`queue`、`stack`、`priority_queue`、`pair`、`lower_bound`，加上 `long long`、输入加速、`auto`、范围 `for`、lambda，就足够应对 90% 的 ACM 基础题。
+>
+> **进阶阶段**：再按需学习 `bitset`、`deque`、`multiset`、`next_permutation`、`nth_element` 等。
+>
+> **永远记住**：STL 是工具，算法才是核心。
+
+---
+
+---
+
+# 常用库
+
+# ACM 完整学习资料包
+
+下面按你要求，分成四部分给出：
+
+1. **ACM 常用 STL 速查表**（一页纸）
+2. **ACM 代码模板**（含常用宏、算法）
+3. **常见 STL 性能对比与选型指南**
+4. **从零开始的 ACM 刷题路线**
+
+---
+
+# 第一部分：ACM 常用 STL 速查表
+
+## 1.1 容器总览
+
+| 容器 | 头文件 | 底层 | 有序 | 可重复 | 随机访问 | 主要用途 |
+|------|--------|------|------|--------|---------|---------|
+| `vector` | `<vector>` | 动态数组 | 否 | 是 | 是 | 通用数组 |
+| `string` | `<string>` | 动态字符数组 | 否 | 是 | 是 | 字符串 |
+| `deque` | `<deque>` | 分段连续 | 否 | 是 | 是 | 双端队列 |
+| `queue` | `<queue>` | 适配器 | 否 | 是 | 否 | BFS |
+| `stack` | `<stack>` | 适配器 | 否 | 是 | 否 | DFS |
+| `priority_queue` | `<queue>` | 堆 | 否 | 是 | 否 | Dijkstra、贪心 |
+| `set` | `<set>` | 红黑树 | 是 | 否 | 否 | 有序去重 |
+| `multiset` | `<set>` | 红黑树 | 是 | 是 | 否 | 有序可重复 |
+| `map` | `<map>` | 红黑树 | 是 | 否 | 否 | 有序键值对 |
+| `multimap` | `<map>` | 红黑树 | 是 | 是 | 否 | 有序可重复键值对 |
+| `unordered_set` | `<unordered_set>` | 哈希表 | 否 | 否 | 否 | 快速去重 |
+| `unordered_map` | `<unordered_map>` | 哈希表 | 否 | 否 | 否 | 快速查找 |
+| `bitset` | `<bitset>` | 位数组 | 否 | 是 | 是 | 位运算优化 |
+| `pair` | `<utility>` | 结构体 | - | - | - | 打包两个值 |
+| `tuple` | `<tuple>` | 结构体 | - | - | - | 打包多个值 |
+
+---
+
+## 1.2 常用操作速查
+
+### `vector`
+
+```cpp
+std::vector<int> v;
+v.push_back(x);          // 尾部插入
+v.pop_back();            // 尾部删除
+v.size();                // 元素个数
+v.empty();               // 是否为空
+v.clear();               // 清空
+v[i];                    // 下标访问（不检查越界）
+v.at(i);                 // 下标访问（检查越界）
+v.front(); v.back();     // 首尾
+v.begin(); v.end();      // 迭代器
+v.resize(n);             // 调整大小
+v.assign(n, x);          // 赋 n 个 x
+std::vector<int> v(n, 0);        // n 个 0
+std::vector<std::vector<int>> g(n);  // 邻接表
+```
+
+### `string`
+
+```cpp
+std::string s = "hello";
+s.size(); s.length();
+s += " world";
+s.substr(pos, len);
+s.find("ll");            // 返回下标或 npos
+s.rfind("ll");           // 从右找
+s.replace(pos, len, str);
+s.insert(pos, str);
+s.erase(pos, len);
+s.compare(other);
+s.c_str();
+s.empty();
+s.clear();
+std::getline(std::cin, s);
+std::stoi(s); std::stoll(s); std::stod(s);
+std::to_string(x);
+```
+
+### `set` / `map`
+
+```cpp
+std::set<int> s;
+s.insert(x);
+s.erase(x);              // 按值删
+s.erase(it);             // 按迭代器删
+s.find(x);               // 返回迭代器
+s.count(x);              // 0 或 1
+s.lower_bound(x);        // 第一个 >= x
+s.upper_bound(x);        // 第一个 > x
+s.empty(); s.size(); s.clear();
+s.begin(); s.end(); s.rbegin(); s.rend();
+
+std::map<K, V> m;
+m[key] = val;            // 不存在则插入
+m.insert({key, val});    // 存在则忽略
+m.erase(key);
+m.find(key);
+m.count(key);
+m.lower_bound(key);
+m.upper_bound(key);
+```
+
+### `queue` / `stack` / `priority_queue`
+
+```cpp
+std::queue<int> q;
+q.push(x); q.pop(); q.front(); q.back(); q.empty(); q.size();
+
+std::stack<int> st;
+st.push(x); st.pop(); st.top(); st.empty(); st.size();
+
+std::priority_queue<int> maxHeap;                            // 大根堆
+std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap;  // 小根堆
+pq.push(x); pq.top(); pq.pop(); pq.empty(); pq.size();
+```
+
+### `algorithm` 常用函数
+
+```cpp
+std::sort(v.begin(), v.end());
+std::sort(v.begin(), v.end(), std::greater<int>());
+std::stable_sort(v.begin(), v.end());
+std::reverse(v.begin(), v.end());
+std::unique(v.begin(), v.end());          // 需先排序
+std::lower_bound(v.begin(), v.end(), x);
+std::upper_bound(v.begin(), v.end(), x);
+std::binary_search(v.begin(), v.end(), x);
+std::max_element(v.begin(), v.end());
+std::min_element(v.begin(), v.end());
+std::count(v.begin(), v.end(), x);
+std::find(v.begin(), v.end(), x);
+std::fill(v.begin(), v.end(), x);
+std::swap(a, b);
+std::max(a, b); std::min(a, b);
+std::abs(x);
+std::next_permutation(v.begin(), v.end());
+std::prev_permutation(v.begin(), v.end());
+std::nth_element(v.begin(), v.begin() + k, v.end());
+std::accumulate(v.begin(), v.end(), 0);
+std::iota(v.begin(), v.end(), 0);         // 0,1,2,...
+```
+
+### `cmath` 常用函数
+
+```cpp
+std::abs(x);          // 整数绝对值
+std::fabs(x);         // 浮点绝对值
+std::sqrt(x);
+std::pow(x, y);
+std::log(x); std::log2(x); std::log10(x);
+std::exp(x);
+std::sin(x); std::cos(x); std::tan(x);
+std::floor(x); std::ceil(x); std::round(x);
+std::hypot(x, y);     // sqrt(x^2 + y^2)
+```
+
+### `numeric` 常用函数
+
+```cpp
+std::gcd(a, b);       // C++17
+std::lcm(a, b);       // C++17
+std::accumulate(v.begin(), v.end(), 0);
+std::iota(v.begin(), v.end(), 0);
+```
+
+> **C++11 等价写法**：`__gcd(a, b)`（GCC 内置）
+
+---
+
+## 1.3 自定义比较器速查
+
+```cpp
+// sort 降序
+std::sort(v.begin(), v.end(), [](int a, int b) { return a > b; });
+
+// sort 结构体
+std::sort(v.begin(), v.end(), [](const Node& a, const Node& b)
+{
+    if (a.x != b.x) return a.x < b.x;
+    return a.y < b.y;
+});
+
+// set 降序
+std::set<int, std::greater<int>> s;
+
+// set 自定义
+struct Cmp
+{
+    bool operator()(int a, int b) const
+    {
+        return a > b;
+    }
+};
+std::set<int, Cmp> s2;
+
+// priority_queue 小根堆
+std::priority_queue<int, std::vector<int>, std::greater<int>> pq;
+
+// priority_queue 自定义
+struct Node
+{
+    int dist, id;
+    bool operator<(const Node& other) const
+    {
+        return dist > other.dist;   // 小根堆
+    }
+};
+std::priority_queue<Node> pq2;
+```
+
+> **注意**：`sort` 和 `priority_queue` 的比较器语义**相反**。
+> - `sort` 的 `cmp(a, b)` 返回 `true` 表示 `a` 排在 `b` 前面
+> - `priority_queue` 的 `operator<` 返回 `true` 表示 `a` 优先级**低于** `b`
+
+---
+
+## 1.4 输入输出速查
+
+```cpp
+// 加速
+std::ios::sync_with_stdio(false);
+std::cin.tie(nullptr);
+
+// 读整数
+int x;
+std::cin >> x;
+scanf("%d", &x);
+
+// 读一行
+std::string line;
+std::getline(std::cin, line);
+
+// 读到文件尾
+while (std::cin >> x) { /* ... */ }
+while (scanf("%d", &x) != EOF) { /* ... */ }
+
+// 输出
+std::cout << x << "\n";
+printf("%d\n", x);
+
+// 格式化
+printf("%.2f\n", 3.14159);
+printf("%lld\n", 1234567890123LL);
+```
+
+---
+
+# 第二部分：ACM 代码模板
+
+## 2.1 基础模板（推荐）
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+using ll = long long;
+using ull = unsigned long long;
+using pii = pair<int, int>;
+using pll = pair<ll, ll>;
+using vi = vector<int>;
+using vll = vector<ll>;
+
+#define rep(i, a, b) for (int i = (a); i < (b); ++i)
+#define per(i, a, b) for (int i = (b) - 1; i >= (a); --i)
+#define pb push_back
+#define fi first
+#define se second
+#define all(x) (x).begin(), (x).end()
+#define sz(x) (int)(x).size()
+
+const int INF = 0x3f3f3f3f;
+const ll LINF = 0x3f3f3f3f3f3f3f3fLL;
+const int MOD = 1e9 + 7;
+const double EPS = 1e-9;
+const double PI = acos(-1.0);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    // 你的代码
+
+    return 0;
+}
+```
+
+> **说明**：
+> - `bits/stdc++.h` 是 GCC 特有，非标准，但 ACM 广泛使用
+> - 若 OJ 用 MSVC，需改成显式头文件
+> - `0x3f3f3f3f` 是常用 INF，两倍不溢出 `int`
+
+---
+
+## 2.2 常用算法模板
+
+### 2.2.1 快速幂
+
+```cpp
+ll qpow(ll a, ll b, ll mod)
+{
+    ll res = 1;
+    a %= mod;
+    while (b > 0)
+    {
+        if (b & 1)
+        {
+            res = res * a % mod;
+        }
+        a = a * a % mod;
+        b >>= 1;
+    }
+    return res;
+}
+```
+
+### 2.2.2 最大公约数 / 最小公倍数
+
+```cpp
+ll gcd(ll a, ll b)
+{
+    return b == 0 ? a : gcd(b, a % b);
+}
+
+ll lcm(ll a, ll b)
+{
+    return a / gcd(a, b) * b;   // 先除后乘防溢出
+}
+```
+
+> **C++17 起**可直接用 `std::gcd` / `std::lcm`。
+
+### 2.2.3 扩展欧几里得
+
+```cpp
+ll exgcd(ll a, ll b, ll& x, ll& y)
+{
+    if (b == 0)
+    {
+        x = 1;
+        y = 0;
+        return a;
+    }
+    ll d = exgcd(b, a % b, y, x);
+    y -= a / b * x;
+    return d;
+}
+```
+
+### 2.2.4 埃氏筛
+
+```cpp
+const int N = 1e6 + 5;
+bool isPrime[N];
+vector<int> primes;
+
+void sieve(int n)
+{
+    fill(isPrime, isPrime + n + 1, true);
+    isPrime[0] = isPrime[1] = false;
+    for (int i = 2; i <= n; ++i)
+    {
+        if (isPrime[i])
+        {
+            primes.pb(i);
+            for (ll j = 1LL * i * i; j <= n; j += i)
+            {
+                isPrime[j] = false;
+            }
+        }
+    }
+}
+```
+
+### 2.2.5 线性筛
+
+```cpp
+const int N = 1e6 + 5;
+int primes[N], cnt;
+bool isComp[N];
+
+void linearSieve(int n)
+{
+    for (int i = 2; i <= n; ++i)
+    {
+        if (!isComp[i])
+        {
+            primes[cnt++] = i;
+        }
+        for (int j = 0; j < cnt && 1LL * i * primes[j] <= n; ++j)
+        {
+            isComp[i * primes[j]] = true;
+            if (i % primes[j] == 0)
+            {
+                break;
+            }
+        }
+    }
+}
+```
+
+### 2.2.6 并查集
+
+```cpp
+const int N = 1e5 + 5;
+int fa[N];
+
+void init(int n)
+{
+    for (int i = 1; i <= n; ++i)
+    {
+        fa[i] = i;
+    }
+}
+
+int find(int x)
+{
+    return fa[x] == x ? x : fa[x] = find(fa[x]);   // 路径压缩
+}
+
+void unite(int x, int y)
+{
+    fa[find(x)] = find(y);
+}
+```
+
+**带权并查集 / 按秩合并**：
+
+```cpp
+int fa[N], rk[N];
+
+void init(int n)
+{
+    for (int i = 1; i <= n; ++i)
+    {
+        fa[i] = i;
+        rk[i] = 1;
+    }
+}
+
+int find(int x)
+{
+    return fa[x] == x ? x : fa[x] = find(fa[x]);
+}
+
+void unite(int x, int y)
+{
+    int fx = find(x);
+    int fy = find(y);
+    if (fx == fy)
+    {
+        return;
+    }
+    if (rk[fx] < rk[fy])
+    {
+        swap(fx, fy);
+    }
+    fa[fy] = fx;
+    rk[fx] += rk[fy];
+}
+```
+
+### 2.2.7 Dijkstra（小根堆）
+
+```cpp
+const int N = 1e5 + 5;
+const ll LINF = 0x3f3f3f3f3f3f3f3fLL;
+
+vector<pair<int, int>> g[N];   // {to, weight}
+ll dist[N];
+bool vis[N];
+
+void dijkstra(int s, int n)
+{
+    fill(dist, dist + n + 1, LINF);
+    fill(vis, vis + n + 1, false);
+    dist[s] = 0;
+    priority_queue<pair<ll, int>, vector<pair<ll, int>>, greater<>> pq;
+    pq.push({0, s});
+    while (!pq.empty())
+    {
+        auto [d, u] = pq.top();
+        pq.pop();
+        if (vis[u])
+        {
+            continue;
+        }
+        vis[u] = true;
+        for (auto [v, w] : g[u])
+        {
+            if (dist[v] > dist[u] + w)
+            {
+                dist[v] = dist[u] + w;
+                pq.push({dist[v], v});
+            }
+        }
+    }
+}
+```
+
+### 2.2.8 SPFA
+
+```cpp
+const int N = 1e5 + 5;
+const ll LINF = 0x3f3f3f3f3f3f3f3fLL;
+
+vector<pair<int, int>> g[N];
+ll dist[N];
+bool inq[N];
+int cnt[N];
+
+bool spfa(int s, int n)
+{
+    fill(dist, dist + n + 1, LINF);
+    fill(inq, inq + n + 1, false);
+    fill(cnt, cnt + n + 1, 0);
+    dist[s] = 0;
+    queue<int> q;
+    q.push(s);
+    inq[s] = true;
+    while (!q.empty())
+    {
+        int u = q.front();
+        q.pop();
+        inq[u] = false;
+        for (auto [v, w] : g[u])
+        {
+            if (dist[v] > dist[u] + w)
+            {
+                dist[v] = dist[u] + w;
+                cnt[v] = cnt[u] + 1;
+                if (cnt[v] >= n)
+                {
+                    return false;   // 负环
+                }
+                if (!inq[v])
+                {
+                    q.push(v);
+                    inq[v] = true;
+                }
+            }
+        }
+    }
+    return true;
+}
+```
+
+### 2.2.9 Floyd
+
+```cpp
+const int N = 305;
+const ll LINF = 0x3f3f3f3f3f3f3f3fLL;
+ll dist[N][N];
+
+void floyd(int n)
+{
+    for (int k = 1; k <= n; ++k)
+    {
+        for (int i = 1; i <= n; ++i)
+        {
+            for (int j = 1; j <= n; ++j)
+            {
+                if (dist[i][k] + dist[k][j] < dist[i][j])
+                {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
+        }
+    }
+}
+```
+
+### 2.2.10 拓扑排序
+
+```cpp
+vector<int> g[N];
+int indeg[N];
+vector<int> topo;
+
+bool topoSort(int n)
+{
+    queue<int> q;
+    for (int i = 1; i <= n; ++i)
+    {
+        if (indeg[i] == 0)
+        {
+            q.push(i);
+        }
+    }
+    while (!q.empty())
+    {
+        int u = q.front();
+        q.pop();
+        topo.pb(u);
+        for (int v : g[u])
+        {
+            if (--indeg[v] == 0)
+            {
+                q.push(v);
+            }
+        }
+    }
+    return (int)topo.size() == n;
+}
+```
+
+### 2.2.11 线段树（区间和 + 区间加）
+
+```cpp
+const int N = 1e5 + 5;
+ll tree[N << 2], lazy[N << 2];
+ll a[N];
+
+void pushUp(int p)
+{
+    tree[p] = tree[p << 1] + tree[p << 1 | 1];
+}
+
+void pushDown(int p, int l, int r)
+{
+    if (lazy[p] != 0)
+    {
+        int mid = (l + r) >> 1;
+        tree[p << 1] += lazy[p] * (mid - l + 1);
+        tree[p << 1 | 1] += lazy[p] * (r - mid);
+        lazy[p << 1] += lazy[p];
+        lazy[p << 1 | 1] += lazy[p];
+        lazy[p] = 0;
+    }
+}
+
+void build(int p, int l, int r)
+{
+    if (l == r)
+    {
+        tree[p] = a[l];
+        return;
+    }
+    int mid = (l + r) >> 1;
+    build(p << 1, l, mid);
+    build(p << 1 | 1, mid + 1, r);
+    pushUp(p);
+}
+
+void update(int p, int l, int r, int ql, int qr, ll val)
+{
+    if (ql <= l && r <= qr)
+    {
+        tree[p] += val * (r - l + 1);
+        lazy[p] += val;
+        return;
+    }
+    pushDown(p, l, r);
+    int mid = (l + r) >> 1;
+    if (ql <= mid)
+    {
+        update(p << 1, l, mid, ql, qr, val);
+    }
+    if (qr > mid)
+    {
+        update(p << 1 | 1, mid + 1, r, ql, qr, val);
+    }
+    pushUp(p);
+}
+
+ll query(int p, int l, int r, int ql, int qr)
+{
+    if (ql <= l && r <= qr)
+    {
+        return tree[p];
+    }
+    pushDown(p, l, r);
+    int mid = (l + r) >> 1;
+    ll res = 0;
+    if (ql <= mid)
+    {
+        res += query(p << 1, l, mid, ql, qr);
+    }
+    if (qr > mid)
+    {
+        res += query(p << 1 | 1, mid + 1, r, ql, qr);
+    }
+    return res;
+}
+```
+
+### 2.2.12 树状数组（单点修改 + 区间查询）
+
+```cpp
+const int N = 1e5 + 5;
+ll tree[N];
+int n;
+
+int lowbit(int x)
+{
+    return x & (-x);
+}
+
+void add(int i, ll val)
+{
+    while (i <= n)
+    {
+        tree[i] += val;
+        i += lowbit(i);
+    }
+}
+
+ll sum(int i)
+{
+    ll res = 0;
+    while (i > 0)
+    {
+        res += tree[i];
+        i -= lowbit(i);
+    }
+    return res;
+}
+
+ll rangeSum(int l, int r)
+{
+    return sum(r) - sum(l - 1);
+}
+```
+
+### 2.2.13 KMP
+
+```cpp
+vector<int> kmpNext(const string& p)
+{
+    int m = p.size();
+    vector<int> nxt(m, 0);
+    for (int i = 1, j = 0; i < m; ++i)
+    {
+        while (j > 0 && p[i] != p[j])
+        {
+            j = nxt[j - 1];
+        }
+        if (p[i] == p[j])
+        {
+            ++j;
+        }
+        nxt[i] = j;
+    }
+    return nxt;
+}
+
+vector<int> kmpSearch(const string& s, const string& p)
+{
+    vector<int> res;
+    if (p.empty())
+    {
+        return res;
+    }
+    vector<int> nxt = kmpNext(p);
+    for (int i = 0, j = 0; i < (int)s.size(); ++i)
+    {
+        while (j > 0 && s[i] != p[j])
+        {
+            j = nxt[j - 1];
+        }
+        if (s[i] == p[j])
+        {
+            ++j;
+        }
+        if (j == (int)p.size())
+        {
+            res.pb(i - j + 1);
+            j = nxt[j - 1];
+        }
+    }
+    return res;
+}
+```
+
+### 2.2.14 快速排序（手写，备用）
+
+```cpp
+void quickSort(vector<int>& a, int l, int r)
+{
+    if (l >= r)
+    {
+        return;
+    }
+    int pivot = a[(l + r) >> 1];
+    int i = l, j = r;
+    while (i <= j)
+    {
+        while (a[i] < pivot) ++i;
+        while (a[j] > pivot) --j;
+        if (i <= j)
+        {
+            swap(a[i], a[j]);
+            ++i;
+            --j;
+        }
+    }
+    quickSort(a, l, j);
+    quickSort(a, i, r);
+}
+```
+
+### 2.2.15 离散化
+
+```cpp
+vector<int> a = {100, 3, 50, 3, 100, 7};
+vector<int> b = a;
+sort(b.begin(), b.end());
+b.erase(unique(b.begin(), b.end()), b.end());
+
+for (int& x : a)
+{
+    x = lower_bound(b.begin(), b.end(), x) - b.begin() + 1;
+}
+// a 变为：4 1 3 1 4 2
+```
+
+### 2.2.16 高精度加法（简版）
+
+```cpp
+string add(string a, string b)
+{
+    string res;
+    int i = a.size() - 1, j = b.size() - 1, carry = 0;
+    while (i >= 0 || j >= 0 || carry)
+    {
+        int sum = carry;
+        if (i >= 0) sum += a[i--] - '0';
+        if (j >= 0) sum += b[j--] - '0';
+        res += char(sum % 10 + '0');
+        carry = sum / 10;
+    }
+    reverse(res.begin(), res.end());
+    return res;
+}
+```
+
+---
+
+## 2.3 常用宏与技巧
+
+```cpp
+// 循环
+#define rep(i, a, b) for (int i = (a); i < (b); ++i)
+#define per(i, a, b) for (int i = (b) - 1; i >= (a); --i)
+
+// 容器
+#define pb push_back
+#define fi first
+#define se second
+#define all(x) (x).begin(), (x).end()
+#define sz(x) (int)(x).size()
+
+// 调试
+#ifdef LOCAL
+#define debug(x) cerr << #x << " = " << (x) << "\n"
+#else
+#define debug(x)
+#endif
+
+// 快速读入（可选）
+inline int read()
+{
+    int x = 0, f = 1;
+    char ch = getchar();
+    while (ch < '0' || ch > '9')
+    {
+        if (ch == '-') f = -1;
+        ch = getchar();
+    }
+    while (ch >= '0' && ch <= '9')
+    {
+        x = x * 10 + (ch - '0');
+        ch = getchar();
+    }
+    return x * f;
+}
+```
+
+---
+
+# 第三部分：STL 性能对比与选型指南
+
+## 3.1 容器性能对比
+
+| 容器 | 查找 | 插入 | 删除 | 遍历 | 内存开销 |
+|------|------|------|------|------|---------|
+| `vector` | $O(n)$ | 尾部 $O(1)$，中间 $O(n)$ | 尾部 $O(1)$，中间 $O(n)$ | 快 | 低 |
+| `deque` | $O(n)$ | 两端 $O(1)$ | 两端 $O(1)$ | 较快 | 中 |
+| `list` | $O(n)$ | $O(1)$ | $O(1)$ | 慢 | 高 |
+| `set` / `map` | $O(\log n)$ | $O(\log n)$ | $O(\log n)$ | 中 | 高 |
+| `unordered_set` / `unordered_map` | 平均 $O(1)$ | 平均 $O(1)$ | 平均 $O(1)$ | 中 | 高 |
+| `priority_queue` | $O(1)$ 取顶 | $O(\log n)$ | $O(\log n)$ | 不支持 | 中 |
+| `bitset` | $O(1)$ | $O(1)$ | $O(1)$ | 快 | 极低 |
+
+---
+
+## 3.2 选型决策树
+
+```
+需要存储数据
+├── 需要随机访问（下标）？
+│   ├── 是 → vector（首选）
+│   └── 否
+│       ├── 需要频繁两端操作？ → deque
+│       ├── 需要频繁中间插入/删除？ → list（ACM 少用）
+│       └── 需要快速查找？
+│           ├── 需要有序？ → set / map
+│           └── 不需要有序？ → unordered_set / unordered_map
+├── 需要优先级？ → priority_queue
+├── 需要位运算？ → bitset
+└── 需要字符串？ → string
+```
+
+---
+
+## 3.3 常见性能陷阱
+
+### 3.3.1 `unordered_map` 被卡
+
+**问题**：OJ 可能构造数据让 `unordered_map` 退化到 $O(n)$。
+
+**解决**：
+- 改用 `map`（$O(\log n)$ 稳定）
+- 或自定义哈希函数加随机种子
+
+```cpp
+struct custom_hash
+{
+    static uint64_t splitmix64(uint64_t x)
+    {
+        x += 0x9e3779b97f4a7c15;
+        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
+        x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
+        return x ^ (x >> 31);
+    }
+
+    size_t operator()(uint64_t x) const
+    {
+        static const uint64_t FIXED_RANDOM =
+            std::chrono::steady_clock::now().time_since_epoch().count();
+        return splitmix64(x + FIXED_RANDOM);
+    }
+};
+
+std::unordered_map<int, int, custom_hash> safeMap;
+```
+
+### 3.3.2 `vector` 扩容
+
+`vector` 扩容是**均摊 $O(1)$**，但单次可能 $O(n)$。若已知大小，用 `reserve`：
+
+```cpp
+std::vector<int> v;
+v.reserve(1000000);   // 预分配
+```
+
+### 3.3.3 `map` 的 `operator[]`
+
+`m[key]` 在 key 不存在时会**插入默认值**，可能改变容器大小。查询用 `find()`。
+
+### 3.3.4 `priority_queue` 与 `sort` 比较器相反
+
+```cpp
+// sort：a < b 表示 a 在前
+std::sort(v.begin(), v.end(), [](int a, int b) { return a < b; });
+
+// priority_queue：a < b 表示 a 优先级低（大根堆）
+struct Node
+{
+    int x;
+    bool operator<(const Node& o) const
+    {
+        return x < o.x;   // 大根堆
+    }
+};
+```
+
+### 3.3.5 `vector<bool>` 特化
+
+`vector<bool>` 是特化版本，按位存储，`operator[]` 返回代理对象，不能用 `&v[0]`。ACM 中**避免使用**，改用 `bitset` 或 `vector<char>`。
+
+### 3.3.6 `string` 拼接性能
+
+```cpp
+// 慢：每次创建新字符串
+std::string s;
+for (int i = 0; i < 100000; ++i)
+{
+    s = s + "a";
+}
+
+// 快：原地追加
+std::string s2;
+for (int i = 0; i < 100000; ++i)
+{
+    s2 += "a";
+}
+```
+
+### 3.3.7 `endl` vs `\n`
+
+`std::endl` 会**刷新缓冲区**，比 `'\n'` 慢。ACM 中用 `'\n'`。
+
+```cpp
+std::cout << x << '\n';   // 快
+std::cout << x << std::endl;  // 慢
+```
+
+---
+
+## 3.4 数组 vs `vector` 性能
+
+- **数组**：栈上分配，快；但大小固定，大数组会爆栈
+- **`vector`**：堆上分配，稍慢；但灵活，大数组安全
+
+**ACM 建议**：
+- 小数组（$< 10^5$）用 `vector`
+- 大数组（$> 10^6$）用**全局数组**（静态分配，避免爆栈）
+- 邻接表用 `vector` 或**链式前向星**
+
+---
+
+# 第四部分：从零开始的 ACM 刷题路线
+
+## 4.1 阶段划分
+
+| 阶段 | 目标 | 时间 | 题量 |
+|------|------|------|------|
+| 阶段 0 | 语言基础 | 1-2 周 | - |
+| 阶段 1 | 基础算法 | 2-4 周 | 100+ |
+| 阶段 2 | 数据结构 | 3-4 周 | 100+ |
+| 阶段 3 | 图论 | 3-4 周 | 80+ |
+| 阶段 4 | 动态规划 | 4-6 周 | 100+ |
+| 阶段 5 | 数学与数论 | 3-4 周 | 80+ |
+| 阶段 6 | 进阶专题 | 持续 | 200+ |
+
+---
+
+## 4.2 阶段 0：语言基础（1-2 周）
+
+**目标**：熟练 C++ 基础语法 + STL 核心。
+
+**内容**：
+- 变量、类型、运算符
+- 分支、循环
+- 数组、字符串
+- 函数、递归
+- 指针、引用（了解）
+- `vector`、`string`、`sort`、`set`、`map`、`queue`、`stack`、`priority_queue`
+- 输入输出加速
+
+**练习**：
+- 洛谷 P1001 A+B Problem
+- 洛谷 P1000 超级玛丽游戏
+- 洛谷 P1046 陶陶摘苹果
+- 洛谷 P1047 校门外的树
+- 洛谷 P1427 小鱼的数字游戏
+
+---
+
+## 4.3 阶段 1：基础算法（2-4 周）
+
+**内容**：
+
+| 专题 | 典型题 |
+|------|--------|
+| 枚举 | 洛谷 P1157 组合的输出 |
+| 模拟 | 洛谷 P1042 乒乓球 |
+| 排序 | 洛谷 P1177 快速排序 |
+| 二分 | 洛谷 P2249 查找 |
+| 前缀和 | 洛谷 P8218 求区间和 |
+| 差分 | 洛谷 P2367 语文成绩 |
+| 双指针 | 洛谷 P1102 A-B 数对 |
+| 贪心 | 洛谷 P1090 合并果子 |
+| 递归 | 洛谷 P1036 选数 |
+| 递推 | 洛谷 P1255 数楼梯 |
+
+**目标**：能独立完成 100+ 基础题，形成代码肌肉记忆。
+
+---
+
+## 4.4 阶段 2：数据结构（3-4 周）
+
+**内容**：
+
+| 专题 | 典型题 |
+|------|--------|
+| 栈 | 洛谷 P1449 后缀表达式 |
+| 队列 | 洛谷 P1996 约瑟夫问题 |
+| 链表 | 洛谷 P1996（用链表实现） |
+| 单调栈 | 洛谷 P5788 单调栈 |
+| 单调队列 | 洛谷 P1886 滑动窗口 |
+| 堆 | 洛谷 P3378 堆 |
+| 并查集 | 洛谷 P3367 并查集 |
+| 哈希表 | 洛谷 P3370 字符串哈希 |
+| 树状数组 | 洛谷 P3374 树状数组 1 |
+| 线段树 | 洛谷 P3372 线段树 1 |
+| ST 表 | 洛谷 P3865 ST 表 |
+| Trie | 洛谷 P8306 Trie |
+
+**目标**：能手写并查集、线段树、树状数组、Trie。
+
+---
+
+## 4.5 阶段 3：图论（3-4 周）
+
+**内容**：
+
+| 专题 | 典型题 |
+|------|--------|
+| 图的存储 | 链式前向星、邻接表 |
+| DFS / BFS | 洛谷 P1443 马的遍历 |
+| 拓扑排序 | 洛谷 P1113 杂务 |
+| 最短路 Dijkstra | 洛谷 P4779 单源最短路 |
+| 最短路 SPFA | 洛谷 P3371

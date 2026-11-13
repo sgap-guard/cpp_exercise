@@ -1,0 +1,705 @@
+# C++ `set` 与 `map` 关联式容器学习笔记
+
+## 一、关联式容器概述
+
+**关联式容器（Associative Container）** 通过**键（key）**来存储和访问元素，底层通常由**平衡二叉搜索树**（红黑树）实现，因此：
+
+- 元素**自动排序**（默认按 `key` 升序）
+- 查找、插入、删除的平均时间复杂度为 $O(\log n)$
+- 不支持随机访问（不能用 `[]` 下标或 `at()` 按位置访问，`map` 的 `[]` 是按 key 访问）
+
+C++ 标准库中主要的关联式容器：
+
+| 容器 | 说明 | 头文件 |
+|------|------|--------|
+| `std::set` | 有序不重复集合 | `<set>` |
+| `std::multiset` | 有序可重复集合 | `<set>` |
+| `std::map` | 有序不重复键值对 | `<map>` |
+| `std::multimap` | 有序可重复键值对 | `<map>` |
+| `std::unordered_set` | 哈希不重复集合 | `<unordered_set>` |
+| `std::unordered_map` | 哈希键值对 | `<unordered_map>` |
+
+> 本笔记重点讲解 `set` 和 `map`，`unordered_*` 作为对比简要提及。
+
+---
+
+## 二、`std::set` 详解
+
+### 2.1 基本特性
+
+- 存储**唯一**的 `key`
+- 元素自动按 `key` 升序排列
+- 底层红黑树，操作 $O(\log n)$
+- 不支持通过下标访问
+- 迭代器是**双向迭代器**（不是随机访问迭代器）
+
+### 2.2 定义与初始化
+
+```cpp
+#include <set>
+#include <iostream>
+
+int main()
+{
+    // 空 set
+    std::set<int> s1;
+
+    // 初始化列表
+    std::set<int> s2 = {3, 1, 4, 1, 5, 9, 2, 6};
+
+    // 范围构造
+    std::vector<int> v = {5, 2, 8, 1};
+    std::set<int> s3(v.begin(), v.end());
+
+    // 降序排列（自定义比较器）
+    std::set<int, std::greater<int>> s4 = {3, 1, 4, 1, 5};
+
+    for (int x : s2)
+    {
+        std::cout << x << " ";
+    }
+    // 输出：1 2 3 4 5 6 9（自动去重 + 排序）
+
+    return 0;
+}
+```
+
+### 2.3 常用成员函数
+
+| 函数 | 作用 | 复杂度 |
+|------|------|--------|
+| `insert(val)` | 插入元素 | $O(\log n)$ |
+| `erase(val)` | 删除指定值 | $O(\log n)$ |
+| `erase(it)` | 删除迭代器指向元素 | 均摊 $O(1)$ |
+| `erase(first, last)` | 删除区间 | $O(\log n + k)$ |
+| `find(val)` | 查找，返回迭代器 | $O(\log n)$ |
+| `count(val)` | 统计出现次数（0 或 1） | $O(\log n)$ |
+| `contains(val)` | 是否包含（**C++20 新增**） | $O(\log n)$ |
+| `lower_bound(val)` | 第一个 $\ge val$ 的位置 | $O(\log n)$ |
+| `upper_bound(val)` | 第一个 $> val$ 的位置 | $O(\log n)$ |
+| `equal_range(val)` | 返回 `[lower, upper)` 对 | $O(\log n)$ |
+| `size()` | 元素个数 | $O(1)$ |
+| `empty()` | 是否为空 | $O(1)$ |
+| `clear()` | 清空 | $O(n)$ |
+| `begin()` / `end()` | 迭代器 | $O(1)$ |
+
+### 2.4 插入与删除示例
+
+```cpp
+#include <set>
+#include <iostream>
+
+int main()
+{
+    std::set<int> s;
+
+    // 插入：返回 pair<iterator, bool>
+    auto [it, ok] = s.insert(10);
+    std::cout << "插入10：" << (ok ? "成功" : "已存在") << "\n";
+
+    s.insert({20, 30, 40});
+
+    // 重复插入
+    auto [it2, ok2] = s.insert(10);
+    std::cout << "再次插入10：" << (ok2 ? "成功" : "已存在") << "\n";
+
+    // 删除
+    s.erase(20);
+
+    // 按迭代器删除
+    auto it3 = s.find(30);
+    if (it3 != s.end())
+    {
+        s.erase(it3);
+    }
+
+    for (int x : s)
+    {
+        std::cout << x << " ";
+    }
+    // 输出：10 40
+
+    return 0;
+}
+```
+
+### 2.5 查找与边界
+
+```cpp
+#include <set>
+#include <iostream>
+
+int main()
+{
+    std::set<int> s = {10, 20, 30, 40, 50};
+
+    // find
+    if (s.find(30) != s.end())
+    {
+        std::cout << "找到 30\n";
+    }
+
+    // lower_bound：第一个 >= 25 的元素
+    auto lo = s.lower_bound(25);
+    std::cout << "lower_bound(25) = " << *lo << "\n";   // 30
+
+    // upper_bound：第一个 > 30 的元素
+    auto hi = s.upper_bound(30);
+    std::cout << "upper_bound(30) = " << *hi << "\n";   // 40
+
+    // equal_range
+    auto [l, r] = s.equal_range(30);
+
+    return 0;
+}
+```
+
+### 2.6 自定义比较器
+
+```cpp
+#include <set>
+#include <string>
+
+struct Person
+{
+    std::string name;
+    int age;
+
+    // 按年龄排序
+    bool operator<(const Person& other) const
+    {
+        return age < other.age;
+    }
+};
+
+int main()
+{
+    std::set<Person> people;
+    people.insert({"Alice", 30});
+    people.insert({"Bob", 25});
+    // 按 age 排序：Bob(25), Alice(30)
+
+    return 0;
+}
+```
+
+或使用 lambda：
+
+```cpp
+auto cmp = [](int a, int b)
+{
+    return a > b;   // 降序
+};
+std::set<int, decltype(cmp)> s(cmp);
+```
+
+> 注意：`set` 的比较器必须满足**严格弱序（strict weak ordering）**。若 `a < b` 和 `b < a` 都不成立，视为等价。
+
+---
+
+## 三、`std::map` 详解
+
+### 3.1 基本特性
+
+- 存储 `std::pair<const Key, T>` 键值对
+- **key 唯一**，按 key 升序排列
+- 底层红黑树，操作 $O(\log n)$
+- 支持 `operator[]` 按 key 访问（若 key 不存在会**插入**默认值）
+- 迭代器解引用得到 `pair<const Key, T>`
+
+### 3.2 定义与初始化
+
+```cpp
+#include <map>
+#include <string>
+#include <iostream>
+
+int main()
+{
+    // 空 map
+    std::map<std::string, int> m1;
+
+    // 初始化列表
+    std::map<std::string, int> m2 = {
+        {"apple", 3},
+        {"banana", 5},
+        {"cherry", 2}
+    };
+
+    // 插入方式
+    m2["date"] = 7;                              // 若不存在则插入
+    m2.insert({"elderberry", 1});                // 若存在则忽略
+    m2.insert(std::make_pair("fig", 4));         // 同上
+    m2.emplace("grape", 6);                      // C++11 起，原地构造
+
+    for (const auto& [k, v] : m2)
+    {
+        std::cout << k << " : " << v << "\n";
+    }
+    // 按 key 字典序输出
+
+    return 0;
+}
+```
+
+### 3.3 `operator[]` vs `at()` vs `find()`
+
+| 方式 | key 不存在时行为 | 是否可修改 | 复杂度 |
+|------|-----------------|-----------|--------|
+| `m[key]` | **插入**默认值 | 可读可写 | $O(\log n)$ |
+| `m.at(key)` | 抛 `std::out_of_range` | 可读可写 | $O(\log n)$ |
+| `m.find(key)` | 返回 `end()` | 返回迭代器 | $O(\log n)$ |
+| `m.count(key)` | 返回 0 | 只读 | $O(\log n)$ |
+| `m.contains(key)` | 返回 false（**C++20**） | 只读 | $O(\log n)$ |
+
+```cpp
+#include <map>
+#include <string>
+#include <iostream>
+#include <stdexcept>
+
+int main()
+{
+    std::map<std::string, int> m = {{"a", 1}};
+
+    // operator[] 会插入
+    m["b"] = 2;                  // 插入 {"b", 2}
+    std::cout << m["c"] << "\n"; // 插入 {"c", 0} 并输出 0
+
+    // at() 会抛异常
+    try
+    {
+        std::cout << m.at("z") << "\n";
+    }
+    catch (const std::out_of_range& e)
+    {
+        std::cout << "key 不存在: " << e.what() << "\n";
+    }
+
+    // find() 安全
+    auto it = m.find("z");
+    if (it == m.end())
+    {
+        std::cout << "z 不存在\n";
+    }
+
+    return 0;
+}
+```
+
+> **重要建议**：若只是想查询而不想误插入，**不要用 `operator[]`**，应使用 `find()` 或 `contains()`（C++20）。
+
+### 3.4 常用成员函数
+
+| 函数 | 作用 |
+|------|------|
+| `insert(pair)` | 插入键值对，返回 `pair<iterator, bool>` |
+| `insert_or_assign(k, v)` | **C++17** 插入或赋值 |
+| `try_emplace(k, args...)` | **C++17** 若 key 不存在才构造 |
+| `emplace(args...)` | 原地构造 |
+| `erase(key)` | 按 key 删除，返回删除个数 |
+| `erase(it)` | 按迭代器删除 |
+| `find(key)` | 查找 |
+| `count(key)` | 返回 0 或 1 |
+| `contains(key)` | **C++20** 是否存在 |
+| `lower_bound` / `upper_bound` | 边界查找 |
+| `size()` / `empty()` / `clear()` | 容量操作 |
+
+### 3.5 修改 value 的几种方式
+
+```cpp
+std::map<std::string, int> m = {{"a", 1}};
+
+// 1. operator[]
+m["a"] = 100;
+
+// 2. 迭代器
+auto it = m.find("a");
+if (it != m.end())
+{
+    it->second = 200;
+}
+
+// 3. insert_or_assign（C++17）
+m.insert_or_assign("a", 300);
+```
+
+### 3.6 `map` 作为"稀疏数组" / 计数器
+
+```cpp
+#include <map>
+#include <string>
+#include <iostream>
+
+int main()
+{
+    std::string text = "hello world";
+    std::map<char, int> freq;
+
+    for (char c : text)
+    {
+        if (c != ' ')
+        {
+            freq[c]++;
+        }
+    }
+
+    for (const auto& [ch, cnt] : freq)
+    {
+        std::cout << ch << " : " << cnt << "\n";
+    }
+
+    return 0;
+}
+```
+
+### 3.7 自定义 key 类型
+
+```cpp
+#include <map>
+#include <string>
+
+struct Point
+{
+    int x, y;
+
+    bool operator<(const Point& other) const
+    {
+        if (x != other.x)
+        {
+            return x < other.x;
+        }
+        return y < other.y;
+    }
+};
+
+int main()
+{
+    std::map<Point, std::string> mp;
+    mp[{1, 2}] = "A";
+    mp[{3, 4}] = "B";
+
+    return 0;
+}
+```
+
+---
+
+## 四、`multiset` 与 `multimap`
+
+- **允许重复 key**
+- **不支持 `operator[]`**（因为 key 不唯一）
+- `count(key)` 返回实际个数
+- `equal_range(key)` 返回所有相同 key 的区间
+- `erase(key)` 会删除**所有**匹配元素
+
+```cpp
+#include <set>
+#include <map>
+#include <iostream>
+
+int main()
+{
+    std::multiset<int> ms = {1, 2, 2, 2, 3};
+    std::cout << ms.count(2) << "\n";   // 3
+
+    // 只删除一个 2
+    auto it = ms.find(2);
+    if (it != ms.end())
+    {
+        ms.erase(it);
+    }
+
+    std::multimap<std::string, int> mm;
+    mm.insert({"a", 1});
+    mm.insert({"a", 2});
+    mm.insert({"b", 3});
+
+    auto [lo, hi] = mm.equal_range("a");
+    for (auto i = lo; i != hi; ++i)
+    {
+        std::cout << i->first << " : " << i->second << "\n";
+    }
+
+    return 0;
+}
+```
+
+---
+
+## 五、`set` / `map` vs `unordered_set` / `unordered_map`
+
+| 特性 | `set` / `map` | `unordered_set` / `unordered_map` |
+|------|---------------|-----------------------------------|
+| 底层 | 红黑树 | 哈希表 |
+| 是否有序 | 有序 | 无序 |
+| 平均查找 | $O(\log n)$ | 平均 $O(1)$，最坏 $O(n)$ |
+| 最坏查找 | $O(\log n)$ | $O(n)$ |
+| 迭代器稳定性 | 稳定 | rehash 时失效 |
+| 需要哈希函数 | 不需要 | 需要 |
+| 适用场景 | 需要有序、范围查询 | 只查询、追求速度 |
+
+**选型建议**：
+
+- 需要**有序遍历**、**范围查询**（`lower_bound`/`upper_bound`）→ 用 `set`/`map`
+- 只需**快速查找/去重**，不关心顺序 → 用 `unordered_set`/`unordered_map`
+- OJ 中若被卡哈希（构造冲突），可改用 `set`/`map`，或自定义哈希加随机种子
+
+---
+
+## 六、迭代器失效规则
+
+| 容器 | 插入 | 删除 |
+|------|------|------|
+| `set` / `map` | 不失效 | 仅被删元素的迭代器失效 |
+| `unordered_set` / `unordered_map` | rehash 时全部失效 | 仅被删元素的迭代器失效 |
+
+> 红黑树插入不会导致其他迭代器失效，这是 `set`/`map` 的显著优势。
+
+---
+
+## 七、C++11 与 C++26 差异说明
+
+### 7.1 `contains()`（C++20 新增）
+
+**C++20 起支持**，之前只能用 `count()` 或 `find()`。
+
+```cpp
+// C++20 及以后
+if (s.contains(42))
+{
+    // ...
+}
+
+// C++11 / C++14 / C++17 等价写法
+if (s.count(42) > 0)
+{
+    // ...
+}
+
+// 或
+if (s.find(42) != s.end())
+{
+    // ...
+}
+```
+
+> **OJ 注意**：多数 OJ 使用 C++11 或 C++14，`contains()` **不可用**，请改用 `count()`。
+
+### 7.2 `std::map::insert_or_assign` / `try_emplace`（C++17 新增）
+
+```cpp
+// C++17 及以后
+m.insert_or_assign("key", 42);   // 存在则覆盖，不存在则插入
+m.try_emplace("key", 42);        // 存在则不构造，性能更优
+
+// C++11 等价写法
+m["key"] = 42;                   // operator[] 会默认构造再赋值
+```
+
+> **OJ 注意**：C++11 环境**不支持**这两个函数。
+
+### 7.3 结构化绑定（C++17 新增）
+
+```cpp
+// C++17 及以后
+for (const auto& [key, value] : m)
+{
+    std::cout << key << " " << value << "\n";
+}
+
+// C++11 等价写法
+for (const auto& kv : m)
+{
+    std::cout << kv.first << " " << kv.second << "\n";
+}
+```
+
+> **OJ 注意**：C++11 环境下结构化绑定**不可用**，必须写 `kv.first` / `kv.second`。
+
+### 7.4 `std::map` 的 `extract` / `merge`（C++17 新增）
+
+```cpp
+// C++17 及以后：节点句柄，可转移节点而不拷贝
+auto node = m.extract("key");
+if (node)
+{
+    node.key() = "new_key";
+    m.insert(std::move(node));
+}
+
+// C++11 无此功能，需 erase + insert
+```
+
+> **OJ 注意**：C++11 环境**不支持**节点句柄。
+
+### 7.5 `std::set` / `std::map` 的透明比较器（C++14 起）
+
+```cpp
+// C++14 及以后：允许用不同类型的 key 查找
+std::set<std::string, std::less<>> s;
+s.find("hello");   // 避免临时构造 std::string
+
+// C++11 需要显式构造
+std::set<std::string> s2;
+s2.find(std::string("hello"));
+```
+
+### 7.6 `constexpr` 支持
+
+- C++11：`constexpr` 函数限制多
+- C++14 起：`constexpr` 放宽，`set`/`map` 的某些操作可在编译期使用
+- C++20 起：`constexpr` 容器支持更完善
+- **C++26**：`constexpr` 进一步扩展，`std::map` 等容器在编译期使用更自由
+
+> **OJ 注意**：OJ 一般使用 C++11/14/17，**编译期 `map` 不可用**。
+
+### 7.7 `std::map` 初始化列表构造（C++11 起）
+
+```cpp
+// C++11 及以后
+std::map<std::string, int> m = {{"a", 1}, {"b", 2}};
+
+// C++98 / C++03 需要逐个 insert
+std::map<std::string, int> m2;
+m2.insert(std::make_pair("a", 1));
+m2.insert(std::make_pair("b", 2));
+```
+
+---
+
+## 八、OJ 实战常见用法模板
+
+### 8.1 去重 + 排序
+
+```cpp
+#include <set>
+#include <vector>
+#include <iostream>
+
+int main()
+{
+    std::vector<int> v = {3, 1, 4, 1, 5, 9, 2, 6, 5};
+    std::set<int> s(v.begin(), v.end());
+
+    for (int x : s)
+    {
+        std::cout << x << " ";
+    }
+    // 1 2 3 4 5 6 9
+    return 0;
+}
+```
+
+### 8.2 统计词频（C++11 兼容写法）
+
+```cpp
+#include <map>
+#include <string>
+#include <iostream>
+#include <sstream>
+
+int main()
+{
+    std::string line = "the quick brown fox jumps over the lazy dog the fox";
+    std::istringstream iss(line);
+    std::map<std::string, int> freq;
+    std::string word;
+
+    while (iss >> word)
+    {
+        freq[word]++;   // operator[] 不存在则插入 0 再加
+    }
+
+    for (std::map<std::string, int>::iterator it = freq.begin(); it != freq.end(); ++it)
+    {
+        std::cout << it->first << " : " << it->second << "\n";
+    }
+
+    return 0;
+}
+```
+
+### 8.3 有序区间查询
+
+```cpp
+#include <set>
+#include <iostream>
+
+int main()
+{
+    std::set<int> s = {1, 3, 5, 7, 9, 11};
+
+    // [4, 9] 范围内的元素
+    auto lo = s.lower_bound(4);   // 指向 5
+    auto hi = s.upper_bound(9);   // 指向 11
+
+    for (auto it = lo; it != hi; ++it)
+    {
+        std::cout << *it << " ";   // 5 7 9
+    }
+
+    return 0;
+}
+```
+
+### 8.4 用 `map` 实现离散化
+
+```cpp
+#include <map>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+
+int main()
+{
+    std::vector<int> a = {100, 3, 50, 3, 100, 7};
+
+    // 去重排序
+    std::set<int> s(a.begin(), a.end());
+
+    // 建立 值 -> 排名 的映射
+    std::map<int, int> id;
+    int rank = 1;
+    for (int x : s)
+    {
+        id[x] = rank++;
+    }
+
+    for (int x : a)
+    {
+        std::cout << id[x] << " ";
+    }
+    // 输出：6 1 4 1 6 2
+
+    return 0;
+}
+```
+
+---
+
+## 九、常见易错点
+
+1. **`operator[]` 会插入默认值**：查询时用 `find()` 或 `count()`，避免意外插入。
+2. **`map` 的 key 是 `const`**：不能通过迭代器修改 `it->first`，只能改 `it->second`。
+3. **`erase(key)` vs `erase(it)`**：
+   - `erase(key)` 返回值删除个数
+   - `erase(it)` 返回下一个迭代器（C++11 起）
+4. **遍历时删除**：`for (auto it = m.begin(); it != m.end(); )`，删除后要用返回值更新 `it`。
+5. **`set` 元素不可修改**：`set` 的迭代器是 `const_iterator`，`*it = x` 不合法。要修改需先 `erase` 再 `insert`。
+6. **自定义比较器必须严格弱序**：否则行为未定义。
+7. **`multiset::erase(key)` 会删除所有匹配**：若只想删一个，用 `erase(find(key))`。
+8. **哈希容器被卡**：`unordered_map` 在 OJ 中可能被构造数据攻击导致退化到 $O(n)$，必要时改用 `map`。
+
+---
+
+## 十、复杂度总结
+
+| 操作 | `set` / `map` | `unordered_set` / `unordered_map` |
+|------|---------------|-----------------------------------|
+| 插入 | $O(\log n)$ | 平均 $O(1)$，最坏 $O(n)$ |
+| 删除 | $O(\log n)$ | 平均 $O(1)$，最坏 $O(n)$ |
+| 查找 | $O(\log n)$ | 平均 $O(1)$，最坏 $O(n)$ |
+| 遍历 | $O(n)$ 有序 | $O(n)$ 无序 |
+| 范围查询 | $O(\log n + k)$ | 不支持 |
+| 最小/最大元素 | $O(1)$（`begin()` / `rbegin()`） | 不支持 |
