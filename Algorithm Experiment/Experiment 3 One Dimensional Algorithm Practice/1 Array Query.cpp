@@ -3,6 +3,7 @@ using namespace std;
 
 int main() 
 {
+    cout << "Áõ¼ÑÁÖ 2604090112" << endl;
     int n; cin >> n;
     int a[25];
     for (int i = 0; i < n; i++)

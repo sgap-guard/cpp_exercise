@@ -28,7 +28,7 @@ signed main()
             cout << i;
             if (cnt % 5 == 0)
             {
-                cout << "\n";
+                cout << endl;
             }
         }
     }

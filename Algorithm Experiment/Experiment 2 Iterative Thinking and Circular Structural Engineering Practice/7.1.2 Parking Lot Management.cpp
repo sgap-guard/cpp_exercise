@@ -22,7 +22,7 @@ signed main()
             if ((int)park.size() < n)
             {
                 park.push_back({id, time});
-                cout << "car#" << id << " in parking space #" << park.size() << "\n";
+                cout << "car#" << id << " in parking space #" << park.size() << endl;
             }
             else
             {
@@ -41,7 +41,7 @@ signed main()
                 if (c.id == id)
                 {
                     found = true;
-                    cout << "car#" << id << " out,parking time " << time - c.time << "\n";
+                    cout << "car#" << id << " out,parking time " << time - c.time << endl;
                     break;
                 }
                 else
@@ -66,7 +66,7 @@ signed main()
                 wait.erase(wait.begin());
                 w.time = time;
                 park.push_back(w);
-                cout << "car#" << w.id << " in parking space #" << park.size() << "\n";
+                cout << "car#" << w.id << " in parking space #" << park.size() << endl;
             }
         }
     }

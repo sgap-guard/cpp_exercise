@@ -776,7 +776,7 @@ while (std::cin >> x) { /* ... */ }
 while (scanf("%d", &x) != EOF) { /* ... */ }
 
 // 输出
-std::cout << x << "\n";
+std::cout << x << endl;
 printf("%d\n", x);
 
 // 格式化
@@ -1393,7 +1393,7 @@ string add(string a, string b)
 
 // 调试
 #ifdef LOCAL
-#define debug(x) cerr << #x << " = " << (x) << "\n"
+#define debug(x) cerr << #x << " = " << (x) << endl
 #else
 #define debug(x)
 #endif

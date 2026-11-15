@@ -504,7 +504,7 @@ int main()
         cin >> l >> r;
         // 区间 [l, r] 的和
         long long ans = sum[r] - sum[l - 1];
-        cout << ans << "\n";
+        cout << ans << endl;
     }
     return 0;
 }

@@ -1,53 +1,76 @@
 cmake_minimum_required(VERSION 3.26)
-project(Practice)
+project(Practice LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+# ---------- 语言标准：gnu++26 ----------
+set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_EXTENSIONS ON)
 
-# 强制 CMake 使用 UTF-8 处理源码
-add_compile_options("$<$<C_COMPILER_ID:GNU>:-finput-charset=UTF-8>")
-add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+# ---------- UTF-8 源码支持 ----------
+add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
-# 自动收集所有 cpp 文件
-file(GLOB_RECURSE CPP_FILES CONFIGURE_DEPENDS "*.cpp")
+# ---------- 输出目录 ----------
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-foreach (file ${CPP_FILES})
-    # 1. 获取相对于项目根目录的路径
-    file(RELATIVE_PATH rel ${CMAKE_CURRENT_SOURCE_DIR} ${file})
-    string(REGEX REPLACE "\\.cpp$" "" name ${rel})
-    string(REPLACE "/" "_" name ${name})
-    string(REPLACE "\\" "_" name ${name})
+# ---------- 收集所有 cpp ----------
+file(GLOB_RECURSE CPP_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
-    # 2. 【核心修复】把中文、括号等非法字符替换为哈希值（确保不会重名）
-    if (NOT "${name}" MATCHES "^[A-Za-z_][A-Za-z0-9_]*$")
-        # 提取文件的扩展名之前的纯文件名
-        string(REGEX MATCH "/?([^/_]+)$" match_name ${rel})
-        set(raw_name ${CMAKE_MATCH_1})
-        # 用文件的 MD5 哈希值作为前缀，彻底解决同名冲突和中文问题
-        string(MD5 hash_name "${file}")
-        set(name "${hash_name}_${raw_name}")
-    endif()
+foreach(file ${CPP_FILES})
+    # 相对路径
+    file(RELATIVE_PATH rel "${CMAKE_CURRENT_SOURCE_DIR}" "${file}")
 
-    # 3. 二次清洗：只保留英文、数字、下划线
-    string(REGEX REPLACE "[^A-Za-z0-9_]" "_" name ${name})
+    # 文件名（不含后缀）
+    get_filename_component(name_only "${file}" NAME_WE)
 
-    # 4. 防止目标名以数字开头
-    if (name MATCHES "^[0-9]")
+    # 所在目录的最后一级
+    get_filename_component(parent_dir "${file}" DIRECTORY)
+    get_filename_component(last_dir "${parent_dir}" NAME)
+
+    # 拼接：最后一级目录__文件名
+    set(name "${last_dir}__${name_only}")
+
+    # 统一替换非法字符为下划线
+    string(REGEX REPLACE "[^A-Za-z0-9_]" "_" name "${name}")
+
+    # 连续下划线压缩为单个
+    string(REGEX REPLACE "_+" "_" name "${name}")
+
+    # 去掉首尾下划线
+    string(STRIP "${name}" name)
+    string(REGEX REPLACE "^_+" "" name "${name}")
+    string(REGEX REPLACE "_+$" "" name "${name}")
+
+    # 防止以数字开头
+    if(name MATCHES "^[0-9]")
         set(name "t_${name}")
     endif()
 
-    add_executable(${name} ${file}
-            "计蒜客/T/T10/T100/T1002 输出马里奥.cpp"
-            "计蒜客/T/T10/T100/T1006 对齐输出.cpp"
-            "牛客/哈理工ACM协会26级新生赛/B 小竹和妈妈.cpp"
-            "牛客/哈理工ACM协会26级新生赛/G 文件路径.cpp"
-            "牛客/哈理工ACM协会26级新生赛/L 校运动会.cpp"
-            "牛客/哈理工ACM协会26级新生赛/I 哪有赌徒天天输.cpp"
-            "牛客/哈理工ACM协会26级新生赛/J 编码转换.cpp"
-            "牛客/哈理工ACM协会26级新生赛/K 编码转换.cpp"
-            "26级作业/循环3/14 乘法表.cpp"
-            "26级作业/循环3/15 小明的数字.cpp"
-            "26级作业/循环3/16 打印质数表.cpp"
-            "26级作业/循环3/17 统计素数.cpp")
+    # 空名字兜底
+    if(name STREQUAL "")
+        set(name "t_${name_only}")
+    endif()
+
+    # 重名兜底
+    if(TARGET ${name})
+        string(MD5 hash "${file}")
+        string(SUBSTRING "${hash}" 0 6 hash6)
+        set(name "${name}_${hash6}")
+    endif()
+
+    add_executable(${name} "${file}"
+            "Nowcoder/Official Question Sheet/Grammar Section/Beginner's Programming Training/2 Branch Control/BC52 判断整数奇偶性.cpp"
+            "Nowcoder/Official Question Sheet/Grammar Section/Beginner's Programming Training/2 Branch Control/BC53 判断是元音还是辅音.cpp"
+            "Nowcoder/Official Question Sheet/Grammar Section/Beginner's Programming Training/2 Branch Control/BC54 牛牛的判断题.cpp"
+            "Nowcoder/Official Question Sheet/Grammar Section/Beginner's Programming Training/2 Branch Control/BC55 判断闰年.cpp"
+            "Nowcoder/Official Question Sheet/Grammar Section/Beginner's Programming Training/2 Branch Control/BC56 判断字母.cpp"
+            "Nowcoder/Official Question Sheet/Grammar Section/Beginner's Programming Training/2 Branch Control/BC57 四季.cpp"
+            "Nowcoder/Official Question Sheet/Grammar Section/Beginner's Programming Training/2 Branch Control/BC58 健康评估.cpp"
+            "Nowcoder/Official Question Sheet/Grammar Section/Beginner's Programming Training/2 Branch Control/BC59 小乐乐找最大数.cpp"
+            "Nowcoder/Official Question Sheet/Grammar Section/Beginner's Programming Training/2 Branch Control/判断是不是字母.cpp")
+
+    set_target_properties(${name} PROPERTIES
+            FOLDER "practice"
+            # 缩短 obj 输出子目录名（减少路径长度）
+            OBJECT_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/obj/${name}"
+    )
 endforeach()

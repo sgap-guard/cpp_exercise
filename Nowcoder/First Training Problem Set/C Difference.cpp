@@ -52,7 +52,7 @@ signed main() // 【主函数】为什么写 signed 而不是 int？因为上面
         
         // 输出当前元素。
         // 缺点：最后一个数字后面会多一个空格。但在绝大多数OJ上，行末空格是被允许的（不扣分）。
-        // 完美主义者可以写成：if (i == n) cout << cur_sum << "\n"; else cout << cur_sum << " ";
+        // 完美主义者可以写成：if (i == n) cout << cur_sum << endl; else cout << cur_sum << " ";
         cout << cur_sum << " "; 
     }
     

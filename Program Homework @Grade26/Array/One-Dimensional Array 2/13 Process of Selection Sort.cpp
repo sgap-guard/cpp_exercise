@@ -9,7 +9,7 @@ void printArr(int n)
         if (i > 0) cout << " ";
         cout << a[i];
     }
-    cout << "\n";
+    cout << endl;
 }
 
 int main()

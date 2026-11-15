@@ -95,13 +95,13 @@ int main()
 
     // 插入：返回 pair<iterator, bool>
     auto [it, ok] = s.insert(10);
-    std::cout << "插入10：" << (ok ? "成功" : "已存在") << "\n";
+    std::cout << "插入10：" << (ok ? "成功" : "已存在") << endl;
 
     s.insert({20, 30, 40});
 
     // 重复插入
     auto [it2, ok2] = s.insert(10);
-    std::cout << "再次插入10：" << (ok2 ? "成功" : "已存在") << "\n";
+    std::cout << "再次插入10：" << (ok2 ? "成功" : "已存在") << endl;
 
     // 删除
     s.erase(20);
@@ -141,11 +141,11 @@ int main()
 
     // lower_bound：第一个 >= 25 的元素
     auto lo = s.lower_bound(25);
-    std::cout << "lower_bound(25) = " << *lo << "\n";   // 30
+    std::cout << "lower_bound(25) = " << *lo << endl;   // 30
 
     // upper_bound：第一个 > 30 的元素
     auto hi = s.upper_bound(30);
-    std::cout << "upper_bound(30) = " << *hi << "\n";   // 40
+    std::cout << "upper_bound(30) = " << *hi << endl;   // 40
 
     // equal_range
     auto [l, r] = s.equal_range(30);
@@ -234,7 +234,7 @@ int main()
 
     for (const auto& [k, v] : m2)
     {
-        std::cout << k << " : " << v << "\n";
+        std::cout << k << " : " << v << endl;
     }
     // 按 key 字典序输出
 
@@ -264,16 +264,16 @@ int main()
 
     // operator[] 会插入
     m["b"] = 2;                  // 插入 {"b", 2}
-    std::cout << m["c"] << "\n"; // 插入 {"c", 0} 并输出 0
+    std::cout << m["c"] << endl; // 插入 {"c", 0} 并输出 0
 
     // at() 会抛异常
     try
     {
-        std::cout << m.at("z") << "\n";
+        std::cout << m.at("z") << endl;
     }
     catch (const std::out_of_range& e)
     {
-        std::cout << "key 不存在: " << e.what() << "\n";
+        std::cout << "key 不存在: " << e.what() << endl;
     }
 
     // find() 安全
@@ -346,7 +346,7 @@ int main()
 
     for (const auto& [ch, cnt] : freq)
     {
-        std::cout << ch << " : " << cnt << "\n";
+        std::cout << ch << " : " << cnt << endl;
     }
 
     return 0;
@@ -401,7 +401,7 @@ int main()
 int main()
 {
     std::multiset<int> ms = {1, 2, 2, 2, 3};
-    std::cout << ms.count(2) << "\n";   // 3
+    std::cout << ms.count(2) << endl;   // 3
 
     // 只删除一个 2
     auto it = ms.find(2);
@@ -418,7 +418,7 @@ int main()
     auto [lo, hi] = mm.equal_range("a");
     for (auto i = lo; i != hi; ++i)
     {
-        std::cout << i->first << " : " << i->second << "\n";
+        std::cout << i->first << " : " << i->second << endl;
     }
 
     return 0;
@@ -505,13 +505,13 @@ m["key"] = 42;                   // operator[] 会默认构造再赋值
 // C++17 及以后
 for (const auto& [key, value] : m)
 {
-    std::cout << key << " " << value << "\n";
+    std::cout << key << " " << value << endl;
 }
 
 // C++11 等价写法
 for (const auto& kv : m)
 {
-    std::cout << kv.first << " " << kv.second << "\n";
+    std::cout << kv.first << " " << kv.second << endl;
 }
 ```
 
@@ -613,7 +613,7 @@ int main()
 
     for (std::map<std::string, int>::iterator it = freq.begin(); it != freq.end(); ++it)
     {
-        std::cout << it->first << " : " << it->second << "\n";
+        std::cout << it->first << " : " << it->second << endl;
     }
 
     return 0;
