@@ -47,7 +47,7 @@
 14. 请在提交Pull Request时，在commit message中，说明你**贡献题目的来源及题目编号或者是您的原创题目**，以便项目维护者了解你的改动。
 15. 如果是您的原创题目（包括但不限于是通过AI生成的题目），确保你的题目无歧义，易于理解，不会与已有的题目冲突。
 16. 本项目**只接受与C++11或者C++26标准相关的贡献**，不接受其他标准等相关的贡献。
-17. 本项目**只接受C++代码**，不接受其他语言的代码，如Python、Java等。
+17. 本项目**只接受`C++`代码**，不接受其他语言的代码，如 `Python`、`Java`等。
 18. 本项目**不接受任何形式的广告或推广**，包括但不限于在代码中插入广告、在代码中插入推广链接等。
 19. 本项目**不接受任何形式的恶意攻击或破坏**，包括但不限于在代码中插入恶意代码、在代码中插入恶意链接等。
 20. 受限于维护者的时间和精力，**您的贡献可能会被延迟处理**，我们会在收到您的贡献后尽快进行审核。
@@ -64,16 +64,4 @@
 MIT License具有极其宽松的条款，您可以自由地使用、修改、分发本项目的代码。
 
 ### 学习平台
-本项目主要学习平台为：
-- [洛谷](https://www.luogu.com.cn/)
-- [VJudge](https://vjudge.net/)
-- [牛客](https://www.nowcoder.com/)
-- [力扣](https://leetcode.cn/)
-- [计蒜客](https://www.jisuanke.com/)
-- [QOJ](https://qoj.ac/)
-- [Codeforces](https://codeforces.com/)
-- [蓝桥杯](https://www.lanqiao.cn/)
-- [ACM](https://www.acmicpc.net/)
-- [PinTia](https://www.pintia.cn/)
-- [HRBUST ACM](http://acm.hrbust.edu.cn/) （**校园内部网络需要**）
-
+本项目主要学习平台，请见[刷题网站](./刷题网站.md)

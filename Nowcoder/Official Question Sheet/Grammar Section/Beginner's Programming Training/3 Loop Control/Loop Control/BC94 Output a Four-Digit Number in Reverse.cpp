@@ -11,3 +11,14 @@
 //     cout << d << c << b << a << endl;
 //     return 0;
 // }
+
+#include <bits/stdc++.h>
+using namespace std;
+
+signed main()
+{
+    string s; cin >> s;
+    reverse(s.begin(), s.end());
+    cout << s << endl;
+    return 0;
+}
