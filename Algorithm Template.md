@@ -257,6 +257,7 @@ void bubbleSort(T arr[], int n)
     return 0;
 ```
 ### 2. 翻转数字
+#### 方法一（无前导0）
 ```cpp
     int n; cin >> n;
     int ans = 0;
@@ -267,7 +268,8 @@ void bubbleSort(T arr[], int n)
     }
     cout << ans << endl;
 ```
-去除前导0
+#### 方法二
+##### 使用字符串去除前导0
 ```cpp
     string s; cin >> s;
     int i = 0;
@@ -275,6 +277,11 @@ void bubbleSort(T arr[], int n)
     if (i == s.length()) cout << 0 << endl;
     else cout << s.substr(i) << endl;
     return 0;
+```
+##### 使用`stoi`函数去除前导0
+```cpp
+int a = 000123;
+cout << stoi(to_string(a)) << endl; // 123
 ```
 ## 9. 输出固定位小数
 ```cpp
