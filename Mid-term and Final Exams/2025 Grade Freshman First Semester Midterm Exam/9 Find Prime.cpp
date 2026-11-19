@@ -11,26 +11,29 @@ bool isPrime(int x)
     return true;
 }
 
-signed main()
+int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr); cout.tie(nullptr);
-    int n, cnt = 0; cin >> n;
-    for (int i = 1; i <= n; i++)
+    int n; cin >> n;
+    int count = 0;
+    for (int i = 2; i <= n; ++i)
     {
         if (isPrime(i))
         {
-            cnt++;
-            if (cnt % 5 != 1) 
-            {
-                cout << " "; 
-            }
+            count++;
             cout << i;
-            if (cnt % 5 == 0)
+            if (count % 5 == 0)
             {
-                cout << endl;
+                cout << " " << endl;
+            }
+            else
+            {
+                cout << " ";
             }
         }
+    }
+    if (count % 5 != 0)
+    {
+        cout << endl;
     }
     return 0;
 }

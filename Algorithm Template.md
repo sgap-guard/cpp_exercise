@@ -2188,3 +2188,26 @@ void pushFront(int x)
 ```cpp
 round(x) // 四舍五入到最近整数
 ```
+## 53.输出乘法表
+```cpp
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int n;
+    cout << "请输入行数：";
+    cin >> n;
+
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= i; j++)
+        {
+            cout << j << "x" << i << "=" << i * j << " ";
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
+```
