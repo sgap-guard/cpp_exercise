@@ -1,13 +1,13 @@
 # Luogu Official
-## Introduction 1 Sequential structure
+## Introduction
+### Introduction 1 Sequential structure
 
 `B2002`  `B2025`  `P1000`  `P1001`  `B2005`  `P5703`
 
 `P5704`  `P5705`  `P5706`  `P5708`  `P5707`  `B2029`
 
 `P1425`  `P1421`  `P3954`
-
-## Introduction 2 Branch Structure
+### Introduction 2 Branch Structure
 
 `P2433`  `P5709`  `P5710`  `P5711`  `P5712`
 
@@ -29,7 +29,7 @@
 
 `P1089`
 
-## Introduction 4 Array
+### Introduction 4 Array
 
 `P1428`  `P1427`  `P5727`  `P1047`  `P5728`
 
@@ -39,10 +39,12 @@
 
 `P5732`  `P1789`  `P1319`  `P1320`  `P1205`
 
-## Introduction 5 String
+### Introduction 5 String
 
 `P5733`  `P1914`  `P1125`  `P1957`  `P5015`
 
 `P5734`  `P1308`  `P1765`  `P3741`  `P1321`
 
 `P1553`  `P1603`  `P1200`  `P1597`  `P1598`
+## Advanced
+### Advanced 1 Prefix and Difference, Discretization

@@ -25,8 +25,8 @@ project(CWorks C CXX)
 # ------------------------------------------------------------------------
 
 # 按照书本要求设定C语言和C++版本
-set(CMAKE_C_STANDARD 99)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_C_STANDARD 23)
+set(CMAKE_CXX_STANDARD 26)
 
 # 设定构建运行路径，避免污染根目录
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/.archive)

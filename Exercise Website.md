@@ -14,9 +14,5 @@
 
 8. 蓝桥杯 https://www.lanqiao.cn/
 
-9. POJ https://poj.org
-
-10. HDU https://acm.hdu.edu.cn/
-
-11. 赛氪 https://oj.saikr.com/
+9. HDU https://acm.hdu.edu.cn/
 
