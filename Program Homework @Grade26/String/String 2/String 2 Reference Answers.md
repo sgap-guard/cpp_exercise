@@ -1,6 +1,6 @@
 ## 字符串 2
 ### 7-1 统计英语单词个数
-#### 法一 遍历字符串
+#### 法一 stringstream流
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -20,7 +20,7 @@ int main()
     return 0;
 }
 ```
-#### 法二 使用stringstream流
+#### 法二 遍历字符串，判断单词开头
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -366,7 +366,8 @@ int main()
     int i = 0;
     while (i < n)
     {
-        // 情况1：如果是数字或者小数点，说明这是一个正数
+        // 情况1：如
+        果是数字或者小数点，说明这是一个正数
         if (isdigit(s[i]) || s[i] == '.')
         {
             string token = "";
