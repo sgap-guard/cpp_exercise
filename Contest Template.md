@@ -3,120 +3,7 @@
 >
 > 整理时间截止至2026年11月11日，后续会继续更新。现编号至第40题。
 
-## 0. ASCII 码表
-| ASCII 码 | 字符 | ASCII 码 | 字符 | ASCII 码 | 字符 | ASCII 码 | 字符 |
-| :------: | :--: | :------: | :--: | :------: | :--: | :------: | :--: |
-|    97    | `a`  |    65    | `A`  |    98    | `b`  |    66    | `B`  |
-|    99    | `c`  |    67    | `C`  |  100   | `d`  |    68    | `D`  |
-|   101   | `e`  |    69    | `E`  |   102   | `f`  |    70    | `F`  |
-|   103   | `g`  |    71    | `G`  |   104   | `h`  |    72    | `H`  |
-|   105   | `i`  |    73    | `I`  |   106   | `j`  |    74    | `J`  |
-|   107   | `k`  |    75    | `K`  |   108   | `l`  |    76    | `L`  |
-|   109   | `m`  |    77    | `M`  |   110   | `n`  |    78    | `N`  |
-|   111   | `o`  |    79    | `O`  |   112   | `p`  |    80    | `P`  |
-|   113   | `q`  |    81    | `Q`  |   114   | `r`  |    82    | `R`  |
-|   115   | `s`  |    83    | `S`  |   116   | `t`  |    84    | `T`  |
-|   117   | `u`  |    85    | `U`  |   118   | `v`  |    86    | `V`  |
-|   119   | `w`  |    87    | `W`  |   120   | `x`  |    88    | `X`  |
-|   121   | `y`  |    89    | `Y`  |   122   | `z`  |    90    | `Z`  |
-| 32|`空格`| 48 | `0` | 49 | `1` | 50 | `2` |
-| 51 | `3` | 52 | `4` | 53 | `5` | 54 | `6`| 
-| 55 | `7` | 56 | `8` | 57 | `9` | 
-## 1. 给定一个整数$a$，若$a$含有数字$b$，则输出`yes`，否则输出`no`。见下方含有数字模板
-```cpp
-#include <iostream>
-using namespace std;
 
-bool hasDigit(int a, int b)
-{
-    int tmp = a;
-    if (tmp < 0)
-    {
-        tmp = -tmp;
-    }
-    while (tmp != 0)
-    {
-        int digit = tmp % 10;
-        if (digit == b)
-        {
-            return true;
-        }
-        tmp = tmp / 10;
-    }
-    return false;
-}
-
-signed main()
-{
-    int a, b;
-    cin >> a >> b;
-    if (hasDigit(a, b))
-    {
-        cout << "yes" << endl;
-    }
-    else
-    {
-        cout << "no" << endl;
-    }
-    return 0;
-}
-```
-## 2. 给定一个$10$进制数字，要求输出大写的$16$进制数字和小写的$16$进制数字，和$8$位的$2$进制数字，用$0$补位
-```cpp
-    int n; cin >> n;
-    // 大写十六进制
-    cout << uppercase << hex << n << endl;
-    // 小写十六进制（不写uppercase默认是小写）
-    cout << nouppercase << hex << n << endl;
-    // 8位二进制，前导0补位
-    for (int i = 7; i >= 0; i--)
-    {
-        cout << ((n >> i) & 1);
-    }
-```
-详见下题
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
-signed main()
-{
-    string s; cin >> s;
-    for (char c : s)
-    {
-        int A = int(c);
-        if (A >= 97 && A < 123)// 小写字母
-        {
-            int a = A - 32;
-            cout << a << ";// 输出大写字母
-        }
-        else if (A >= 65 && A < 91)// 大写字母
-        {
-            int b = A + 32;
-            cout << b << ";// 输出小写字母
-        }
-        else if (A >= 48 && A < 58)// 数字
-        {
-            for (int i = 7; i >= 0; i--)
-            {
-                cout << ((A >> i) & 1);// 输出8位二进制数字，前导0补位
-            }
-        }
-    }
-    return 0;
-}
-```
-二进制也可使用`bitset`模板，`bitset<长度>(数字)` 直接把整数转为定长二进制串，不足高位补0，`to_string()` 输出二进制串
-```cpp
-    bitset<8> bs(n);// 输出 8 位二进制，不足高位补0
-    bitset<16> a16(n);// 输出 16 位二进制，不足高位补0
-    cout << bs.to_string() << endl;
-    cout << a16.to_string() << endl;
-```
-## 3. 按照原样输出一个字符串，允许多行
-```cpp
-    cout << R"(////origin$raw\\\\)" << endl;
-```
 ## 4. 经典巴什博弈：每次取$1$ 或$2$个，总数$n$个。
 班尼特和旅行者轮流从宝藏中取走摩拉，每次必须取$1$ 枚或 $2$ 枚，取走最后$1$枚摩拉的人可以拿走全部宝藏。
 班尼特先手，两人都采取最优策略。请问最终谁会拿走全部摩拉？
@@ -142,14 +29,6 @@ signed main()
     return 0;
 ```
 ## 5. 给定两整数$a$，$b$，要求取平均值，分别输出小数格式，向上取整，向下取整，换行分开
-```cpp
-    int a, b; cin >> a >> b;
-    double avg = (a + b) / 2.0;
-    cout << avg << endl; 
-    cout << ceil(avg) << endl;//向上取整
-    cout << floor(avg) << endl;//向下取整
-    return 0;
-```
 >`ceil`，`floor`适用于浮点数
 那对于整数来说，满足$a = q \times b + r$，向上取整用$(a + b - 1) \div b$，向下取整用$a \div b$，
 若是超级大的数，需要使用数学方法，上面方法会溢出
@@ -170,123 +49,6 @@ signed main()
         cout << ans << endl;
     }
     return 0;
-```
-## 6. 排序
-### 自定义排序函数
-```cpp
-bool cmp(int x, int y)
-{
-    return x < y;
-}
-```
-详见此题：对数组$a[1000]$（使用循环依次读取每个值）进行升序排序，并求排序后的第$5$名的元素
-```cpp
-// 自定义比较函数cmp，升序
-bool cmp(int x, int y) return x < y;
-//写x<y表示升序排序，写x>y表示降序排序
-signed main()
-{
-    int a[1000];
-    for (int i = 0; i < 1000; i++) cin >> a[i];
-    // 使用cmp进行升序排序
-    sort(a, a + 1000, cmp);
-    // 第5名，数组下标从0开始：第1名a[0]，第5名a[4]
-    cout << a[4] << endl;
-    return 0;
-}
-```
-### sort排序
-`sort`函数默认是升序排序。可适用数组、向量、列表等。
-```cpp
-sort(a + 1, a + n + 1);
-sort(a.begin(), a.end());
-```
-若要降序排序，需要在 `sort` 函数中添加一个参数 `greater<int>()`，或`greater()`。
-```cpp
-sort(a + 1, a + n + 1, greater<int>());
-sort(a.begin(), a.end(), greater());
-```
-### 冒泡排序
-```cpp
-template <typename T>
-void bubbleSort(T arr[], int n)
-{
-    for (int i = 0; i < n - 1; i++)
-    {
-        int swapped = 0;
-        for (int j = 0; j < n - 1 - i; j++)
-        {
-            if (arr[j] > arr[j + 1])
-            {
-                T temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-                swapped = 1;
-            }
-        }
-        // 若一趟中没有发生交换，说明已经有序
-        if (!swapped)
-        {
-            break;
-        }
-    }
-}
-```
-## 7. 青蛙跳井模板
-一只青蛙在井底，井深为$H$米。它每天白天能向上爬$U$米，但晚上会下滑$D$米。如果某一天白天它已经爬出井口，就不会再下滑。问：青蛙最少需要多少天? 才能爬出井口？
-```cpp
-    long long H,U,D;
-    cin >> H >> U >> D;
-    if (H <= U)
-    {
-        cout << 1 << endl;
-        return 0;
-    }
-    long long a = U - D;
-    long long b = H - U;
-    long long day = (b + a -1) / a;
-    cout << day + 1 << endl;
-    return 0;
-```
-## 8. 翻转
-### 1. 翻转字符串
-```cpp
-    string s; cin >> s;
-    reverse(s.begin(), s.end());
-    cout << s << endl;
-    return 0;
-```
-### 2. 翻转数字
-#### 方法一（无前导0）
-```cpp
-    int n; cin >> n;
-    int ans = 0;
-    while (n > 0)
-    {
-        ans = ans * 10 + n % 10;
-        n /= 10;
-    }
-    cout << ans << endl;
-```
-#### 方法二
-##### 使用字符串去除前导0
-```cpp
-    string s; cin >> s;
-    int i = 0;
-    while (i < s.length() && s[i] == '0') i++;
-    if (i == s.length()) cout << 0 << endl;
-    else cout << s.substr(i) << endl;
-    return 0;
-```
-##### 使用`stoi`函数去除前导0
-```cpp
-int a = 000123;
-cout << stoi(to_string(a)) << endl; // 123
-```
-## 9. 输出固定位小数
-```cpp
-    double x; cin >> x;
-    cout << fixed << setprecision(2) << x << endl;
 ```
 ## 10. `vector`动态数组
 长度可以自动增长，不用像普通数组那样提前定死大小。
@@ -448,87 +210,6 @@ sum[i] = sum[i-1] + a[i];
 ```cpp
 sum[r] - sum[l-1]
 ```
-斐波那契数列模板
-```cpp
-const int MAXN = 1005;
-long long f[MAXN];
-long long sum[MAXN]; // sum[n] 表示前n项的前缀和
-
-signed main()
-{
-    f[1] = 1; f[2] = 1;
-    sum[1] = f[1];
-    sum[2] = f[1] + f[2];
-    int n; cin >> n;
-    for (int i = 3; i <= n; i++)
-    {
-        f[i] = f[i - 1] + f[i - 2];
-        sum[i] = sum[i - 1] + f[i];
-    }
-    cout << f[n] << endl;
-}
-```
-高精度加法
-```cpp
-int n; cin >> n;
-vector<long long> a(n + 1);
-vector<long long> S(n + 1);
-a[1] = 1; a[2] = 1;
-S[1] = 1; S[2] = 2;
-for (int i = 3; i <= n; i++)
-{
-    a[i] = a[i - 1] + a[i - 2];
-    S[i] = S[i - 1] + a[i];
-}
-cout << a[n] << endl;
-cout << S[n] << endl;
-```
-一维前缀和的应用：统计区间内满足条件的元素个数
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
-int main() 
-{
-    // 假设数组长度为 n，查询次数为 q
-    int n, q; cin >> n >> q;
-    // a 数组从下标 1 开始存储，方便处理前缀和（避免处理 l=0 的越界问题）
-    vector<int> a(n + 1);
-    for (int i = 1; i <= n; i++) 
-    {
-        cin >> a[i];
-    }
-    // 1. 预处理前缀和数组（建议用 long long 防溢出）
-    vector<long long> sum(n + 1, 0);
-    for (int i = 1; i <= n; i++) 
-    {
-        sum[i] = sum[i - 1] + a[i];
-    }
-    // 2. 处理查询
-    while (q--) 
-    {
-        int l, r;
-        cin >> l >> r;
-        // 区间 [l, r] 的和
-        long long ans = sum[r] - sum[l - 1];
-        cout << ans << endl;
-    }
-    return 0;
-}
-```
-## 13. `toupper`与`tolower`
-参数类型是`int`，必须传入 `unsigned char` 范围的值，不要直接传负数 `char`（中文 / 扩展 ASCII 会出 UB），**只适合 ASCII 字符**
-
-#### 简单示例
-```cpp
-char ch = 'b';
-char upCh = toupper(ch);
-cout << upCh << endl; // B
-
-char ch2 = 'D';
-char lowCh = tolower(ch2);
-cout << lowCh << endl; // d
-```
 #### 字符串批量
 ```cpp
 string s = "aBc123!";
@@ -551,99 +232,8 @@ char c = 'a';
 cout << toupper(c); // ?直接输出得到ASCII码97，不是字符！
 cout << (char)toupper(c); // ? 强转char，输出'A'
 ```
-## 14. 对于给定的四位数，分别提取个位、十位、百位、千位
-```cpp
-int a = n % 10;// 个位数
-int b = (n / 10) % 10;// 十位数
-int c = (n / 100) % 10;// 百位数
-int d = (n / 1000) % 10;// 千位数
-```
-## 15. 对于给定的范围$[a,b)$输出这个范围的所有质数，若没有输出`No`
-### 普通方法
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
 
-// 判断x是不是质数
-bool isPrime(int x)
-{
-    if (x < 2)
-    {
-        return false;
-    }
-    for (int i = 2; i * i <= x; i++)
-    {
-        if (x % i == 0)
-        {
-            return false;
-        }
-    }
-    return true;
-}
 
-signed main()
-{
-    int a, b; cin >> a >> b;
-    bool has_prime = false;
-    for (int i = a; i < b; i++) // [a,b) 左闭右开，i从a到b-1
-    {
-        if (isPrime(i))
-        {
-            cout << i << " ";
-            has_prime = true;
-        }
-    }
-    if (!has_prime)
-    {
-        cout << "No";
-    }
-    cout << endl;
-    return 0;
-}
-```
-### 埃氏筛法
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
-signed main()
-{
-    int a, b; cin >> a >> b;
-    if (b <= 2)
-    {
-        cout << "No" << endl;
-        return 0;
-    }
-    vector<bool> isPrime(b, true);
-    isPrime[0] = isPrime[1] = false;
-    for (int i = 2; i * i < b; i++)
-    {
-        if (isPrime[i])
-        {
-            for (int j = i * i; j < b; j += i)
-            {
-                isPrime[j] = false;
-            }
-        }
-    }
-
-    bool found = false;
-    for (int i = a; i < b; i++)
-    {
-        if (isPrime[i])
-        {
-            cout << i << " ";
-            found = true;
-        }
-    }
-    if (!found)
-    {
-        cout << "No";
-    }
-    cout << endl;
-    return 0;
-}
-```
 ## 16. 对于$N$个人参加的跳远比赛，每个人跳两次，并且保证这两次成绩互不相同，取每个人跳远的最优成绩为最终结绩。请输出这$N$个人最终排名的第$3$名。（二分排序）
 ```cpp
 #include <bits/stdc++.h>
@@ -676,50 +266,7 @@ signed main()
     return 0;
 }
 ```
-## 17. 输入数字$a,n$，要求将输入的数字$n$（十进制）转换成$a$进制数字
-```cpp
-int a, n; cin >> a >> n;
-string res;
-if (n == 0)
-{
-    cout << "0\n";
-    return 0;
-}
-while (n > 0)
-{
-    int rem = n % a;
-    if (rem < 10)
-    {
-        res += (char)('0' + rem);
-    }
-    else
-    {
-        res += (char)('A' + rem - 10);
-    }
-    n = n / a;
-}
-reverse(res.begin(), res.end());
-cout << res << endl;
-return 0;
-```
-## 18. 大小写字母转换
-### +-32手动转换
-```cpp
-char res1;
-if (ch >= 'A' && ch <= 'Z')
-{
-    res1 = ch + 32;
-}
-else if (ch >= 'a' && ch <= 'z')
-{
-    res1 = ch - 32;
-}
-else
-{
-    res1 = ch;
-}
-```
-### toupper与tolower函数，详见第13节
+
 ## 19. 高精度除法
 ```cpp
 #include <bits/stdc++.h>
@@ -837,123 +384,6 @@ signed main()
             cout << "No\n";
         }
     }
-    return 0;
-}
-```
-## 21. 最大公约数与最小公倍数
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
-// 欧几里得算法手写gcd
-int gcd_own(int a, int b)
-{
-    while (b != 0)
-    {
-        int temp = a % b;
-        a = b;
-        b = temp;
-    }
-    return a;
-}
-
-// 手写lcm，公式 lcm(a,b)=a*b/gcd(a,b)
-int lcm_own(int a, int b)
-{
-    return a / gcd_own(a, b) * b;
-}
-
-signed main()
-{
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    int a, b; cin >> a >> b;
-    cout << "手写gcd: " << gcd_own(a, b) << endl;
-    cout << "手写lcm: " << lcm_own(a, b) << endl;
-
-    // std::gcd，std::lcm在C++17/GNU++17及后续版本中引入
-    // 很多OJ的bits/stdc++.h已经包含
-    cout << "库gcd: " << gcd(a, b) << endl;
-    cout << "库lcm: " << lcm(a, b) << endl;
-    return 0;
-}
-```
-## 22. 判断字符串是否含有某字符，输出该字符出现的次数
-### 版本1：
-```cpp
-string s;
-    getline(cin, s);   // 可以读入带空格的字符串
-    int cnt = 0;
-    for (int i = 0; i < s.size(); i++) 
-    {
-        if (s[i] == 'A') 
-        {
-            cnt++;
-        }
-    }
-    cout << cnt << endl;
-```
-### 版本2：
-```cpp
-string s;
-getline(cin, s);
-int cnt = 0;
-for (char c : s) 
-{
-    if (c == 'A') cnt++;
-}
-cout << cnt << endl;
-```
-### 版本3：
-```cpp
-string s;
-getline(cin, s);
-int cnt = count(s.begin(), s.end(), 'A');
-cout << cnt << endl;
-```
-## 23. 对于任意$a$进制的数字$n$，转换成其对应$p$进制的数字$m$并输出
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-// 将字符转换为对应的数值 (0-9, A-Z, a-z)
-int charToVal(char c) 
-{
-    if (c >= '0' && c <= '9') return c - '0';
-    if (c >= 'A' && c <= 'Z') return c - 'A' + 10;
-    if (c >= 'a' && c <= 'z') return c - 'a' + 10;
-    return 0;
-}
-// 将数值转换为对应的字符
-char valToChar(int v) 
-{
-    if (v >= 0 && v <= 9) return '0' + v;
-    return 'A' + (v - 10);
-}
-signed main() 
-{
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    int a, p; string n;
-    // 输入格式示例：a p n （如：16 2 1A3F）
-    cin >> a >> p >> n;
-    // 步骤1：a进制转十进制 (使用 long long 防止溢出)
-    long long dec = 0;
-    for (char c : n)  dec = dec * a + charToVal(c);
-    // 步骤2：十进制转p进制
-    if (dec == 0) 
-    {
-        cout << 0 << endl;
-        return 0;
-    }
-    string res;
-    while (dec > 0) 
-    {
-        res += valToChar(dec % p);
-        dec /= p;
-    }
-    // 逆序输出
-    reverse(res.begin(), res.end());
-    cout << res << endl;
     return 0;
 }
 ```
@@ -1211,27 +641,7 @@ int main()
 > - **差分 diff**：相邻项差值，用来快速批量修改区间数值
 > 前缀和是「加法累积」，差分是「减法拆分」，二者互为逆运算。
 
----
 
-## 26. 判断是否是2的n次方
-`__builtin_ctz(x)`是 GCC/G++ 编译器内置的一个极其高效的位运算函数。
-它的的全称是 Count Trailing Zeros（统计末尾零的个数）。计算一个正整数`x`的二进制表示中，从最低位（最右边）开始，连续有多少个0。
-```cpp
-long long x;
-while (cin >> x)
-{
-    if (x < 0) x = -x;
-    if (((x & (x - 1)) == 0) && x > 0)
-    {
-        long long n = __builtin_ctz(x);
-        cout << n << endl;
-    }
-    else
-    {
-        cout << "No!" << endl;
-    }
-}
-```
 
 ## 27. `map` 容器
 `map`是STL关联容器，存储键值对，按key自动升序排序，底层红黑树实现。
@@ -1305,16 +715,6 @@ int n; cin >> n;
 int cnt = __builtin_popcount(n);
 cout << cnt << endl;
 ```
-## 32. 异或 同或
-异或（XOR）是位运算，符号 `^`，两比特相同为0、不同为1
-
-同或（XNOR）是其取反，相同为1、不同为0。
-
-C++ 无原生同或运算符，用 `~(a ^ b)` 实现。
-
-异或特性：自反 `a^a=0`、恒等 `a^0=a`、交换 `a^b=b^a`，常用于交换两数、找单身数字。
-
-同或多用于逻辑判断、奇偶校验电路。
 ## 33. `count` 函数
 `count` 函数可以在容器中查找指定元素的个数。查找范围是$[begin, end)$。
 ```cpp
@@ -1326,63 +726,6 @@ if (it != v.end())
          << distance(v.begin(), it) << endl;
 }
 ```
-## 34. 交换数值
-### `swap` 函数可以交换两个变量的值。
-```cpp
-int a = 10, b = 20;
-swap(a, b);
-cout << a << " " << b << endl; // 20 10
-```
-### 经典三变量交换
-```cpp
-int a = 10, b = 20;
-int c = a; a = b; b = c;
-cout << a << " " << b << endl; // 20 10
-```
-### 经典异或交换
-```cpp
-int a = 10, b = 20;
-a = a ^ b; b = b ^ a; a = a ^ b;
-cout << a << " " << b << endl; // 20 10
-```
-## 35. 字符串与数值互转
-### 1. 字符串转数值
-```cpp
-string s;
-int a = stoi(s);
-```
-### 2. 数值转字符串
-```cpp
-int a = 10;
-string s = to_string(a);
-```
-## 36. `string`构造函数
-这里`string` 是构造函数，用重复次数和字符来初始化字符串。
-```cpp
-string s(重复次数, 字符)
-```
-例如 `string s(5, 'A')` 生成 `"AAAAA"`。字符可以是 `char` 或 `int`（会被转为 `char`）。常用于快速生成重复模式的字符串，如填充、分隔线等。注意第一个参数是数量（size_t），第二个是字符值，顺序不能反。
-## 37. 判断是否是字母、数字、空格等
-|判断 | 描述 | 判断 | 描述 |
-|:------:|:------:|:------:|:------:|
-|判断字母|`isalpha(c)`|判断数字|`isdigit(c)`|
-|判断大写字母|`isupper(c)`|判断小写字母|`islower(c)`|
-|判断数字|`isdigit(c)`|判断空格|`isspace(c)`|
-|判断空格|`isspace(c)`|判断换行符|`isntrl(c)`|
-|判断换行符|`isntrl(c)`|判断制表符|`istab(c)`|
-|判断回车符|`isreturn(c)`|判断其他|`isgraph(c)`|
-|判断控制符|`iscntrl(c)`|
-## 39. 常见数学
-| 数学 | 描述 | 数学 | 描述 |
-|:------:|:------:|:------:|:------:|
-| 最大值 | `max(x,y)` | 最小值 | `min(x,y)` |
-| 绝对值 | `abs(x)` | 取整 | `round(x)` |
-| 向上取整 | 见上 | 向下取整 | 见上 |
-| 平方根 | `sqrt(x)` | 立方根 | `cbrt(x)` |
-| 对数底$e$ | `log(x)` | 对数底$2$ |  `log2(x)` |
-| 对数底$10$ | `log10(x)` | 对数底$e$ | `log(x)` |
-| 导数 | `derivative(x)`| 积分 | `integral(x)` |
-| 开$n$次方 | `pow(x, n)` |
 ## 40. 约瑟夫环
 约瑟夫环（Josephus Problem）是经典递推问题：$n$个人围成一圈，每数到第 $k$ 个就淘汰，求最后幸存者编号。递推公式：$f(1)=0$; $f(i)=(f(i-1)+k)\mod i$，最终答案 `+1` 转为 1-based 编号。时间复杂度$O(n)$，空间$O(1)$。
 ```cpp
@@ -1522,24 +865,6 @@ void bfs(int startX, int startY, vector<string>& grid)
 ---
 
 边界检查：`x >= 0 && x < n && y >= 0 && y < m`
-## 43. `getline` 读取整行
-```cpp
-string s, p, q;
-getline(cin, s); // 读取换行符，直到换行符为止
-cin.get(p); // 从输入流中读取一个字符，存入p中
-cin.ignore(q); // 从输入流中忽略（丢弃） q 个字符
-```
-## 44. 一年中的第几天
-```cpp
-int a, b, c; cin >> a >> b >> c;
-int sum[13] = {0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
-int total = sum[b] + c;
-if (((a % 4 == 0 && a % 100 != 0) || (a % 400 == 0)) && b > 2)
-{
-       total++;
-}
-cout << total << endl;
-```
 ## 45. 数组比较相关
 ### 找出不是两个数组共有的元素
 ```cpp
@@ -2191,10 +1516,6 @@ void pushFront(int x)
 | 指定位置插入 | $O(1)$ | $O(1)$ | $O(n)$ |
 | 指定位置删除 | $O(1)$ | $O(1)$ | $O(n)$ |
 | 查找 | $O(n)$ | $O(n)$ | $O(1)$ |
-## 52. 四舍五入
-```cpp
-round(x) // 四舍五入到最近整数
-```
 ## 53.输出乘法表
 ```cpp
 #include <iostream>
