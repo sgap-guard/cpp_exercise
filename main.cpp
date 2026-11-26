@@ -1,11 +1,19 @@
-#include <stdio.h>
-#include <string.h>
-int main()
+#include <bits/stdc++.h>
+using namespace std;
+
+static int a[20];
+signed main()
 {
-    int a[2][3], *p;
-    scanf("%d",&a[0][0]);
-    printf("==%p\n", &a[0][0]);
-    printf("==%p\n", &a[0]);
-    printf("== =%p\n", a);
+    int i = 0;
+    do
+    {
+        cin >> a[i];
+        i++;
+    } while (a[i] != -1);
+    sort(a, a + i);
+    int MAX = a[i - 1];
+    int MIN = a[0];
+    cout << "max=" << MAX << ",";
+    cout << "min=" << MIN << endl;
     return 0;
 }

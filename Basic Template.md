@@ -6,6 +6,13 @@
 > [!important]
 > 本模板的所有代码均使用万能头文件，代码中若没有写万能头文件和标准命名空间，则视为默认使用。所有代码均在GNU++26环境下测试通过。
 # 基础模板
+## 宏定义
+```cpp
+#define \n endl // 代表将代码中的`\n` 替换为 `endl`
+#define int long long // 代表将代码中的 `int` 替换为 `long long`
+// 上面一行宏定义，必须把 `int main()` 改为 `signed main()`，否则会报错
+#define PI 3.14 // 定义圆周率 PI=3.14
+```
 ## 图形输出
 ### 加速输入输出
 ```cpp
@@ -452,21 +459,20 @@ for (int i = 1; i <= n; i++)
 
 </details>
 
-
-
-
-
-
-
-
-
 ## 字符及字符串
 ### 读取整行
 ```cpp
 string s, p, q;
-getline(cin, s); // 读取换行符，直到换行符为止
-cin.get(p); // 从输入流中读取一个字符，存入p中
-cin.ignore(q); // 从输入流中忽略（丢弃） q 个字符
+// 读取一行（含空格）到 string，遇到换行符停止，换行符被丢弃不存入
+getline(cin, s);
+
+// 读取单个字符（包括空格、Tab、换行）存入 p
+cin.get(p);
+
+// 丢弃最多 q 个字符；若中途遇到 delim 则提前停止（delim 也被丢弃）
+// 默认 delim 为 EOF，故 cin.ignore(q) 就是丢弃 q 个字符
+cin.ignore(q);
+cin.ignore(q, '\n');   // 常用：清到行尾
 ```
 ### 按照原样输出（可多行）
 ```cpp
@@ -657,8 +663,9 @@ string s = to_string(n); // 输出为123456789
 ```
 ### 字符串转数字
 ```cpp
-string s; cin >> s; // 123456789为例
-int n = stoi(s); // 输出为123456789
+string s; cin >> s; // 12346789为例
+int n = stoi(s); // 输出为12346789
+long long m = stoll(s); // 输出为12346789，返回long long类型
 ```
 ### 判断字符串是否为空
 ```cpp
@@ -780,6 +787,82 @@ vector<int> getPrimesEuler(int n, vector<bool> &is_composite)
     return primes;
 }
 ```
+### 判断完数
+完数（也称完全数，完美数）：一个正整数等于其所有真因子（除自身外的约数）之和。如 6=1+2+3，28=1+2+4+7+14。偶完数公式：$2^{p-1}(2^p-1)$，其中 $2^p-1$ 为梅森素数。
+#### 暴力版($O(n)$)
+```cpp
+int sum = 0;
+for (int i = 1; i < n; i++)
+{
+    if (n % i == 0) sum += i;
+}
+if (sum == n) cout << "Yes" << endl;
+else cout << "No" << endl;
+```
+#### 优化版($O(\sqrt{n})$)
+```cpp
+int sumDiv(int n)
+{
+    if (n == 1) return 0;
+    int sum = 1;
+    for (int i = 2; i * i <= n; i++)
+    {
+        if (n % i == 0)
+        {
+            sum += i;
+            if (i != n / i) sum += n / i;
+        }
+    }
+    return sum;
+}
+signed main()
+{
+    // 输入 n
+    if (sumDiv(n) == n) cout << "Yes" << endl;
+    else cout << "No" << endl;
+}
+```
+### 判断水仙花数
+水仙花数（一般指三位数的）：三位数，各位数字的立方和等于本身。三位数共 4 个：153、370、371、407
+
+> 水仙花数其实是自幂数的一种，
+> 自幂数是指一个 n 位数，其各位数字的 n 次幂之和等于该数本身。
+> 所以水仙花数是n=3的自幂数。
+
+通用版自幂数
+```cpp
+bool isSelfPow(int n)
+{
+    string s = to_string(n);
+    int k = s.size(), sum = 0;
+    for (char ch : s)
+    {
+        int d = ch - '0', p = 1;
+        for (int j = 0; j < k; j++) p *= d;
+        sum += p;
+    }
+    return sum == n;
+}
+```
+### 相亲数
+
+两个正整数 $a$、$b$，若 $a$ 的所有真因子（除自身外的因数）之和等于 $b$，且 $b$ 的所有真因子之和等于 $a$，则称它们是一对亲和数。
+
+$$s(a) = b, \quad s(b) = a$$
+
+
+
+| 类型 | 条件 | 例子 |
+|---|---|---|
+| **完全数** | $s(n) = n$（自身循环） | 6, 28, 496 |
+| **亲和数** | $s(a)=b,\ s(b)=a$（2 个数循环） | (220, 284) |
+| **社交数**（多亲数） | $s(a_1)=a_2,\ ..., s(a_k)=a_1$，$k \ge 3$ | 12496→14288→15472→14536→14264→12496 |
+
+三者可统一称为**亲和数**（amicable numbers），都与真因子和有关。
+
+
+> 判断亲和数时必须**双向验证** $s(s(n)) = n$，且排除 $s(n) = n$ 的完全数情况，否则 16（$s(16)=15$，但 $s(15)=9$）这类单向数会被误判。
+
 ### 向上取整，向下取整
 存在等式$a = q \times b + r$，其中$q$为商，$r$为余数，且$0 \leq r < b$。则有：
 ```cpp
@@ -1125,20 +1208,184 @@ sum[i] = sum[i-1] + a[i];
 sum[r] - sum[l-1]
 ```
 有关前缀和的更多语法，参见[Contest Template](./Contest%20Template.md)
+#### 删除指定值
+```cpp
+int n; cin >> n;
+vector<int> nums;
+for (int i = 0; i < n; i++)
+{
+    int x;
+    cin >> x;
+    nums.push_back(x);
+}
+int target; cin >> target;
+vector<int> result;
+for (int x : nums)
+{
+    if (x != target)
+    {
+        result.push_back(x);
+    }
+}
+for (size_t i = 0; i < result.size(); i++)
+{
+    if (i > 0)
+    {
+        cout << " ";
+    }
+    cout << result[i];
+}
+cout << endl;
+return 0;
+```
+#### 找出不是两数组共有的元素
+```cpp
+vector<int> arr1, arr2;
+int n1, n2; cin >> n1;
+for (int i = 0; i < n1; i++)
+{
+    int x;
+    cin >> x;
+    arr1.push_back(x);
+}
 
+cin >> n2;
+for (int i = 0; i < n2; i++)
+{
+    int x;
+    cin >> x;
+    arr2.push_back(x);
+}
+vector<int> result;
+vector<bool> printed(100000, false);
+for (int x : arr1)
+{
+    bool found = false;
+    for (int y : arr2)
+    {
+        if (x == y)
+        {
+            found = true;
+            break;
+        }
+    }
+    if (!found && !printed[x + 50000])
+    {
+        result.push_back(x);
+        printed[x + 50000] = true;
+    }
+}
+for (int x : arr2)
+{
+    bool found = false;
+    for (int y : arr1)
+    {
+        if (x == y)
+        {
+            found = true;
+            break;
+        }
+    }
+    if (!found && !printed[x + 50000])
+    {
+        result.push_back(x);
+        printed[x + 50000] = true;
+    }
+}
+for (size_t i = 0; i < result.size(); i++)
+{
+    if (i > 0)
+    {
+        cout << " ";
+    }
+    cout << result[i];
+}
+cout << endl;
+```
 
+<details>
+<summary>开关灯</summary>
 
+#### 经典题（开关灯）
+假设有 N 盏灯（N 为不大于 5000 的正整数），从 1  到 N 按顺序依次编号，初始时全部处于开启状态；有 M 个人（M 为不大于 N 的正整数）也从 1 到 M 依次编号。
+第一个人（1 号）将灯全部关闭，第二个人（2 号）将编号为 2 的倍数的灯打开，第三个人（3 号）将编号为 3 的倍数的灯做相反处理（即，将打开的灯关闭，将关闭的灯打开）。依照编号递增顺序，以后的人都和 3 号一样，将凡是自己编号倍数的灯做相反处理。
+请问：当第 M 个人操作之后，哪几盏灯是关闭的，按从小到大输出其编号，其间用逗号间隔。
+输入格式:
+输入正整数 N 和 M，以单个空格隔开，M ≤ N。
+输出格式:
+顺序输出关闭的灯的编号，各编号之间用逗号间隔。
 
+</details>
 
-
-
-
-
-
-
-
-
-
+#### 向有序数列插入整数
+```cpp
+int n; cin >> n;
+vector<int> nums;
+for (int i = 0; i < n; i++)
+{
+    int x; cin >> x;
+    nums.push_back(x);
+}
+int insert_val; cin >> insert_val;
+auto it = lower_bound(nums.begin(), nums.end(), insert_val);
+nums.insert(it, insert_val);
+for (size_t i = 0; i < nums.size(); i++)
+{
+    if (i > 0)
+    {
+        cout << " ";
+    }
+    cout << nums[i];
+}
+cout << endl;
+```
+#### 有序序列合并
+```cpp
+int n, m; cin >> n >> m;
+vector<int> a(n), b(m);
+for (int i = 0; i < n; i++)
+{
+    cin >> a[i];
+}
+for (int i = 0; i < m; i++)
+{
+    cin >> b[i];
+}
+vector<int> result;
+int i = 0, j = 0;
+while (i < n && j < m)
+{
+    if (a[i] <= b[j])
+    {
+        result.push_back(a[i]);
+        i++;
+    }
+    else
+    {
+        result.push_back(b[j]);
+        j++;
+    }
+}
+while (i < n)
+{
+    result.push_back(a[i]);
+    i++;
+}
+while (j < m)
+{
+    result.push_back(b[j]);
+    j++;
+}
+for (size_t k = 0; k < result.size(); k++)
+{
+    if (k > 0)
+    {
+        cout << " ";
+    }
+    cout << result[k];
+}
+cout << endl;
+```
 ### 二维数组
 #### 求和
 ```cpp
@@ -1163,10 +1410,6 @@ for (int i = 0; i < n; i++)
     }
 }
 ```
-
-
-
-
 
 
 
