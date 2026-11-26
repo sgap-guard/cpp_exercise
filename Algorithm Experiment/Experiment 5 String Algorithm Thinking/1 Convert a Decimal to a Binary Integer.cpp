@@ -3,6 +3,7 @@ using namespace std;
 
 int main()
 {
+    cout << "刘佳林 2604090112" << endl;
     int n; cin >> n;
     if (n == 0)
     {

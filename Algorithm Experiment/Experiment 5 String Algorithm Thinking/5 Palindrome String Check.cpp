@@ -3,6 +3,7 @@ using namespace std;
 
 signed main()
 {
+    cout << "刘佳林 2604090112" << endl;
     string a;
     getline(cin, a);
     string b(a.begin(), a.end());

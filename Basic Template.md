@@ -2,6 +2,9 @@
 > 声明：部分题目与模板未使用万能头文件和标准命名空间和主函数，则视为默认使用
 >
 > 整理时间截止至2026年11月24日，后续会继续更新。
+
+> [!important]
+> 本模板的所有代码均使用万能头文件，代码中若没有写万能头文件和标准命名空间，则视为默认使用。所有代码均在GNU++26环境下测试通过。
 # 基础模板
 ## 图形输出
 ### 加速输入输出
@@ -10,53 +13,453 @@ ios::sync_with_stdio(false);
 cin.tie(nullptr);
 ```
 ### 输出图形的边界控制
-#### 1. 核心框架：坐标系与双重循环
-控制台图形打印本质是二维矩阵输出。外层循环控制行 `i`，内层控制列 `j`，内层结束后必须换行。
+#### 一、纯字符图形（方阵）边界规律
+##### 1）基础“线”原子条件（必背）
+| 线条 | 条件（0 下标） | 说明 |
+|---|---|---|
+| 上边框 | `i == 0` | 第一行 |
+| 下边框 | `i == n - 1` | 最后一行 |
+| 左边框 | `j == 0` | 第一列 |
+| 右边框 | `j == n - 1` | 最后一列 |
+| 主对角线 | `i == j` | 左上 → 右下 |
+| 副对角线 | `i + j == n - 1` | 右上 → 左下 |
+
+- **空心**：只用 `==`，只描轮廓线；多条线用 `||` 拼；
+- **实心**：用 `>=`、`<=` 圈一块连续区域；
+- **镜像翻转**：
+  - **左右镜像**：主对角线 ? 副对角线互换；
+  - **上下翻转**：把 `i` 换成 `n - 1 - i`；
+  - **旋转**：多条条件一起替换。
+
+典型组合：
+- N：左竖 `||` 右竖 `||` 主对角线；
+- 反 N：左竖 `||` 右竖 `||` 副对角线；
+- X：主对角线 `||` 副对角线；
+- Z：上框 `||` 下框 `||` 副对角线；
+- 反 Z：上框 `||` 下框 `||` 主对角线。
+
+##### 2）非方阵（三角、菱形）
+不是固定 `n` 列，套路固定两段循环：
+```
+外层 i（行）
+    内层循环 A → 打前置空格
+    内层循环 B → 打图案字符
+```
+- **空格**：一般是随行递减；
+- **图案长度**：一般是奇数递增（`2i?1`）；
+- **空心菱形**：图案段只保留该行最左、最右两个点；实心直接全部填满。
+
+记忆口诀：**先挪位置（空格），再画图形**。
+
+---
+
+#### 二、数字图案的边界 & 方向规律
+数字题多一个变量：**当前数字 `num`**，边界分「几何边界」和「流动方向边界」。
+
+##### 1）普通递增三角
+每行多一个数，`num` 一直 `++`；边界就是 `j <= i`，单纯“放行”。
+
+##### 2）龙摆尾（蛇形）
+- **方阵蛇形**：奇数行正扫，偶数行反扫；几何边界每行都是 `1～n`；方向边界判断 `i % 2`；
+- **倒三角蛇形**：从最大总和往回切块，每组再判断正反；
+- **反向递减方阵**：起点是 `n·n`，一路 `--`。
+
+核心：**几何管画多大一块，奇偶管扫的方向**。
+
+##### 3）螺旋 / 回形（高阶）
+不再是单循环一条判断式，而是用「四条边界」收缩：
+- `top`：最上面一行；
+- `bottom`：最下面一行；
+- `left`：最左一列；
+- `right`：最右一列；
+一圈跑完，边界向内缩，直到撞在一起停止。
+
+规律：**不是一条 if，而是轮流沿着四条边填充，填完收边界**。
+
+---
+
+#### 三、考场通用推导流程（固定步骤）
+1. **定坐标系**
+   拿小样本（`n = 4 / 5`）标 `(i, j)`；优先选一套下标不要来回乱换。
+2. **区分类型**
+   - 方阵：一层外层 + 一层内层循环，if 判断要不要输出；
+   - 三角菱形：拆空格 + 图案双内层循环；
+   - 数字蛇形：额外加方向标记、起点终点；
+3. **提取特征**
+   - 哪些行 / 列固定全打？→ 边框；
+   - 哪些是斜线？→ 两条对角线；
+   - 是不是镜像翻转？→ 替换对角线公式；
+   - 是不是空心？→ 只留 `==`；实心就用区间；
+4. **写骨架**
+   循环骨架几乎不变，大部分时间只是换 `if` 里面那串条件；
+5. **小样例校验**
+   代入 `n = 3` 跑一遍，看第一行、最后一行、对角线是否符合；错了就单独调一条条件。
+
+---
+
+#### 四、高频踩坑规律
+1. **下标漂移**：一会儿从 `0`，一会儿从 `1`，对角线公式直接失效；
+2. **空心实心混写**：实心用 `==` 画成线条，空心用 `<=` 直接糊一片；
+3. **翻转想当然**：不是所有翻转都只换一个变量，有的要整条条件替换；
+4. **数字蛇形**：反行不要一个个 `--` 硬猜，先算该行起点、终点再倒序输出；
+5. **多余空格**：每行最后多一个空格，考试有时候会卡评测；对策：判断 `j` 是否是最后一个再打空格。
+
+---
+
+#### 五、一张“选型决策表”
+| 看到长啥样 | 套路 |
+|---|---|
+| N / X / Z / 方阵斜线 | 拼边框 + 对角线 |
+| 等腰三角 / 菱形 | 空格循环 + 图案循环 |
+| 一行比一行多一个数字 | `num` 持续累加 |
+| 一行正一行反（蛇） | `i % 2` 判断方向 |
+| 一圈一圈往里转 | 四边界收缩螺旋 |
+| 全部倒序填满方阵 | 起点设最大值，不断自减 |
+
+   
+<details>
+<summary>示例</summary>
+<details>
+<summary>输出n行实心正方形</summary>
 
 ```cpp
-#include <bits/stdc++.h>
-using namespace std;
-void printPattern(int n)
+for (int i = 0; i < n; i++)
 {
-    for (int i = 0; i < n; i++)
+    for (int j = 0; j < n; j++)
     {
-        for (int j = 0; j < n; j++)
+        cout << ch;
+    }
+    cout << endl;
+}
+```
+</details>
+
+<details> 
+<summary>输出n行空心正方形</summary>
+
+```cpp
+for (int i = 0; i < n; i++)
+{
+    for (int j = 0; j < n; j++)
+    {
+        if (i == 0 || i == n - 1 || j == 0 || j == n - 1)
         {
-            // 根据坐标 (i, j) 判定输出
+            cout << ch;
+        }
+        else
+        {
+            cout << " ";
+        }
+    }
+    cout << endl;
+}
+```
+
+</details>
+
+<details>
+<summary>输出n行直角三角形（尖朝上）</summary>
+
+```cpp
+for (int i = 1; i <= n; i++)
+{
+    for (int j = 1; j <= i; j++)
+    {
+        cout << ch;
+    }
+    cout << endl;
+}
+```
+
+</details>
+
+<details>
+<summary>输出n行直角三角形（尖朝下）</summary>
+
+```cpp
+for (int i = n; i >= 1; i--)
+{
+    for (int j = 1; j <= i; j++)
+    {
+        cout << ch;
+    }
+    cout << endl;
+}
+```
+
+</details>
+
+<details>
+<summary>输出空心菱形</summary>
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    char ch; int n;
+    cout << "请输入绘图字符：";
+    cin >> ch;
+    cout << "请输入菱形上半部分行数：";
+    cin >> n;
+    // 打印上半部分（包含中间一行）
+    for (int i = 1; i <= n; i++)
+    {
+        // 打印前置空格
+        for (int j = 1; j <= n - i; j++)
+        {
+            cout << " ";
+        }
+        // 打印字符与中间空格
+        for (int k = 1; k <= 2 * i - 1; k++)
+        {
+            if (k == 1 || k == 2 * i - 1)
+            {
+                cout << ch;
+            }
+            else
+            {
+                cout << " ";
+            }
+        }
+        cout << endl;
+    }
+    // 打印下半部分
+    for (int i = n - 1; i >= 1; i--)
+    {
+        // 打印前置空格
+        for (int j = 1; j <= n - i; j++)
+        {
+            cout << " ";
+        }
+        // 打印字符与中间空格
+        for (int k = 1; k <= 2 * i - 1; k++)
+        {
+            if (k == 1 || k == 2 * i - 1)
+            {
+                cout << ch;
+            }
+            else
+            {
+                cout << " ";
+            }
+        }
+        cout << endl;
+    }
+    return 0;
+}
+```
+
+</details>
+
+<details>
+<summary>输出实心菱形</summary>
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    char ch;
+    int n;
+    cout << "请输入绘图字符：";
+    cin >> ch;
+    cout << "请输入菱形上半部分行数：";
+    cin >> n;
+    // 上半部分（含中间行）
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= n - i; j++)
+        {
+            cout << " ";
+        }
+        for (int k = 1; k <= 2 * i - 1; k++)
+        {
+            cout << ch;
+        }
+        cout << endl;
+    }
+    // 下半部分
+    for (int i = n - 1; i >= 1; i--)
+    {
+        for (int j = 1; j <= n - i; j++)
+        {
+            cout << " ";
+        }
+        for (int k = 1; k <= 2 * i - 1; k++)
+        {
+            cout << ch;
+        }
+        cout << endl;
+    }
+    return 0;
+}
+```
+
+</details>
+
+<details>
+<summary>输出n行N字形</summary>
+
+```cpp
+for (int i = 0; i < n; i++)
+{
+    for (int j = 0; j < n; j++)
+    {
+        if (j == 0 || j == n - 1 || i == j)
+        {
+            cout << ch;
+        }
+        else
+        {
+            cout << " ";
         }
         cout << endl;
     }
 }
 ```
 
-#### 2. 边界与条件判定规律
-图形的变化本质是 `(i, j)` 满足的数学关系，以下为必考公式：
+</details>
 
-| 图形/位置 | 核心判定条件 |
-| :--- | :--- |
-| 主对角线 | `i == j` |
-| 副对角线 | `i + j == n - 1` |
-| X 形图案 | `i == j \|\| i + j == n - 1` |
-| 矩形边框 | `i == 0 \|\| i == n-1 \|\| j == 0 \|\| j == m-1` |
-| 左下/右上实心三角形 | `j <= i` / `j >= i` |
-| 中心行/列 | `i == n / 2` |
+<details>
+<summary>输出n行X字形</summary>
 
-#### 3. 空格与星号的数学关系
-非矩形图形通常需分段循环：先打印空格，再打印字符。
-*   **右对齐直角三角形**：第 `i` 行先打印 `n-i-1` 个空格，再打印 `i+1` 个字符。
-*   **等腰三角形**：第 `i` 行先打印 `n-i-1` 个前置空格，再打印 `2*i+1` 个字符。
-*   **菱形**：拆分为上下两个三角形，分别用双重循环处理。
+```cpp
+for (int i = 0; i < n; i++)
+{
+    for (int j = 0; j < n; j++)
+    {
+        if (i == j || i + j == n - 1)
+        {
+            cout << ch;
+        }
+        else
+        {
+            cout << " ";
+        }
+        cout << endl;
+    }
+}
+```
 
-#### 4. 循环控制易错点
-*   **索引起点**：明确是 `0` 到 `n-1` 还是 `1` 到 `n`，这直接决定边界公式是 `n-1` 还是 `n`。
-*   **判断优先级**：图形重叠时（如H字矩阵），`if-else if` 顺序决定输出，特殊条件在前，通用条件在后。
-*   **break 作用域**：嵌套循环中 `break` 仅跳出最内层，跳出多层需借助标志变量或封装函数使用 `return`。
+</details>
 
-#### 5. 竞赛实战建议
-在OJ平台刷题时格式要求极严：
-*   **严禁多余空格**：行末不能有多余空格，严格按样例输出。
-*   **调试技巧**：图形错位时临时改为 `cout << "(" << i << "," << j << ") "` 排查边界逻辑。
-*   **代码精简**：简单判定用一行条件表达式解决，避免嵌套过深。
+<details>
+<summary>输出n行反N字型</summary>
+
+```cpp
+for (int i = 0; i < n; i++)
+{
+    for (int j = 0; j < n; j++)
+    {
+        if (j == 0 || j == n - 1 || i + j == n - 1)
+        {
+            cout << ch;
+        }
+        else
+        {
+            cout << " ";
+        }
+        cout << endl;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>输出n行Z字形</summary>
+
+```cpp
+for (int i = 0; i < n; i++)
+{
+    for (int j = 0; j < n; j++)
+    {
+        if (i == 0 || i == n - 1 || i + j == n - 1)
+        {
+            cout << ch;
+        }
+        else
+        {
+            cout << " ";
+        }
+        cout << endl;
+}
+```
+
+</details>
+
+<details>
+<summary>阶梯状输出数字</summary>
+
+```cpp
+for (int i = 1; i <= n; i++)
+{
+    for (int j = 1; j <= i; j++)
+    {
+        cout << num;
+        if (j != i)
+        {
+            cout << " ";
+        }
+        num++;
+    }
+    cout << endl;
+}
+```
+
+</details>
+
+<details>
+<summary>正方形输出数字</summary>
+
+```cpp
+int num = 1;
+for (int i = 1; i <= n; i++)
+{
+    if (i % 2 == 1)
+    {
+        for (int j = 1; j <= n; j++)
+        {
+            cout << num;
+            if (j != n)
+            {
+                cout << " ";
+            }
+            num++;
+        }
+    }
+    else
+    {
+        int end = num + n - 1;
+        for (int j = end; j >= num; j--)
+        {
+            cout << j;
+            if (j != num)
+            {
+                cout << " ";
+            }
+        }
+        num += n;
+    }
+    cout << endl;
+}
+```
+
+</details>
+
+</details>
+
+
+
+
+
+
+
+
+
 ## 字符及字符串
 ### 读取整行
 ```cpp
@@ -65,9 +468,10 @@ getline(cin, s); // 读取换行符，直到换行符为止
 cin.get(p); // 从输入流中读取一个字符，存入p中
 cin.ignore(q); // 从输入流中忽略（丢弃） q 个字符
 ```
-### 按照原样输出
+### 按照原样输出（可多行）
 ```cpp
-cout << R"(////origin$raw\\\\)" << endl;
+cout << R"(////origin$raw\\\\
+jjjjjj///nnn\\\)" << endl;
 ```
 ### 翻转
 #### 字符串翻转
@@ -78,7 +482,7 @@ cout << str << endl; // dlrow olleh
 ```
 #### 数字翻转
 ##### 无前导零
-###### 法一
+###### 数学方法
 ```cpp
 int n; cin >> n; // 0123为例
 int ans = 0;
@@ -89,7 +493,7 @@ while (n > 0)
 }
 cout << ans << endl; // 321
 ```
-###### 法二
+###### 字符串方法
 ```cpp
 string s; cin >> s; // 0123为例
 reverse(s.begin(), s.end());
@@ -120,13 +524,13 @@ cout << s.length() << endl; // 输出为11
 cout << s.size() << endl; // 等价写法，输出11
 ```
 ### 在字符串中查找字符
-#### 法一
+#### find函数
 ```cpp
 string s; cin >> s; // Hello World为例
 char c; cin >> c; // 查找字符为o
 cout << s.find(c) << endl; // 输出为4，从0开始计数，o在第5位
 ```
-#### 法二
+#### 遍历字符串
 ```cpp
 for (char c : s)
 {
@@ -165,7 +569,7 @@ cout << s3 << endl; // hello world
 ```
 ### 删除字符串中第i位字符
 ```cpp
-string s; cin >> s; // Hello World为例，i=5
+string s; cin >> s; // Hello! World为例，i=5
 s.erase(i, 1); // 删除第5位字符，输出为Hello World
 cout << s << endl; // Hello World
 ```
@@ -183,8 +587,8 @@ cout << s << endl; // Hello World
 ```
 ### 删除字符串末尾的字符
 ```cpp
-string s; cin >> s; // Hello World 为例
-s.pop_back(); // 删除末尾字符，输出为Hello Worl
+string s; cin >> s; // Hello! World为例
+s.pop_back(); // 删除末尾字符，输出为Hello World
 cout << s << endl; // Hello World
 ```
 ### 截取字符串
@@ -194,7 +598,7 @@ string str = s.substr(i, len); // 截取第5位开始的3个字符，输出为! 
 cout << str << endl; // ! W
 ```
 ### 字符串转大小写
-#### 法一
+#### isxxx函数
 ```cpp
 string s; cin >> s; // Hello World为例
 for (char &c : s)
@@ -210,7 +614,13 @@ for (char &c : s)
     }
 }
 ```
-#### 法二
+#### 字符串查找字符首次出现位置
+```cpp
+char c; cin >> c; // 查找字符为c，是否是大写元音字母
+if (isupper(c) && !strchr("AEIOU", c)) cout << "yes" << endl; 
+// 输出为yes
+```
+#### 字符加减
 ```cpp
 string s; cin >> s; // Hello World为例
 for (char &c : s)
@@ -225,7 +635,7 @@ for (char &c : s)
     }
 }
 ```
-### 判断及转换字符，<cctype>
+### 判断及转换字符
 | 函数 | 说明 | 函数 | 说明 | 函数 | 说明 |
 | --- | --- | --- | --- | --- | --- |
 | `isalpha` | 判断是否是字母 | `isupper` | 判断是否是大写字母 | `islower` | 判断是否是小写字母 | `isupper` | 判断是否是大写字母 |
@@ -291,6 +701,18 @@ bool hasDigit(int a, int b)
     }
     return false;
 }
+```
+### 统计数字$a$中数字$b$的个数
+```cpp
+int a, b; cin >> a >> b;
+int cnt = 0;
+if (a == 0 && b == 0) cnt++; // 特判 a=0 的情况
+while (a > 0)
+{
+    if (a % 10 == b) cnt++;
+    a /= 10;
+}
+cout << cnt << endl;
 ```
 ### 判断质数
 #### 基础试除法
@@ -376,41 +798,62 @@ cout << hex << uppercase << n << endl; // 输出为7B，十六进制大
 ```
 #### 十进制转二进制
 ##### 无前导零
+###### 模拟数学方法
 ```cpp
-void printBinaryShort(int n)
+int n; cin >> n;
+if (n == 0)
 {
-    if (n == 0)
-    {
-        cout << 0 << endl;
-        return;
-    }
-    // 找到最高位的 1 所在的位置
-    int highest = 0;
-    for (int i = 31; i >= 0; i--)
-    {
-        if ((n >> i) & 1)
-        {
-            highest = i;
-            break;
-        }
-    }
-    // 从最高位的 1 开始输出，自然去除了前导零
-    for (int i = highest; i >= 0; i--)
-    {
-        cout << ((n >> i) & 1);
-    }
-    cout << endl;
+    cout << 0 << endl;
+    return 0;
 }
+int high = 0;
+for (int i = 30; i >= 0; i--)
+{
+    if ((n >> i) & 1)
+    {
+        high = i;
+        break;
+    }
+}
+for (int i = high; i >= 0; i--)
+{
+    cout << ((n >> i) & 1);
+}
+cout << endl;
+return 0;
+```
+###### 数组模拟
+```cpp
+int n; cin >> n;
+if (n == 0)
+{
+    cout << 0 << endl;
+    return 0;
+}
+int bin[32];
+int i = 0;
+while (n > 0)
+{
+    bin[i] = n % 2;
+    n /= 2;
+    i++;
+}
+for (int j = i - 1; j >= 0; j--)
+{
+    cout << bin[j];
+}
+cout << endl;
 ```
 ##### 有前导零，位宽8
-###### 法一
+###### 位运算
 ```cpp
 for (int i = 7; i >= 0; i--)
 {
     cout << ((n >> i) & 1);
 }
 ```
-###### 法二
+
+###### bitset
 ```cpp
 bitset<8> bs(n);// 输出 8 位二进制，不足高位补0，123为例
 cout << bs.to_string() << endl; // 输出为01111011
@@ -442,7 +885,7 @@ cout << res << endl;
 return 0;
 ```
 ### 阶乘
-#### 法一
+#### 递归
 ```cpp
 int factorial(int n)
 {
@@ -450,7 +893,7 @@ int factorial(int n)
     return n * factorial(n - 1);
 }
 ```
-#### 法二
+#### 循环
 ```cpp
 int factorial(int n)
 {
@@ -462,7 +905,7 @@ int factorial(int n)
     return res;
 }
 ```
-#### 法三
+#### 函数
 ```cpp
 int x = factorial(n); // n!，n为非负整数
 ```
@@ -586,9 +1029,6 @@ int ones = num % 10; // 个位
 ```
 ### 最大公因数与最小公倍数
 ```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
 // 欧几里得算法手写gcd
 int gcd_own(int a, int b)
 {
@@ -600,7 +1040,6 @@ int gcd_own(int a, int b)
     }
     return a;
 }
-
 // 手写lcm，公式 lcm(a,b)=a*b/gcd(a,b)
 int lcm_own(int a, int b)
 {
@@ -609,17 +1048,13 @@ int lcm_own(int a, int b)
 
 signed main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
     int a, b; cin >> a >> b;
     cout << "手写gcd: " << gcd_own(a, b) << endl;
     cout << "手写lcm: " << lcm_own(a, b) << endl;
-
     // std::gcd，std::lcm在C++17/GNU++17及后续版本中引入
     // 很多OJ的bits/stdc++.h已经包含
     cout << "库gcd: " << gcd(a, b) << endl;
     cout << "库lcm: " << lcm(a, b) << endl;
-    return 0;
 }
 ```
 ### 判断是否是$2$的$n$次方
@@ -689,6 +1124,21 @@ sum[i] = sum[i-1] + a[i];
 ```cpp
 sum[r] - sum[l-1]
 ```
+有关前缀和的更多语法，参见[Contest Template](./Contest%20Template.md)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### 二维数组
 #### 求和
 ```cpp
@@ -713,6 +1163,23 @@ for (int i = 0; i < n; i++)
     }
 }
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### 动态数组
 `vector`是C++ STL中的动态数组，支持自动扩展和收缩，提供了丰富的成员函数和算法支持。常用操作包括：
 长度可以自动增长，不用像普通数组那样提前定死大小。

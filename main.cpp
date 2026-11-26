@@ -1,14 +1,11 @@
-#include <iostream>
-using namespace std;
-
+#include <stdio.h>
+#include <string.h>
 int main()
 {
-    int a, b;
-    while (cin >> a >> b)
-    {
-        a++;
-        b++;
-        cout << a << endl << b << endl;
-    }
+    int a[2][3], *p;
+    scanf("%d",&a[0][0]);
+    printf("==%p\n", &a[0][0]);
+    printf("==%p\n", &a[0]);
+    printf("== =%p\n", a);
     return 0;
 }
