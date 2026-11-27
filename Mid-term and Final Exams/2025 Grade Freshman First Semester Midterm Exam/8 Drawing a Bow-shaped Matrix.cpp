@@ -4,7 +4,7 @@ using namespace std;
 int main()
 {
     int n;
-    if (cin >> n)
+    cin >> n;
     {
         for (int i = 0; i < n; i++)
         // 外层：控制行，i=0,1,2,...,n-1

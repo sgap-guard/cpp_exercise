@@ -13,7 +13,105 @@
 // 上面一行宏定义，必须把 `int main()` 改为 `signed main()`，否则会报错
 #define PI 3.14 // 定义圆周率 PI=3.14
 ```
-## 图形输出
+## 循环
+### 常见循环类型
+#### `for` 循环
+```cpp
+for (int i = 0; i < n; i++)
+{
+    // 循环体
+}
+```
+#### `while` 循环
+```cpp
+int i = 0;
+while (/*条件*)
+{
+    // 循环体
+}
+// 注意：`while` 循环必须保证循环条件在某一时刻会变为 `false`，否则会陷入死循环
+```
+#### `do-while` 循环
+```cpp
+do
+{
+    // 循环体
+} while (/*条件*/);
+// 注意：`do-while` 循环至少会执行一次循环体
+```
+#### `switch` 语句
+```cpp
+switch (/*表达式*/)
+{
+case /*常量表达式1*/:
+    // 语句1
+    break;
+case /*常量表达式2*/:
+case /*常量表达式3*/:
+// 可以合理的利用case穿透，将多个case合并成一个case
+    // 语句2
+    break;
+default:
+    // 默认语句
+}
+```
+
+<details>
+
+<summary>国王的金币</summary>
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+signed main()
+{
+    long long k;
+    cin >> k;
+
+    long long n = 1;           // 当前阶段：每天发 n 枚，持续 n 天
+    long long days_passed = 0; // 已经发放的总天数
+    long long total_coins = 0; // 累计获得的金币数
+
+    while (days_passed < k)
+    {
+        if (days_passed + n <= k)
+        {
+            // 当前阶段完整度过
+            total_coins += n * n;
+            days_passed += n;
+            n++;
+        }
+        else
+        {
+            // 当前阶段只发一部分就达到 k 天
+            long long remaining = k - days_passed;
+            total_coins += remaining * n;
+            break;
+        }
+    }
+
+    cout << total_coins << endl;
+
+    return 0;
+}
+```
+
+</details>
+
+#### `break`和`continue`语句
+`break`：用于跳出当前循环
+
+`continue`：用于跳过当前循环的剩余部分，直接进入下一次循环
+
+`break`和`continue`只能用于循环语句和`switch`语句中
+## 函数
+### 基本函数
+```cpp
+int add(int a, int b)
+{
+    
+}
 ### 加速输入输出
 ```cpp
 ios::sync_with_stdio(false);
@@ -662,10 +760,30 @@ long long n; cin >> n; // 123456789为例
 string s = to_string(n); // 输出为123456789
 ```
 ### 字符串转数字
+#### 转`int`，同时可去除前导零
 ```cpp
-string s; cin >> s; // 12346789为例
-int n = stoi(s); // 输出为12346789
-long long m = stoll(s); // 输出为12346789，返回long long类型
+string s; // 全称叫Strig TO Int
+stoi(s); // 将字符串s转为int
+```
+#### 转`long long`
+```cpp
+string s; // 全称叫Strig TO Long Long
+stoll(s); // 将字符串s转为long long
+```
+#### 转`double`
+```cpp
+string s; // 全称叫Strig TO Double
+stod(s); // 将字符串s转为double
+```
+#### 转`float`
+```cpp
+string s; // 全称叫Strig TO Float
+stof(s); // 将字符串s转为float
+```
+#### 转`long double`
+```cpp
+string s; // 全称叫Strig TO Long Double
+stold(s); // 将字符串s转为long double
 ```
 ### 判断字符串是否为空
 ```cpp
@@ -732,6 +850,7 @@ bool isPrime(int x)
 {
     if (x <= 1) return false;
     for (int i = 2; i * i <= x; i++)
+    // 如果数太大，可以写 i <= x / i 防止溢出
     {
         if (x % i == 0) return false;
     }
