@@ -1,19 +1,16 @@
-#include <bits/stdc++.h>
-using namespace std;
-
-static int a[20];
-signed main()
-{
-    int i = 0;
-    do
-    {
-        cin >> a[i];
-        i++;
-    } while (a[i] != -1);
-    sort(a, a + i);
-    int MAX = a[i - 1];
-    int MIN = a[0];
-    cout << "max=" << MAX << ",";
-    cout << "min=" << MIN << endl;
-    return 0;
-}
+class Solution {
+public:
+    /**
+     * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
+     *
+     * 计算 n 的阶乘
+     * @param n int整型 
+     * @return int整型
+     */
+    int factorialOfN(int n) {
+        int sum = 1;
+        for (int i = 1; i <= n; i++)
+            sum *= i;
+        return sum;
+    }
+};
